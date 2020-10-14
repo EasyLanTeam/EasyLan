@@ -13,7 +13,6 @@ namespace EasyLan.Web
     {
         public static void Main(string[] args)
         {
-            //ÏÈÑîñ
             CreateHostBuilder(args).Build().Run();
         }
 
