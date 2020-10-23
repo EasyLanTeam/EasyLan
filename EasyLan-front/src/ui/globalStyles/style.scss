@@ -1,8 +1,7 @@
-@import "./variables.scss";
-
 html {
-  background-color: #3f3f3f;
-  color: #e5e5e5;
+  background-color: $color-deep;
+  color: $color-text;
+  font-family: "PT Sans", Arial, sans-serif;
 }
 
 * {

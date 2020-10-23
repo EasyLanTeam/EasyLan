@@ -84,7 +84,6 @@ module.exports = {
           {
             loader: "css-loader",
             options: {
-              importLoaders: 1,
               modules: {
                 mode: "local",
                 auto: /\.style\.\w+$/i,
@@ -94,6 +93,15 @@ module.exports = {
             },
           },
           "sass-loader",
+          {
+            loader: "sass-resources-loader",
+            options: {
+              resources: [
+                "./src/ui/globalStyles/variables.scss",
+                "./src/ui/globalStyles/mixins.scss",
+              ],
+            },
+          },
         ],
       },
     ],

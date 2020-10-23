@@ -13,6 +13,8 @@
   "author": "Andreyinthesky",
   "license": "ISC",
   "dependencies": {
+    "@mdi/js": "^5.7.55",
+    "@mdi/react": "^1.4.0",
     "classnames": "^2.2.6",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -37,6 +39,7 @@
     "optimize-css-assets-webpack-plugin": "^5.0.4",
     "sass": "^1.27.0",
     "sass-loader": "^10.0.3",
+    "sass-resources-loader": "^2.1.1",
     "style-loader": "^1.2.1",
     "terser-webpack-plugin": "^4.2.3",
     "typescript": "^4.0.3",

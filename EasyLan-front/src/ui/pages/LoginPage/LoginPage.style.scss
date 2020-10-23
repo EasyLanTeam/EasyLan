@@ -1,0 +1,102 @@
+.card {
+  padding: 0 8px 48px 8px;
+
+  background-color: $color-fg;
+}
+
+.form-header {
+  display: flex;
+  justify-content: center;
+
+  text-transform: uppercase;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.form-title {
+  display: inline-block;
+  margin: 24px 0 16px 0;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+
+  margin-bottom: 12px;
+}
+
+.form-label {
+  margin-bottom: 4px;
+}
+
+.submit-button {
+  display: block;
+  width: 100%;
+
+  margin-top: 24px;
+  margin-bottom: 16px;
+
+  font-size: 16px;
+}
+
+.alt-signs {
+  padding-top: 20px;
+  position: relative;
+  border-top: 1px solid #c4c4c4;
+}
+
+.alt-signs-title {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 0 16px;
+  background-color: $color-fg;
+
+  text-transform: uppercase;
+  font-weight: bold;
+  line-height: 24px;
+}
+
+.sign-in-vk-button {
+  background-color: #4a76bb;
+  font-size: 16px;
+}
+
+.vk-icon {
+  @include icon-size;
+  margin-right: 4px;
+  vertical-align: bottom;
+}
+
+@media (min-width: $tablet-width) {
+  .wrapper {
+    display: flex;
+    margin: 56px 72px 0 72px;
+  }
+
+  .card {
+    width: 100%;
+    padding: 0 56px 48px 56px;
+    border-radius: 8px;
+
+    background-color: $color-fg;
+  }
+
+  .submit-button {
+    width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 36px;
+    margin-bottom: 24px;
+  }
+
+  .alt-signs {
+    display: flex;
+  }
+
+  .sign-in-vk-button {
+    width: 300px;
+    margin: 0 auto;
+  }
+}
