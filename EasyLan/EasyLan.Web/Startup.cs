@@ -87,6 +87,11 @@ namespace EasyLan.Web
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
+            
+            if (env.IsDevelopment())
+            {
+                app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod());
+            }
 
             app.UseEndpoints(endpoints =>
             {

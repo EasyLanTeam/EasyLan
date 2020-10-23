@@ -23,6 +23,11 @@ namespace EasyLan.Web.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            if (userService.GetUser(model.Username) != null)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+            
             var sha256 = new SHA256Managed();
             var userDto = new UserDTO
             {
