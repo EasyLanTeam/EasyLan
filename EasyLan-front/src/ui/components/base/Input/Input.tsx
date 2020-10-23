@@ -2,12 +2,21 @@ import * as React from "react";
 
 import styles from "./Input.style.scss";
 
-interface IInputProps {
-  type?: "text" | "password";
-}
+interface IInputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
 
-const Input: React.FunctionComponent<IInputProps> = (props : IInputProps) => {
-  return <input className={styles.input} type={props.type} />;
+const Input: React.FunctionComponent<IInputProps> = ({
+  type,
+  value,
+  onChange,
+} : IInputProps) => {
+  return (
+    <input
+      className={styles.input}
+      type={type}
+      value={value}
+      onChange={onChange}
+    />
+  );
 };
 
 Input.defaultProps = {

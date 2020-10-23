@@ -4,14 +4,15 @@ import IBaseComponentProps from "../../../../infrastructure/ui/interfaces/IBaseC
 
 import styles from "./Button.style.scss";
 
-interface IButtonProps extends IBaseComponentProps {
-  children: React.ReactNode;
-}
+type IButtonProps = {
+  children: React.ReactNode,
+} & IBaseComponentProps & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-const Button: React.FunctionComponent<IButtonProps> = (props: IButtonProps) => {
+
+const Button: React.FunctionComponent<IButtonProps> = ({className, children, ...rest}: IButtonProps) => {
   return (
-    <button className={cn(props.className, styles.button)}>
-      {props.children}
+    <button className={cn(className, styles.button)} {...rest}>
+      {children}
     </button>
   );
 };
