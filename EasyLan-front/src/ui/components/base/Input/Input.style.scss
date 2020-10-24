@@ -1,0 +1,17 @@
+.input {
+  display: block;
+  padding: 12px;
+  border: none;
+  border-radius: 4px;
+
+  background-color: $color-fg-light;
+  color: $color-text;
+
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 24px;
+
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,0 +1,31 @@
+.header {
+  position: fixed;
+  top: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  width: $mobile-width;
+  background-color: $color-bg;
+  padding: 16px;
+
+  box-shadow: 0 4px 4px 0 #00000040;
+
+  @media (min-width: $tablet-width) {
+    position: absolute;
+    width: 100%;
+  }
+}
+
+.title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.menu-icon {
+  @include icon-size;
+  width: 48px;
+  height: 48px;
+}
