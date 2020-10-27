@@ -55,14 +55,15 @@ namespace EasyLan.Web
                 });
             services.AddSwaggerGen();
             string connectionString;
-            if (WebHostEnvironment.IsEnvironment("azure"))
-            {
-                connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
-            }
-            else
-            {
-                connectionString = Configuration.GetConnectionString("DefaultConnection");
-            }
+            connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
+
+            //if (WebHostEnvironment.IsEnvironment("azure"))
+            //{
+            //}
+            //else
+            //{
+            //    connectionString = Configuration.GetConnectionString("DefaultConnection");
+            //}
 
             services.AddDbContext<AppDbContext>(o => o.UseMySql(connectionString));
 
