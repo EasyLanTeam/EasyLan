@@ -79,13 +79,15 @@ namespace EasyLan.Web
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
-            app.UseCookiePolicy(new CookiePolicyOptions
             {
-                MinimumSameSitePolicy = SameSiteMode.Strict,
-                HttpOnly = HttpOnlyPolicy.Always,
-                Secure = CookieSecurePolicy.Always
-            });
+                app.UseCookiePolicy(new CookiePolicyOptions
+                {
+                    MinimumSameSitePolicy = SameSiteMode.Strict,
+                    HttpOnly = HttpOnlyPolicy.Always,
+                    Secure = CookieSecurePolicy.Always
+                });
+            }
+
 
             if (env.IsDevelopment())
             {
@@ -105,6 +107,13 @@ namespace EasyLan.Web
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
+            
+            Console.WriteLine(env.IsDevelopment());
+            
+            if (env.IsDevelopment())
+            {
+                app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            }
 
             app.UseEndpoints(endpoints =>
             {

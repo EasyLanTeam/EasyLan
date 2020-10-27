@@ -1,0 +1,11 @@
+.container {
+  position: relative;
+  width: $mobile-width;
+  min-height: 100vh;
+  margin: 0 auto;
+  background-color: $color-bg;
+
+  @media (min-width: $tablet-width) {
+    width: $tablet-width;
+  }
+}
