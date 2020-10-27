@@ -8,7 +8,7 @@ namespace EasyLan.DataLayer
         public DbSet<User> Users { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-
+            Database.Migrate();
         }
     }
 }
