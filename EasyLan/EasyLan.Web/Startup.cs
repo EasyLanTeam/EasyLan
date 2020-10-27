@@ -57,17 +57,12 @@ namespace EasyLan.Web
             string connectionString;
             if (WebHostEnvironment.IsEnvironment("azure"))
             {
-                string connection = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
-                string dbhost = Regex.Match(connection, @"Data Source=(.+?);").Groups[1].Value;
-                string server = dbhost.Split(':')[0].ToString();
-                string port = dbhost.Split(':')[1].ToString();
-                string dbname = Regex.Match(connection, @"Database=(.+?);").Groups[1].Value;
-                string dbusername = Regex.Match(connection, @"User Id=(.+?);").Groups[1].Value;
-                string dbpassword = Regex.Match(connection, @"Password=(.+?)$").Groups[1].Value;
-                connectionString = $@"server={server};userid={dbusername};password={dbpassword};database={dbname};port={port};pooling = false; convert zero datetime=True;";
+                connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
             }
-            else 
+            else
+            {
                 connectionString = Configuration.GetConnectionString("DefaultConnection");
+            }
 
             services.AddDbContext<AppDbContext>(o => o.UseMySql(connectionString));
 
