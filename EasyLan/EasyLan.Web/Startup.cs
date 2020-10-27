@@ -14,15 +14,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Text.RegularExpressions;
 
 namespace EasyLan.Web
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        public Startup(IConfiguration configuration)
+        public IWebHostEnvironment WebHostEnvironment { get; }
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            WebHostEnvironment = environment;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -51,17 +54,32 @@ namespace EasyLan.Web
                     };
                 });
             services.AddSwaggerGen();
-            services.AddDbContext<AppDbContext>(o => o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            string connectionString;
+            if (WebHostEnvironment.IsEnvironment("azure"))
+            {
+                string connection = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
+                string dbhost = Regex.Match(connection, @"Data Source=(.+?);").Groups[1].Value;
+                string server = dbhost.Split(':')[0].ToString();
+                string port = dbhost.Split(':')[1].ToString();
+                string dbname = Regex.Match(connection, @"Database=(.+?);").Groups[1].Value;
+                string dbusername = Regex.Match(connection, @"User Id=(.+?);").Groups[1].Value;
+                string dbpassword = Regex.Match(connection, @"Password=(.+?)$").Groups[1].Value;
+                connectionString = $@"server={server};userid={dbusername};password={dbpassword};database={dbname};port={port};pooling = false; convert zero datetime=True;";
+            }
+            else 
+                connectionString = Configuration.GetConnectionString("DefaultConnection");
+
+            services.AddDbContext<AppDbContext>(o => o.UseMySql(connectionString));
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepository, UserRepository>();
-            
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-           
+
             app.UseCookiePolicy(new CookiePolicyOptions
             {
                 MinimumSameSitePolicy = SameSiteMode.Strict,
