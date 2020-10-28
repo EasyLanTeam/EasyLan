@@ -40,10 +40,5 @@ namespace EasyLan.Web.Controllers
             userService.SaveChanges();
             return Ok();
         }
-        [HttpGet]
-        public string String()
-        {
-            return Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
-        }
     }
 }
