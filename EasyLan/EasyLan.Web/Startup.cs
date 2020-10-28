@@ -95,7 +95,6 @@ namespace EasyLan.Web
                 var token = context.Request.Cookies[".AspNetCore.Application.Kel"];
                 if (!string.IsNullOrEmpty(token))
                     context.Request.Headers.Add("Authorization", "Bearer " + token);
-                await context.Response.WriteAsync(Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb"));
                 await next();
 
             });
