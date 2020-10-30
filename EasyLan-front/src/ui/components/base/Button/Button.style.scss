@@ -17,4 +17,8 @@
   &:focus {
     outline: none;
   }
+
+  &:hover {
+    background-color: lighten($color: $color-primary, $amount: 5);
+  }
 }
