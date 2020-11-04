@@ -107,7 +107,7 @@ export default class LoginPage extends React.Component<
               ></Input>
             </div>
             <span className={styles.formErrorMessage}>{errorMessage}</span>
-            <Button className={styles.submitButton} onClick={this.handleSubmit}>
+            <Button className={styles.submitButton} variant="primary" onClick={this.handleSubmit}>
               Войти
             </Button>
           </div>

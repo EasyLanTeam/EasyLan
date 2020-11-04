@@ -4,15 +4,33 @@ import cn from "classnames";
 import styles from "./Button.style.scss";
 
 type IButtonProps = {
+  variant?: "primary" | "default";
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
+const Button: React.FunctionComponent<IButtonProps> = ({
+  className,
+  children,
+  variant,
+  ...rest
+}: IButtonProps) => {
+  console.log(styles);
 
-const Button: React.FunctionComponent<IButtonProps> = ({className, children, ...rest}: IButtonProps) => {
   return (
-    <button className={cn(className, styles.button)} {...rest}>
+    <button
+      className={cn(
+        className,
+        styles.button,
+        variant !== "default" && styles[`button--${variant}`]
+      )}
+      {...rest}
+    >
       {children}
     </button>
   );
+};
+
+Button.defaultProps = {
+  variant: "default",
 };
 
 export default Button;

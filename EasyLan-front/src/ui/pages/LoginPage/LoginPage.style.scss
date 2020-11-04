@@ -68,7 +68,12 @@
 
 .sign-in-vk-button {
   background-color: #4a76bb;
+  border: none;
   font-size: 16px;
+
+  &:hover {
+    background-color: #4a76bb;
+  }
 }
 
 .vk-icon {
