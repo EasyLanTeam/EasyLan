@@ -1,5 +1,7 @@
 .container {
   position: relative;
+  display: flex;
+  flex-direction: column;
   width: $mobile-width;
   min-height: 100vh;
   margin: 0 auto;

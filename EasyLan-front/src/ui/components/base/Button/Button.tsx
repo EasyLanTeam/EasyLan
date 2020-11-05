@@ -13,8 +13,6 @@ const Button: React.FunctionComponent<IButtonProps> = ({
   variant,
   ...rest
 }: IButtonProps) => {
-  console.log(styles);
-
   return (
     <button
       className={cn(

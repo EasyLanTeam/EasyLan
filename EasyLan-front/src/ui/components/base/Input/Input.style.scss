@@ -21,4 +21,9 @@
     -webkit-text-fill-color: $color-text !important;
     box-shadow: 0 0 0px 1000px $color-fg-light inset;
   }
+
+  &:disabled {
+    background-color: darken($color-fg-light, $amount: 10);
+    color: darken($color: $color-text, $amount: 20);
+  }
 }

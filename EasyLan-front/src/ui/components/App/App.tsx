@@ -1,12 +1,13 @@
 import React from "react";
 import { Redirect, Route, Switch, BrowserRouter } from "react-router-dom";
 
-import styles from "./App.style.scss";
-
 import Header from "../Header";
 import LoginPage from "../../pages/LoginPage";
 import Main from "../Main";
 import RegisterPage from "../../pages/RegisterPage";
+import CreateTournamentPage from "../../pages/CreateTournamentPage";
+
+import styles from "./App.style.scss";
 
 export interface IAppProps {}
 
@@ -27,6 +28,9 @@ export default class App extends React.Component<IAppProps> {
               </Route>
               <Route path="/register">
                 <RegisterPage />
+              </Route>
+              <Route path="/tournament">
+                <CreateTournamentPage />
               </Route>
             </Switch>
           </Main>

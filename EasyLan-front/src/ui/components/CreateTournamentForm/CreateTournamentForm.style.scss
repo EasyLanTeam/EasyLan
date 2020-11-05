@@ -1,0 +1,255 @@
+.form-body {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-header {
+  display: flex;
+  justify-content: center;
+}
+
+.form-title {
+  margin-top: 24px;
+  margin-bottom: 16px;
+
+  font-size: 16px;
+  text-transform: uppercase;
+}
+
+.form-section {
+  border-top: 1px solid $color-text-light;
+
+  &--prizes {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.form-section__title {
+  margin: 8px 0;
+  width: 100%;
+
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.form-fieldset {
+  &--prize-type {
+    flex-basis: 50%;
+    border-right: 1px solid $color-text-light;
+    margin-bottom: 16px;
+  }
+
+  &--prize-count {
+    width: 50%;
+    padding-left: 16px;
+  }
+
+  &--participants {
+    display: flex;
+    flex-wrap: wrap;
+  }
+}
+
+.form-fieldset--prize-type .form-group:last-child {
+  margin-bottom: 0;
+}
+
+.form-fieldset__label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.form-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-bottom: 12px;
+
+  &--participants {
+    width: 50%;
+
+    &:not(:last-child) {
+      padding-right: 8px;
+    }
+  }
+}
+
+.form-label {
+  margin-right: 8px;
+
+  &--prize-count {
+    margin: 0;
+    margin-bottom: 8px;
+  }
+}
+
+.input {
+  max-width: 100%;
+  flex-grow: 1;
+
+  &--fee {
+    width: 100%;
+    padding-right: 48px;
+  }
+
+  &--participants {
+    width: 112px;
+  }
+}
+
+.input-wrapper--fee {
+  max-width: 100%;
+  flex-grow: 1;
+  position: relative;
+}
+
+.input-fee__money-sign {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translate(-50%, 50%);
+
+  color: $color-text-light;
+  font-weight: bold;
+
+  user-select: none;
+}
+
+.input-error {
+  min-width: 100px;
+  flex-basis: 100%;
+  margin-top: 4px;
+
+  color: $color-error;
+  font-size: 14px;
+  overflow-wrap: break-word;
+}
+
+.submit-button {
+  width: 100%;
+
+  margin-top: 24px;
+  margin-bottom: 48px;
+
+  font-size: 16px;
+}
+
+@media (min-width: $tablet-width) {
+  .form-title {
+    font-size: 20px;
+    margin-top: 36px;
+    margin-bottom: 48px;
+  }
+
+  .form-section {
+    border: none;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .form-section__title {
+    margin-bottom: 16px;
+    text-align: start;
+    font-size: 16px;
+  }
+
+  .form-section--date-time .form-group {
+    width: 50%;
+    &:not(:last-child) {
+      padding-right: 16px;
+    }
+  }
+
+  .form-section--location .form-group {
+    width: 1/3 * 100%;
+    &:not(:last-child) {
+      padding-right: 8px;
+    }
+  }
+
+  .form-section--tournament-type .form-group {
+    &:not(:last-child) {
+      margin-right: 24px;
+    }
+  }
+
+  .form-section--discipline .form-group {
+    width: 50%;
+    &:not(:last-child) {
+      padding-right: 16px;
+    }
+  }
+
+  .form-section--prizes {
+    display: block;
+    width: 67%;
+  }
+
+  .form-fieldset {
+    &--prize-type {
+      flex-basis: auto;
+      border: none;
+      margin-bottom: 4px;
+    }
+
+    &--prize-count {
+      width: auto;
+      padding-left: 0;
+    }
+
+    &--participants {
+      width: 50%;
+      padding-right: 16px;
+    }
+  }
+
+  .form-fieldset--prize-type .form-group {
+    display: inline-block;
+
+    &:not(:last-child) {
+      margin-right: 24px;
+    }
+  }
+
+  .form-fieldset__label {
+    &--participants {
+      width: 100%;
+    }
+  }
+
+  .form-group {
+    &-fee {
+      width: 50%;
+    }
+  }
+
+  .form-label {
+    &--prize-count {
+      margin: 0;
+      margin-right: 8px;
+    }
+
+    &-fee {
+      margin-bottom: 8px;
+      width: 100%;
+    }
+  }
+
+  .input {
+    &--location {
+      width: 100px;
+    }
+  }
+
+  .submit-button {
+    align-self: flex-start;
+    width: auto;
+    min-width: 296px;
+    margin-top: 36px;
+    margin-bottom: 24px;
+  }
+}

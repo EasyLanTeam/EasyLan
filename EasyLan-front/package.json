@@ -16,6 +16,7 @@
     "@mdi/js": "^5.7.55",
     "@mdi/react": "^1.4.0",
     "classnames": "^2.2.6",
+    "formik": "^2.2.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-router-dom": "^5.2.0"
