@@ -1,0 +1,96 @@
+.container {
+  // display: flex;
+  // flex-direction: column;
+  margin: 0 8px;
+}
+
+.tournament-list {
+  display: flex;
+  margin-top: 24px;
+  flex-wrap: wrap;
+}
+
+.tournament-list__item {
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+.tournament-card {
+  position: relative;
+  height: 100%;
+  cursor: pointer;
+
+  padding: 8px;
+  padding-bottom: 40px;
+  border-radius: 8px;
+  min-height: 120px;
+  background-color: $color-fg;
+
+  &:hover {
+    background-color: lighten($color-fg, 5);
+  }
+}
+
+.tournament-card__wrapper {
+  width: 80%;
+}
+
+.tournament-card__title {
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.tournament-card__participants {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  height: 24px;
+
+  font-weight: bold;
+}
+
+.tournament-card__datetime {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+}
+
+.time__icon,
+.date__icon,
+.participants__icon {
+  margin-right: 4px;
+  vertical-align: middle;
+}
+
+.time__text,
+.date__text {
+  vertical-align: middle;
+}
+
+@media (min-width: $tablet-width) {
+  .container {
+    width: 632px;
+    margin: 0 auto;
+  }
+
+  .tournament-list {
+    margin-right: -24px;
+  }
+
+  .tournament-list__item {
+    width: 304px;
+    margin-bottom: 16px;
+    margin-right: 24px;
+  }
+}
+
+@media (min-width: $desktop-width) {
+  .container {
+    width: 960px;
+  }
+}

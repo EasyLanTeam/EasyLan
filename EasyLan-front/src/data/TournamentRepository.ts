@@ -41,7 +41,7 @@ const tournaments: Array<Tournament> = [
   },
 ];
 
-class TournamentRepository {
+export default class TournamentRepository {
   getAllTournaments(): Array<Tournament> {
     return tournaments;
   }

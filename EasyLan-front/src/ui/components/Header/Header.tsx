@@ -43,6 +43,13 @@ const Header: React.FunctionComponent<IHeaderProps> = (props) => {
             >
               Турниры
             </NavLink>
+            <NavLink
+              className={styles.siteNavItem}
+              activeClassName={styles.siteNavItemActive}
+              to={"/createtournament"}
+            >
+              Создать турнир
+            </NavLink>
           </div>
           <div className={styles.userNav}>
             <NavLink

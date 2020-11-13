@@ -8,6 +8,7 @@ import RegisterPage from "../../pages/RegisterPage";
 import CreateTournamentPage from "../../pages/CreateTournamentPage";
 
 import styles from "./App.style.scss";
+import TournamentsPage from "../../pages/TournamentsPage/TournamentsPage";
 
 export interface IAppProps {}
 
@@ -29,7 +30,10 @@ export default class App extends React.Component<IAppProps> {
               <Route path="/register">
                 <RegisterPage />
               </Route>
-              <Route path="/tournament">
+              <Route path="/tournaments">
+                <TournamentsPage />
+              </Route>
+              <Route path="/createtournament">
                 <CreateTournamentPage />
               </Route>
             </Switch>
