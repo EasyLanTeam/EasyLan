@@ -15,6 +15,10 @@ const Header: React.FunctionComponent<IHeaderProps> = (props) => {
     setCloseMainNav(!closeMainNav);
   };
 
+  const handleNavItemClick = () => {
+    setCloseMainNav(true);
+  };
+
   return (
     <header className={styles.header}>
       <h1 className={styles.title}>EasyLan</h1>
@@ -27,7 +31,7 @@ const Header: React.FunctionComponent<IHeaderProps> = (props) => {
         </div>
 
         <div className={styles.mainNavList}>
-          <div className={styles.siteNav}>
+          <div className={styles.siteNav} onClick={handleNavItemClick}>
             <NavLink
               className={styles.siteNavItem}
               activeClassName={styles.siteNavItemActive}
@@ -51,7 +55,7 @@ const Header: React.FunctionComponent<IHeaderProps> = (props) => {
               Создать турнир
             </NavLink>
           </div>
-          <div className={styles.userNav}>
+          <div className={styles.userNav} onClick={handleNavItemClick}>
             <NavLink
               className={cn(styles.userNavItem, styles.userNavItemRegister)}
               to={"/register"}
