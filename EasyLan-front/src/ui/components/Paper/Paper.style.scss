@@ -1,0 +1,20 @@
+.paper {
+  padding: 0 12px;
+
+  background-color: $color-fg;
+}
+
+@media (min-width: $tablet-width) {
+  .paper {
+    padding: 0 48px;
+  }
+}
+
+@media (min-width: $desktop-width) {
+  .paper {
+    width: 1110px;
+    margin: 42px auto 48px;
+    padding: 0 72px;
+    border-radius: 8px;
+  }
+}
