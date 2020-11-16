@@ -8,13 +8,14 @@ import { TournamentFormValues } from "./TournamentFormValues";
 import styles from "./CreateTournamentForm.style.scss";
 
 const LocationSection = () => {
-  const { values, handleChange, setFieldValue } = useFormikContext<
+  const { values, handleChange, setFieldValue, setFieldTouched } = useFormikContext<
     TournamentFormValues
   >();
   const handleInputBlur = (evt: React.FocusEvent<HTMLInputElement>) => {
     const { id, name, value } = evt.target;
 
-    setFieldValue(name || id, value.trim());
+    setFieldValue(name || id, value.trim(), true);
+    setFieldTouched(name || id);
   };
 
   return (
@@ -34,7 +35,9 @@ const LocationSection = () => {
           value={values.city}
           onBlur={handleInputBlur}
         ></Input>
-        <span className={styles.inputError}>Ошибка</span>
+        <span className={styles.inputError}>
+          <ErrorMessage name="city" />
+        </span>
       </div>
       <div className={styles.formGroup}>
         <FormLabel
@@ -50,7 +53,9 @@ const LocationSection = () => {
           onChange={handleChange}
           onBlur={handleInputBlur}
         ></Input>
-        <span className={styles.inputError}>Ошибка</span>
+        <span className={styles.inputError}>
+          <ErrorMessage name="street" />
+        </span>
       </div>
       <div className={styles.formGroup}>
         <FormLabel
@@ -66,7 +71,9 @@ const LocationSection = () => {
           onChange={handleChange}
           onBlur={handleInputBlur}
         ></Input>
-        <span className={styles.inputError}>Ошибка</span>
+        <span className={styles.inputError}>
+          <ErrorMessage name="house" />
+        </span>
       </div>
     </div>
   );

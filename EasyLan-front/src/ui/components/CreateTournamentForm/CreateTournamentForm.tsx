@@ -1,19 +1,24 @@
 import * as React from "react";
-import TextArea from "../../components/base/TextArea/TextArea";
-import Button from "../../components/base/Button";
+import * as yup from "yup";
 import { Formik, FormikProps } from "formik";
+import Button from "../../components/base/Button";
 import { TournamentFormValues } from "./TournamentFormValues";
 import PrizesSection from "./PrizesSection";
 import ParticipantsSection from "./ParticipantsSection";
 import LocationSection from "./LocationSection";
 import DateTimeSection from "./DateTimeSection";
 import TournamentTypeSection from "./TornamentTypeSection";
-import DisciplineSection from "./DisciplineSection";
+import GameSection from "./GameSection";
+import AdditionalInfoSection from "./AdditionalInfoSection";
 
 import styles from "./CreateTournamentForm.style.scss";
+import { Tournament } from "../../../data/Tournament";
+import dayjs from "dayjs";
+
+interface ICreateTournamentFormProps {}
 
 const renderForm = (props: FormikProps<TournamentFormValues>) => {
-  const { values, handleChange, handleSubmit } = props;
+  const { handleSubmit } = props;
 
   return (
     <div className={styles.form}>
@@ -24,18 +29,10 @@ const renderForm = (props: FormikProps<TournamentFormValues>) => {
         <DateTimeSection />
         <LocationSection />
         <TournamentTypeSection />
-        <DisciplineSection />
+        <GameSection />
         <PrizesSection />
         <ParticipantsSection />
-        <div className={styles.formSection}>
-          <div className={styles.formSectionTitle}>Доп. информация:</div>
-          <TextArea
-            id="additionalInfo"
-            onChange={handleChange}
-            value={values.additionalInfo}
-          ></TextArea>
-          <span className={styles.inputError}>Ошибка</span>
-        </div>
+        <AdditionalInfoSection />
         <Button
           type="submit"
           variant="primary"
@@ -48,8 +45,6 @@ const renderForm = (props: FormikProps<TournamentFormValues>) => {
     </div>
   );
 };
-
-interface ICreateTournamentFormProps {}
 
 const formDefaultValues: TournamentFormValues = {
   date: new Date().toISOString().split("T")[0],
@@ -69,17 +64,92 @@ const formDefaultValues: TournamentFormValues = {
   additionalInfo: "",
 };
 
+const errorMessages = {
+  required: "Обязательное поле",
+  maxSymbols: "Слишком длинное значение поля",
+  datePassed: "Введите корректную дату",
+};
+
+const validationSchema = yup.object().shape({
+  date: yup
+    .date()
+    .transform(function (value: any, originalValue: any) {
+      if (this.isType(value)) return value;
+
+      const [yearStr, monthStr, dateStr] = originalValue.split("-");
+      value = new Date(+yearStr, +monthStr, +dateStr);
+
+      return value;
+    })
+    .min(new Date().toISOString().split("T")[0], errorMessages.datePassed),
+  city: yup
+    .string()
+    .required(errorMessages.required)
+    .max(250, errorMessages.maxSymbols),
+  street: yup
+    .string()
+    .required(errorMessages.required)
+    .max(250, errorMessages.maxSymbols),
+  house: yup
+    .string()
+    .required(errorMessages.required)
+    .max(250, errorMessages.maxSymbols),
+  game: yup
+    .string()
+    .required(errorMessages.required)
+    .max(250, errorMessages.maxSymbols),
+  gameFormat: yup.string().max(250, errorMessages.maxSymbols),
+  prizeCount: yup.number().required(),
+  minParticipants: yup.number().required(),
+  maxParticipants: yup.number().required(),
+  fee: yup.number().required(),
+  prizes: yup
+    .array()
+    .of(
+      yup
+        .string()
+        .required(errorMessages.required)
+        .max(250, errorMessages.maxSymbols)
+    ),
+  additionalInfo: yup.string().max(250, errorMessages.maxSymbols),
+});
+
 const CreateTournamentForm: React.FunctionComponent<ICreateTournamentFormProps> = (
   props
 ) => {
   const handleSubmit = (values: TournamentFormValues, actions: any) => {
-    console.log("submit", values, actions);
+    const { date: dateStr, time: timeStr } = values;
+    const [hourStr, minuteStr] = timeStr.split(":");
+    const datetime = dayjs(dateStr)
+      .set("hour", +hourStr)
+      .set("minute", +minuteStr)
+      .toDate();
+    const location = [values.city, values.street, values.house].join(", ");
+    const tournamentEntity: Tournament = {
+      id: null,
+      organizerId: "o1",
+      organizerFullname: "username",
+      datetime,
+      location,
+      type: values.type,
+      game: values.game,
+      gameFormat: values.gameFormat,
+      prizes: values.prizes,
+      minParticipants: values.minParticipants,
+      maxParticipants: values.maxParticipants,
+      fee: values.fee,
+    };
+
+    console.log(tournamentEntity);
   };
 
-  const formInitialValues = formDefaultValues;
-
   return (
-    <Formik initialValues={formInitialValues} onSubmit={handleSubmit}>
+    <Formik
+      initialValues={formDefaultValues}
+      onSubmit={handleSubmit}
+      validationSchema={validationSchema}
+      validateOnBlur={true}
+    >
       {(props) => renderForm(props)}
     </Formik>
   );

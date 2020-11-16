@@ -3,11 +3,12 @@ import { Tournament } from "./Tournament";
 const tournaments: Array<Tournament> = [
   {
     id: "t1",
-    organizer: "username",
+    organizerId: "o1",
+    organizerFullname: "username",
     datetime: new Date(2020, 11, 20, 14),
     location: "Екатеринбург, Первомайская, 28",
     game: "DOTA 2",
-    type: "Командный",
+    type: "team",
     gameFormat: "5x5",
     minParticipants: 8,
     maxParticipants: 32,
@@ -17,22 +18,26 @@ const tournaments: Array<Tournament> = [
   },
   {
     id: "t2",
-    organizer: "Cyber Club",
+    organizerId: "o2",
+    organizerFullname: "Cyber Club",
     datetime: new Date(2020, 11, 22, 17),
     location: "Екатеринбург, Первомайская, 28",
     game: "PUBG",
-    type: "Индивидуальный",
+    type: "single",
     gameFormat: "",
     minParticipants: 8,
     maxParticipants: 24,
+    prizes: [],
+    fee: 0,
   },
   {
     id: "t3",
-    organizer: "username",
+    organizerId: "o3",
+    organizerFullname: "username",
     datetime: new Date(2020, 12, 18, 18),
     location: "Екатеринбург, Первомайская, 28",
     game: "DOTA 2",
-    type: "Командный",
+    type: "team",
     gameFormat: "5x5",
     minParticipants: 8,
     maxParticipants: 32,
@@ -44,5 +49,9 @@ const tournaments: Array<Tournament> = [
 export default class TournamentRepository {
   getAllTournaments(): Array<Tournament> {
     return tournaments;
+  }
+
+  addTournament(tournament: Tournament) {
+    tournaments.push(tournament);
   }
 }

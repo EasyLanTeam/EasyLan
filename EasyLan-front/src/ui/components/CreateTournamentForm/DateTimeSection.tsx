@@ -2,13 +2,20 @@ import * as React from "react";
 import FormLabel from "../base/FormLabel";
 import Input from "../base/Input";
 import cn from "classnames";
-import { useFormikContext } from "formik";
+import { ErrorMessage, useFormikContext } from "formik";
 import { TournamentFormValues } from "./TournamentFormValues";
 
 import styles from "./CreateTournamentForm.style.scss";
 
 const DateTimeSection = () => {
-  const { values, handleChange } = useFormikContext<TournamentFormValues>();
+  const { values, handleChange, setFieldTouched } = useFormikContext<
+    TournamentFormValues
+  >();
+
+  const handleInputBlur = ({ target }: React.FocusEvent<HTMLInputElement>) => {
+    const { id, name } = target;
+    setFieldTouched(id || name);
+  };
 
   return (
     <div className={cn(styles.formSection, styles.formSectionDateTime)}>
@@ -24,8 +31,11 @@ const DateTimeSection = () => {
           className={styles.input}
           value={values.date}
           onChange={handleChange}
+          onBlur={handleInputBlur}
         ></Input>
-        <span className={styles.inputError}>Ошибка</span>
+        <span className={styles.inputError}>
+          <ErrorMessage name="date" />
+        </span>
       </div>
       <div className={styles.formGroup}>
         <FormLabel className={styles.formLabel} htmlFor="time">
@@ -37,8 +47,11 @@ const DateTimeSection = () => {
           className={styles.input}
           value={values.time}
           onChange={handleChange}
+          onBlur={handleInputBlur}
         ></Input>
-        <span className={styles.inputError}>Ошибка</span>
+        <span className={styles.inputError}>
+          <ErrorMessage name="time" />
+        </span>
       </div>
     </div>
   );

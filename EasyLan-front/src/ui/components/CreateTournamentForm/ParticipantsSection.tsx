@@ -2,7 +2,7 @@ import * as React from "react";
 import FormLabel from "../base/FormLabel";
 import Input from "../base/Input";
 import cn from "classnames";
-import { useFormikContext } from "formik";
+import { ErrorMessage, useFormikContext } from "formik";
 import { TournamentFormValues } from "./TournamentFormValues";
 
 import styles from "./CreateTournamentForm.style.scss";
@@ -96,7 +96,9 @@ const ParticipantsSection = () => {
             onChange={handleParticipantsChange}
             onBlur={handleMinParticipantsBlur}
           ></Input>
-          <span className={styles.inputError}>Ошибка</span>
+          <span className={styles.inputError}>
+            <ErrorMessage name="minParticipants" />
+          </span>
         </div>
         <div className={cn(styles.formGroup, styles.formGroupParticipants)}>
           <FormLabel
@@ -112,7 +114,9 @@ const ParticipantsSection = () => {
             value={values.maxParticipants}
             onBlur={handleMaxParticipantsBlur}
           ></Input>
-          <span className={styles.inputError}>Ошибка</span>
+          <span className={styles.inputError}>
+            <ErrorMessage name="maxParticipants" />
+          </span>
         </div>
       </div>
       <div className={cn(styles.formGroup, styles.formGroupFee)}>
@@ -132,7 +136,9 @@ const ParticipantsSection = () => {
           ></Input>
           <span className={styles.inputFeeMoneySign}>РУБ</span>
         </div>
-        <span className={styles.inputError}>Ошибка</span>
+        <span className={styles.inputError}>
+          <ErrorMessage name="fee" />
+        </span>
       </div>
     </div>
   );

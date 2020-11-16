@@ -2,19 +2,23 @@ import * as React from "react";
 import FormLabel from "../base/FormLabel";
 import Input from "../base/Input";
 import cn from "classnames";
-import { useFormikContext } from "formik";
+import { ErrorMessage, useFormikContext, Field } from "formik";
 import { TournamentFormValues } from "./TournamentFormValues";
 
 import styles from "./CreateTournamentForm.style.scss";
 
-const DisciplineSection = () => {
-  const { values, handleChange, setFieldValue } = useFormikContext<
-    TournamentFormValues
-  >();
+const GameSection = () => {
+  const {
+    values,
+    handleChange,
+    setFieldValue,
+    setFieldTouched,
+  } = useFormikContext<TournamentFormValues>();
   const handleInputBlur = (evt: React.FocusEvent<HTMLInputElement>) => {
     const { id, name, value } = evt.target;
 
     setFieldValue(name || id, value.trim());
+    setFieldTouched(name || id);
   };
 
   return (
@@ -31,7 +35,9 @@ const DisciplineSection = () => {
           onChange={handleChange}
           onBlur={handleInputBlur}
         ></Input>
-        <span className={styles.inputError}>Ошибка</span>
+        <span className={styles.inputError}>
+          <ErrorMessage name="game" />
+        </span>
       </div>
       <div className={styles.formGroup}>
         <FormLabel className={styles.formLabel} htmlFor="gameFormat">
@@ -44,10 +50,12 @@ const DisciplineSection = () => {
           onChange={handleChange}
           onBlur={handleInputBlur}
         ></Input>
-        <span className={styles.inputError}>Ошибка</span>
+        <span className={styles.inputError}>
+          <ErrorMessage name="gameFormat" />
+        </span>
       </div>
     </div>
   );
 };
 
-export default DisciplineSection;
+export default GameSection;
