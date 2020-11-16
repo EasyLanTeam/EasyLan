@@ -1,6 +1,5 @@
 import * as React from "react";
-import Icon from "@mdi/react";
-import { mdiAlphaEBox, mdiVk } from "@mdi/js";
+import { mdiVk } from "@mdi/js";
 
 import Input from "../../components/base/Input/Input";
 import FormLabel from "../../components/base/FormLabel";
@@ -107,15 +106,19 @@ export default class LoginPage extends React.Component<
               ></Input>
             </div>
             <span className={styles.formErrorMessage}>{errorMessage}</span>
-            <Button className={styles.submitButton} variant="primary" onClick={this.handleSubmit}>
+            <Button
+              className={styles.submitButton}
+              variant="primary"
+              onClick={this.handleSubmit}
+            >
               Войти
             </Button>
           </div>
         </div>
         <div className={styles.altSigns}>
           <span className={styles.altSignsTitle}>Или</span>
-          <Button className={styles.signInVkButton}>
-            <Icon size="24px" className={styles.vkIcon} path={mdiVk}></Icon>
+
+          <Button className={styles.signInVkButton} icon={{ path: mdiVk }}>
             Войти с помощью вконтакте
           </Button>
         </div>

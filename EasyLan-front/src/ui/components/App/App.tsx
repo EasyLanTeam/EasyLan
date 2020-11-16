@@ -1,5 +1,11 @@
 import React from "react";
-import { Redirect, Route, Switch, BrowserRouter } from "react-router-dom";
+import {
+  Redirect,
+  Route,
+  Switch,
+  BrowserRouter,
+  useRouteMatch,
+} from "react-router-dom";
 
 import Header from "../Header";
 import LoginPage from "../../pages/LoginPage";
@@ -33,9 +39,6 @@ export default class App extends React.Component<IAppProps> {
               </Route>
               <Route path="/tournaments">
                 <TournamentsPage />
-              </Route>
-              <Route path="/createtournament">
-                <CreateTournamentPage />
               </Route>
               <Route path="/user">
                 <UserPage />

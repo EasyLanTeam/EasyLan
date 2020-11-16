@@ -33,26 +33,20 @@ const Header: React.FunctionComponent<IHeaderProps> = (props) => {
         <div className={styles.mainNavList}>
           <div className={styles.siteNav} onClick={handleNavItemClick}>
             <NavLink
+              exact
               className={styles.siteNavItem}
               activeClassName={styles.siteNavItemActive}
               to={"/"}
-              exact
             >
               Главная
             </NavLink>
             <NavLink
+              exact
               className={styles.siteNavItem}
               activeClassName={styles.siteNavItemActive}
               to={"/tournaments"}
             >
               Турниры
-            </NavLink>
-            <NavLink
-              className={styles.siteNavItem}
-              activeClassName={styles.siteNavItemActive}
-              to={"/createtournament"}
-            >
-              Создать турнир
             </NavLink>
           </div>
           <div className={styles.userNav} onClick={handleNavItemClick}>
