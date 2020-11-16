@@ -1,5 +1,6 @@
 import * as React from "react";
 import CreateTournamentForm from "../../components/CreateTournamentForm/CreateTournamentForm";
+import Paper from "../../components/Paper";
 
 import styles from "./CreateTournamentPage.style.scss";
 
@@ -9,9 +10,9 @@ const CreateTournamentPage: React.FunctionComponent<ICreateTournamentPageProps> 
   props
 ) => {
   return (
-    <div className={styles.card}>
+    <Paper>
       <CreateTournamentForm />
-    </div>
+    </Paper>
   );
 };
 
