@@ -37,7 +37,6 @@ namespace EasyLan.Web.Controllers
                 Password = Convert.ToBase64String(sha256.ComputeHash(Encoding.UTF8.GetBytes(model.Password))),
             };
             userService.Add(userDto);
-            userService.SaveChanges();
             return Ok();
         }
     }

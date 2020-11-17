@@ -51,9 +51,5 @@ namespace EasyLan.LogicLayer.Services
         {
 
         }
-        public void SaveChanges()
-        {
-            db.SaveChanges();
-        }
     }
 }

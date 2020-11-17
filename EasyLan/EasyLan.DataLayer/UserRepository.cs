@@ -34,16 +34,15 @@ namespace EasyLan.DataLayer
         {
             user.Id = Guid.NewGuid();
             db.Users.Add(user);
+            db.SaveChanges();
+
         }
 
         public void Remove(User user)
         {
             db.Users.Remove(user);
-        }
-
-        public void SaveChanges()
-        {
             db.SaveChanges();
+
         }
     }
 }
