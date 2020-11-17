@@ -1,6 +1,6 @@
 import * as React from "react";
 import cn from "classnames";
-import { mdiMenu } from "@mdi/js";
+import { mdiAccountCircle, mdiMenu } from "@mdi/js";
 import Icon from "@mdi/react";
 import { NavLink } from "react-router-dom";
 
@@ -50,7 +50,7 @@ const Header: React.FunctionComponent<IHeaderProps> = (props) => {
             </NavLink>
           </div>
           <div className={styles.userNav} onClick={handleNavItemClick}>
-            <NavLink
+            {/* <NavLink
               className={cn(styles.userNavItem, styles.userNavItemRegister)}
               to={"/register"}
             >
@@ -61,9 +61,20 @@ const Header: React.FunctionComponent<IHeaderProps> = (props) => {
               to={"/login"}
             >
               Войти
+            </NavLink> */}
+            <NavLink
+              className={cn(styles.userNavItem, styles.userNavItemProfile)}
+              to={"/user"}
+            >
+              <Icon path={mdiAccountCircle} size="24px" className={styles.userNavIcon}></Icon>
+              <span>Профиль</span>
             </NavLink>
-            {/* <div className={styles.userNavItem}>Профиль</div>
-            <div className={styles.userNavItem}>Выход</div> */}
+            <NavLink
+              className={cn(styles.userNavItem, styles.userNavItemLogout)}
+              to={"/logout"}
+            >
+              Выход
+            </NavLink>
           </div>
         </div>
       </div>

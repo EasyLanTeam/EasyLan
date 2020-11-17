@@ -194,5 +194,28 @@
         background-color: lighten($color: $color-primary, $amount: 5);
       }
     }
+
+    &--profile {
+      display: flex;
+      align-items: center;
+      margin-right: 8px;
+      text-transform: none;
+    }
+
+    &--logout {
+      min-width: auto;
+      background-color: $color-secondary;
+      border: 1px solid $color-fg-light;
+      text-transform: none;
+
+      &:hover,
+      &:active {
+        background-color: lighten($color: $color-secondary, $amount: 5);
+      }
+    }
+  }
+
+  .user-nav__icon {
+    margin-right: 4px;
   }
 }
