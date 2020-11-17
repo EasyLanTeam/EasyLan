@@ -9,8 +9,7 @@ namespace EasyLan.DataLayer.Interfaces
         IEnumerable<User> Get();
         User Get(Guid id);
         User Get(string username);
-        void Create(User issue);
-        void Remove(User issue);
-        void SaveChanges();
+        void Create(User user);
+        void Remove(User user);
     }
 }

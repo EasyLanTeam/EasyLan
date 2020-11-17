@@ -1,4 +1,5 @@
 using EasyLan.DataLayer;
+using EasyLan.DataLayer.Entites;
 using EasyLan.DataLayer.Interfaces;
 using EasyLan.LogicLayer.Interfaces;
 using EasyLan.LogicLayer.Services;
@@ -55,20 +56,22 @@ namespace EasyLan.Web
                 });
             services.AddSwaggerGen();
             string connectionString;
-            connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
+            //connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
 
             //if (WebHostEnvironment.IsEnvironment("azure"))
             //{
             //}
             //else
             //{
-            //    connectionString = Configuration.GetConnectionString("DefaultConnection");
+            connectionString = Configuration.GetConnectionString("DefaultConnection");
             //}
 
             services.AddDbContext<AppDbContext>(o => o.UseMySql(connectionString));
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IGenericRepository<Tournament>, GenericRepository<Tournament>>();
+            services.AddTransient<ITournamentService, TournamentService>();
 
         }
 
