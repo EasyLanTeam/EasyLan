@@ -11,6 +11,5 @@ namespace EasyLan.LogicLayer.Interfaces
         IEnumerable<UserDTO> FindAll();
         void Add(UserDTO userDTO);
         void Remove(UserDTO userDTO);
-        void SaveChanges();
     }
 }

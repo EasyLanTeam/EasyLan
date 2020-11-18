@@ -1,4 +1,5 @@
 using EasyLan.DataLayer;
+using EasyLan.DataLayer.Entites;
 using EasyLan.DataLayer.Interfaces;
 using EasyLan.LogicLayer.Interfaces;
 using EasyLan.LogicLayer.Services;
@@ -14,15 +15,18 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Text.RegularExpressions;
 
 namespace EasyLan.Web
 {
     public class Startup
     {
         public IConfiguration Configuration { get; }
-        public Startup(IConfiguration configuration)
+        public IWebHostEnvironment WebHostEnvironment { get; }
+        public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
+            WebHostEnvironment = environment;
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -51,17 +55,29 @@ namespace EasyLan.Web
                     };
                 });
             services.AddSwaggerGen();
-            services.AddDbContext<AppDbContext>(o => o.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+            string connectionString;
+            //connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
+
+            //if (WebHostEnvironment.IsEnvironment("azure"))
+            //{
+            //}
+            //else
+            //{
+            connectionString = Configuration.GetConnectionString("DefaultConnection");
+            //}
+
+            services.AddDbContext<AppDbContext>(o => o.UseMySql(connectionString));
 
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IUserRepository, UserRepository>();
-            
+            services.AddTransient<IGenericRepository<Tournament>, GenericRepository<Tournament>>();
+            services.AddTransient<ITournamentService, TournamentService>();
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (!env.IsDevelopment())
             {
                 app.UseCookiePolicy(new CookiePolicyOptions
                 {
@@ -85,6 +101,7 @@ namespace EasyLan.Web
                 await next();
 
             });
+
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
