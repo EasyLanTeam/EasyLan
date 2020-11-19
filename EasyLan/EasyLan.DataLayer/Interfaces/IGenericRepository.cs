@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Text;
 
 namespace EasyLan.DataLayer.Interfaces
@@ -12,6 +13,7 @@ namespace EasyLan.DataLayer.Interfaces
         void Create(T entity);
         void Remove(T entitu);
         void Update(T entity);
+        List<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties);
 
     }
 }

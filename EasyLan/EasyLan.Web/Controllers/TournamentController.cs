@@ -1,12 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using EasyLan.LogicLayer.DTOs;
 using EasyLan.LogicLayer.Interfaces;
 using EasyLan.Web.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -17,18 +17,24 @@ namespace EasyLan.Web.Controllers
     public class TournamentController : ControllerBase
     {
         ITournamentService tournamentService;
+        UserManager<IdentityUser> userManager;
 
-        private MapperConfiguration config = new MapperConfiguration(cfg => {
+        private MapperConfiguration config = new MapperConfiguration(cfg =>
+        {
             cfg.CreateMap<TournamentViewModel, TournamentDTO>();
             cfg.CreateMap<TournamentDTO, TournamentViewModel>();
             cfg.CreateMap<LocationViewModel, LocationDTO>();
             cfg.CreateMap<LocationDTO, LocationViewModel>();
             cfg.CreateMap<UserViewModel, UserDTO>();
             cfg.CreateMap<UserDTO, UserViewModel>();
+            cfg.CreateMap<PrizeViewModel, PrizeDTO>();
+            cfg.CreateMap<PrizeDTO, PrizeViewModel>();
+
         });
-        public TournamentController(ITournamentService tournamentService)
+        public TournamentController(ITournamentService tournamentService, UserManager<IdentityUser> userManager)
         {
             this.tournamentService = tournamentService;
+            this.userManager = userManager;
         }
 
         // GET: api/<TournamentController>
@@ -49,15 +55,23 @@ namespace EasyLan.Web.Controllers
             var tournament = tournamentService.Find(id);
             if (tournament == null)
                 return NotFound();
-            return new JsonResult(mapper.Map<TournamentDTO, TournamentViewModel>(tournament));
+            var tournamentViewModel = mapper.Map<TournamentDTO, TournamentViewModel>(tournament);
+            tournamentViewModel.Prizes = mapper.Map<List<PrizeDTO>, List<PrizeViewModel>>(tournament.Prizes);
+            return new JsonResult(tournamentViewModel);
         }
 
         // POST api/<TournamentController>
         [HttpPost]
+        [Authorize]
         public void Post([FromBody] TournamentViewModel tournament)
         {
             var mapper = config.CreateMapper();
-            tournamentService.Create(mapper.Map<TournamentViewModel, TournamentDTO>(tournament));
+            var tournamentDto = mapper.Map<TournamentViewModel, TournamentDTO>(tournament);
+            tournamentDto.Prizes = mapper.Map < List<PrizeViewModel>, List<PrizeDTO>>(tournament.Prizes);
+            var user = userManager.GetUserAsync(User).Result;
+
+            tournamentDto.Initiator = user.UserName;
+            tournamentService.Create(tournamentDto);
         }
 
         // PUT api/<TournamentController>/5
