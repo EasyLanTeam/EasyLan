@@ -5,7 +5,7 @@ using EasyLan.LogicLayer.DTOs;
 using EasyLan.LogicLayer.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace EasyLan.LogicLayer.Services
 {
@@ -17,8 +17,8 @@ namespace EasyLan.LogicLayer.Services
             cfg.CreateMap<TournamentDTO, Tournament>();
             cfg.CreateMap<Location, LocationDTO>();
             cfg.CreateMap<LocationDTO, Location>();
-            cfg.CreateMap<User, UserDTO>();
-            cfg.CreateMap<UserDTO, User>();
+            cfg.CreateMap<Prize, PrizeDTO>();
+            cfg.CreateMap<PrizeDTO, Prize>();
         });
 
         public TournamentService(IGenericRepository<Tournament> repository)
@@ -36,14 +36,18 @@ namespace EasyLan.LogicLayer.Services
         public TournamentDTO Find(Guid id)
         {
             var mapper = config.CreateMapper();
-            var tournament = repository.Find(id);
-            return mapper.Map<Tournament, TournamentDTO>(tournament);
+            var tournament = repository.GetWithInclude(t => t.Prizes).FirstOrDefault(p => p.TournamentId == id);
+            var tournamentDto = mapper.Map<Tournament, TournamentDTO>(tournament);
+            tournamentDto.Prizes = mapper.Map<List<Prize>, List<PrizeDTO>>(tournament.Prizes);
+            return tournamentDto;
         }
 
         public void Create(TournamentDTO tournamentDTO)
         {
             var mapper = config.CreateMapper();
-            repository.Create(mapper.Map<TournamentDTO, Tournament>(tournamentDTO));
+            var tournament = mapper.Map<TournamentDTO, Tournament>(tournamentDTO);
+            tournament.Prizes = mapper.Map<List<PrizeDTO>, List<Prize>>(tournamentDTO.Prizes);
+            repository.Create(tournament);
         }
         public void Remove(TournamentDTO tournamentDTO)
         {

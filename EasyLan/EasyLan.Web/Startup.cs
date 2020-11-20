@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -34,26 +35,7 @@ namespace EasyLan.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
-            services.AddAuthentication(o =>
-            {
-                o.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
-                o.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            })
-                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, o =>
-                {
-                    o.RequireHttpsMetadata = false;
-                    o.SaveToken = true;
-                    o.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidIssuer = AuthOptions.ISSUER,
-                        ValidAudience = AuthOptions.AUDIENCE,
-                        IssuerSigningKey = AuthOptions.GetSymmetricSecurityKey(),
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ClockSkew = TimeSpan.Zero,
-                    };
-                });
+            services.AddAuthentication();
             services.AddSwaggerGen();
             string connectionString;
             //connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
@@ -68,8 +50,14 @@ namespace EasyLan.Web
 
             services.AddDbContext<AppDbContext>(o => o.UseMySql(connectionString));
 
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            {
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireDigit = false;
+            }).AddEntityFrameworkStores<AppDbContext>();
+
             services.AddTransient<IGenericRepository<Tournament>, GenericRepository<Tournament>>();
             services.AddTransient<ITournamentService, TournamentService>();
 
@@ -92,15 +80,6 @@ namespace EasyLan.Web
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.Use(async (context, next) =>
-            {
-                var token = context.Request.Cookies[".AspNetCore.Application.Kel"];
-                if (!string.IsNullOrEmpty(token))
-                    context.Request.Headers.Add("Authorization", "Bearer " + token);
-                await next();
-
-            });
 
 
             app.UseAuthentication();
