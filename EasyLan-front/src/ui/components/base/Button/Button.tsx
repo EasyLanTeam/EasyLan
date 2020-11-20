@@ -19,14 +19,14 @@ const renderButtonContentWithIcon = (
   { path: iconPath }: { path: string }
 ) => {
   return (
-    <>
+    <div className={styles.buttonWrapper}>
       <Icon
         path={iconPath}
         size={buttonSize === "small" ? "16px" : "24px"}
         style={{marginRight: "4px"}}
       ></Icon>
       <span>{content}</span>
-    </>
+    </div>
   );
 };
 

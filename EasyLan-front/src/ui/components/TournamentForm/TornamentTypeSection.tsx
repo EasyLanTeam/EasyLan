@@ -1,10 +1,10 @@
 import * as React from "react";
-import Check from "../../components/base/Check";
+import Check from "../base/Check";
 import cn from "classnames";
 import { useFormikContext } from "formik";
 import { TournamentFormValues } from "./TournamentFormValues";
 
-import styles from "./CreateTournamentForm.style.scss";
+import styles from "./TournamentForm.style.scss";
 
 const TournamentTypeSection = () => {
   const { values, handleChange } = useFormikContext<TournamentFormValues>();

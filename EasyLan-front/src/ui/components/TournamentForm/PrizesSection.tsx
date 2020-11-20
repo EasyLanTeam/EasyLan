@@ -6,7 +6,7 @@ import cn from "classnames";
 import { ErrorMessage, useFormikContext } from "formik";
 import { TournamentFormValues } from "./TournamentFormValues";
 
-import styles from "./CreateTournamentForm.style.scss";
+import styles from "./TournamentForm.style.scss";
 
 const MAX_PRIZE_COUNT = 5;
 

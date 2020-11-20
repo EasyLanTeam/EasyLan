@@ -1,9 +1,9 @@
 import * as React from "react";
 import { ErrorMessage, useFormikContext } from "formik";
-import TextArea from "../../components/base/TextArea/TextArea";
+import TextArea from "../base/TextArea/TextArea";
 import { TournamentFormValues } from "./TournamentFormValues";
 
-import styles from "./CreateTournamentForm.style.scss";
+import styles from "./TournamentForm.style.scss";
 
 interface IAdditionalInfoSectionProps {}
 

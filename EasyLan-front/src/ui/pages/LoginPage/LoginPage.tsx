@@ -115,13 +115,13 @@ export default class LoginPage extends React.Component<
             </Button>
           </div>
         </div>
-        <div className={styles.altSigns}>
+        {/* <div className={styles.altSigns}>
           <span className={styles.altSignsTitle}>Или</span>
 
           <Button className={styles.signInVkButton} icon={{ path: mdiVk }}>
             Войти с помощью вконтакте
           </Button>
-        </div>
+        </div> */}
       </div>
     );
   }

@@ -4,18 +4,15 @@ import {
   Route,
   Switch,
   BrowserRouter,
-  useRouteMatch,
 } from "react-router-dom";
-
 import Header from "../Header";
 import LoginPage from "../../pages/LoginPage";
 import Main from "../Main";
 import RegisterPage from "../../pages/RegisterPage";
-import CreateTournamentPage from "../../pages/CreateTournamentPage";
+import TournamentsPage from "../../pages/TournamentsPage";
+import UserPage from "../../pages/UserPage";
 
 import styles from "./App.style.scss";
-import TournamentsPage from "../../pages/TournamentsPage/TournamentsPage";
-import UserPage from "../../pages/UserPage/UserPage";
 
 export interface IAppProps {}
 

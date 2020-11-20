@@ -14,6 +14,12 @@
   margin-bottom: 16px;
 }
 
+.tournament-list__link {
+  &:focus {
+    box-shadow: none;
+  }
+}
+
 .tournament-card {
   position: relative;
   height: 100%;

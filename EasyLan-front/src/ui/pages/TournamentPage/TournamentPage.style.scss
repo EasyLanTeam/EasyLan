@@ -4,26 +4,53 @@
 
 .paper {
   padding-bottom: 24px;
+  font-weight: bold;
 }
 
-.user-info__header {
+.info__header {
   padding: 8px 0;
   margin-bottom: 8px;
   border-bottom: 1px solid $color-text-light;
 
-  font-weight: bold;
   font-size: 14px;
   text-align: center;
 }
 
-.user-info__username {
+.info__username {
   font-size: 16px;
   margin-bottom: 4px;
 }
 
+.info__body {
+  display: flex;
+  flex-direction: column;
+
+  & > * {
+    margin-bottom: 8px;
+  }
+}
+
+.tournament-main-actions {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+}
+
+.tournament-main-actions__button {
+  margin-bottom: 8px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
 @media (min-width: $tablet-width) {
-  .user-info__header {
-    padding: 16px 0;
+  .paper {
+    border-radius: 8px;
+  }
+
+  .info__header {
+    padding-top: 16px;
   }
 
   .container {
@@ -49,20 +76,26 @@
     }
   }
 
-  .user-info__header {
+  .info__header {
     font-size: 20px;
     text-align: center;
   }
 
-  .user-info__username {
+  .info__username {
     font-size: 24px;
     margin-bottom: 8px;
+  }
+
+  .tournament-main-actions {
+    width: 300px;
   }
 }
 
 @media (min-width: $desktop-width) {
   .paper {
     width: auto;
-    margin: 0;
+    margin-top: 0;
+    margin-left: 0;
+    margin-right: 0;
   }
 }

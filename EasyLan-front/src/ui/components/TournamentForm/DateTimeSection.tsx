@@ -5,7 +5,7 @@ import cn from "classnames";
 import { ErrorMessage, useFormikContext } from "formik";
 import { TournamentFormValues } from "./TournamentFormValues";
 
-import styles from "./CreateTournamentForm.style.scss";
+import styles from "./TournamentForm.style.scss";
 
 const DateTimeSection = () => {
   const { values, handleChange, setFieldTouched } = useFormikContext<

@@ -1,7 +1,8 @@
 import * as React from "react";
 import * as yup from "yup";
+import dayjs from "dayjs";
 import { Formik, FormikProps } from "formik";
-import Button from "../../components/base/Button";
+import Button from "../base/Button";
 import { TournamentFormValues } from "./TournamentFormValues";
 import PrizesSection from "./PrizesSection";
 import ParticipantsSection from "./ParticipantsSection";
@@ -10,12 +11,13 @@ import DateTimeSection from "./DateTimeSection";
 import TournamentTypeSection from "./TornamentTypeSection";
 import GameSection from "./GameSection";
 import AdditionalInfoSection from "./AdditionalInfoSection";
-
-import styles from "./CreateTournamentForm.style.scss";
 import { Tournament } from "../../../data/Tournament";
-import dayjs from "dayjs";
 
-interface ICreateTournamentFormProps {}
+import styles from "./TournamentForm.style.scss";
+
+interface ITournamentFormProps {
+  onSubmit: (tournament: Tournament) => void;
+}
 
 const renderForm = (props: FormikProps<TournamentFormValues>) => {
   const { handleSubmit } = props;
@@ -114,33 +116,49 @@ const validationSchema = yup.object().shape({
   additionalInfo: yup.string().max(250, errorMessages.maxSymbols),
 });
 
-const CreateTournamentForm: React.FunctionComponent<ICreateTournamentFormProps> = (
-  props
+const tournamentFormValuesMapper = ({
+  date: dateStr,
+  time: timeStr,
+  game,
+  gameFormat,
+  type,
+  prizes,
+  maxParticipants,
+  minParticipants,
+  fee,
+  city,
+  street,
+  house,
+}: TournamentFormValues) => {
+  const [hourStr, minuteStr] = timeStr.split(":");
+  const datetime = dayjs(dateStr)
+    .set("hour", +hourStr)
+    .set("minute", +minuteStr)
+    .toDate();
+  const location = [city, street, house].join(", ");
+
+  return {
+    initiatorFullname: "username",
+    datetime,
+    location,
+    type: type === "single" ? 0 : 1,
+    game,
+    gameFormat,
+    prizes: prizes.map((prize, index) => ({
+      place: index + 1,
+      prize: prize,
+    })),
+    minParticipants: minParticipants,
+    maxParticipants: maxParticipants,
+    fee: fee,
+  } as Tournament;
+};
+
+const TournamentForm: React.FunctionComponent<ITournamentFormProps> = (
+  props: ITournamentFormProps
 ) => {
   const handleSubmit = (values: TournamentFormValues, actions: any) => {
-    const { date: dateStr, time: timeStr } = values;
-    const [hourStr, minuteStr] = timeStr.split(":");
-    const datetime = dayjs(dateStr)
-      .set("hour", +hourStr)
-      .set("minute", +minuteStr)
-      .toDate();
-    const location = [values.city, values.street, values.house].join(", ");
-    const tournamentEntity: Tournament = {
-      id: null,
-      organizerId: "o1",
-      organizerFullname: "username",
-      datetime,
-      location,
-      type: values.type,
-      game: values.game,
-      gameFormat: values.gameFormat,
-      prizes: values.prizes,
-      minParticipants: values.minParticipants,
-      maxParticipants: values.maxParticipants,
-      fee: values.fee,
-    };
-
-    console.log(tournamentEntity);
+    props.onSubmit(tournamentFormValuesMapper(values));
   };
 
   return (
@@ -155,4 +173,4 @@ const CreateTournamentForm: React.FunctionComponent<ICreateTournamentFormProps> 
   );
 };
 
-export default CreateTournamentForm;
+export default TournamentForm;

@@ -2,16 +2,17 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  width: $mobile-width;
+  min-width: $mobile-width;
+  // width: $mobile-width;
   min-height: 100vh;
-  margin: 0 auto;
+  // margin: 0 auto;
   background-color: $color-bg;
 
   @media (min-width: $tablet-width) {
-    width: $tablet-width;
+    // width: $tablet-width;
   }
 
   @media (min-width: $desktop-width) {
-    width: $desktop-width;
+    // width: $desktop-width;
   }
 }

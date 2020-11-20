@@ -1,22 +1,24 @@
+import { TournamentPrize } from "./TournamentPrize";
+
 export type Tournament = {
   // Идентификатор
-  id: string;
+  id?: string;
   // Идентификатор организатора
-  organizerId: string;
+  initiatorId?: string;
   // Полное (Публичное) имя организатора
-  organizerFullname: string;
+  initiatorFullname: string;
   // Дата и время
   datetime: Date;
-  // Место проведения - пример: "Город, Улица, Дом"
+  // Место проведения - пример: "Екатеринбург, Первомайская, 28"
   location: string;
   // Тип турнира - индивидуальный или командный
-  type: "single" | "team";
+  type: number;
   // Игра
   game: string;
   // Формат игры - в зависимости от игры (1 на 1, 5 на 5, или др.)
   gameFormat: string;
   // Призы за турнир - массив формата ["Приз за 1-е место", "Приз за 2-е место", ...rest]
-  prizes: Array<string>;
+  prizes: Array<TournamentPrize>;
   // Минимальное число участников
   minParticipants: number;
   // Максимальное число участников

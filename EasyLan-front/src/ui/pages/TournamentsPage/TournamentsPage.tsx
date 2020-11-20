@@ -7,10 +7,12 @@ import { Tournament } from "../../../data/Tournament";
 import Button from "../../components/base/Button";
 import CreateTournamentPage from "../CreateTournamentPage";
 import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
+import TournamentPage from "../TournamentPage";
 
 import styles from "./TournamentsPage.style.scss";
 
 interface ITournamentsPageProps {}
+interface ITournamentListProps {}
 interface ITournamentCardProps {
   tournament: Tournament;
 }
@@ -69,34 +71,66 @@ const TournamentCard: React.FunctionComponent<ITournamentCardProps> = ({
   );
 };
 
+let tournamentList: Tournament[] = null;
+
+const TournamentList: React.FunctionComponent<ITournamentListProps> = () => {
+  const [isLoaded, setIsLoaded] = React.useState(false);
+  const { url } = useRouteMatch();
+
+  if (!isLoaded) {
+    tournamentRepo.getAllTournaments().then((tournaments) => {
+      tournamentList = tournaments.map((t) => {
+        t.datetime = new Date(t.datetime);
+
+        return t;
+      });
+
+      setIsLoaded(true);
+    });
+
+    return null;
+  }
+
+  return (
+    <div className={styles.container}>
+      <Link to={`${url}/create`}>
+        <Button size={"small"} variant={"primary"} icon={{ path: mdiPlus }}>
+          Провести турнир
+        </Button>
+      </Link>
+      <div className={styles.tournamentList}>
+        {tournamentList.map((tournament) => {
+          return (
+            <div key={tournament.id} className={styles.tournamentListItem}>
+              <Link
+                to={`${url}/${tournament.id}`}
+                className={styles.tournamentListLink}
+              >
+                <TournamentCard tournament={tournament}></TournamentCard>
+              </Link>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+
 const TournamentsPage: React.FunctionComponent<ITournamentsPageProps> = (
   props
 ) => {
-  const { path, url } = useRouteMatch();
-  const tournamentList = tournamentRepo.getAllTournaments();
+  const { path } = useRouteMatch();
 
   return (
     <Switch>
-      <Route path={`${path}/create`} exact>
+      <Route path={`${path}`} exact>
+        <TournamentList />
+      </Route>
+      <Route path={`${path}/create`}>
         <CreateTournamentPage></CreateTournamentPage>
       </Route>
-      <Route path={`${path}`}>
-        <div className={styles.container}>
-          <Link to={`${url}/create`}>
-            <Button size={"small"} variant={"primary"} icon={{ path: mdiPlus }}>
-              Провести турнир
-            </Button>
-          </Link>
-          <div className={styles.tournamentList}>
-            {tournamentList.map((tournament) => {
-              return (
-                <div key={tournament.id} className={styles.tournamentListItem}>
-                  <TournamentCard tournament={tournament}></TournamentCard>
-                </div>
-              );
-            })}
-          </div>
-        </div>
+      <Route path={`${path}/:tournamentId`}>
+        <TournamentPage></TournamentPage>
       </Route>
     </Switch>
   );
