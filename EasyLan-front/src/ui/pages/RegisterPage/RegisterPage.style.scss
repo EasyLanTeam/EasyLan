@@ -1,38 +1,43 @@
 .card {
-  padding: 0 8px 48px 8px;
+  padding: 0 12px 48px 12px;
 
   background-color: $color-fg;
 }
 
 .form-header {
   display: flex;
-  flex-direction: column;
-  align-items: center;
+  justify-content: center;
+}
 
+.form-title {
+  margin-top: 24px;
+  margin-bottom: 8px;
+
+  text-transform: uppercase;
   font-size: 16px;
   line-height: 24px;
 }
 
-.form-title {
-  text-transform: uppercase;
-  display: inline-block;
-  margin-top: 24px;
-  margin-bottom: 8px;
-}
-
-.form-header {
-  margin-bottom: 16px;
+.form-body {
+  display: flex;
+  flex-direction: column;
 }
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-
   margin-bottom: 12px;
 }
 
 .form-label {
   margin-bottom: 4px;
+}
+
+.form-error-message {
+  font-size: 14px;
+  color: $color-error;
+}
+
+.input {
+  width: 100%;
 }
 
 .submit-button {
@@ -75,17 +80,34 @@
 }
 
 @media (min-width: $tablet-width) {
-  .wrapper {
-    display: flex;
-    margin: 56px 72px 0 72px;
-  }
-
   .card {
-    width: 100%;
+    max-width: 625px;
     padding: 0 56px 48px 56px;
     border-radius: 8px;
+    margin: 0 auto;
+    margin-top: 56px;
+  }
 
-    background-color: $color-fg;
+  .form-title {
+    font-size: 18px;
+    margin-bottom: 36px;
+  }
+
+  .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 36px;
+  }
+
+  .form-label {
+    width: 180px;
+    padding-right: 16px;
+  }
+
+  .form-error-message {
+    display: block;
+    margin-top: -18px;
+    margin-bottom: -18px;
   }
 
   .submit-button {

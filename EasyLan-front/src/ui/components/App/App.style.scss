@@ -1,11 +1,18 @@
 .container {
   position: relative;
-  width: $mobile-width;
+  display: flex;
+  flex-direction: column;
+  min-width: $mobile-width;
+  // width: $mobile-width;
   min-height: 100vh;
-  margin: 0 auto;
+  // margin: 0 auto;
   background-color: $color-bg;
 
   @media (min-width: $tablet-width) {
-    width: $tablet-width;
+    // width: $tablet-width;
+  }
+
+  @media (min-width: $desktop-width) {
+    // width: $desktop-width;
   }
 }

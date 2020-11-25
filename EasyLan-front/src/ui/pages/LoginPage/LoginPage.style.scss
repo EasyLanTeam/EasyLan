@@ -1,28 +1,28 @@
 .card {
-  padding: 0 8px 48px 8px;
+  padding: 0 12px 48px 12px;
 
   background-color: $color-fg;
 }
 
-.form-header {
+.form-body {
   display: flex;
   flex-direction: column;
-  align-items: center;
+}
 
-  font-size: 16px;
-  line-height: 24px;
+.form-header {
+  display: flex;
+  justify-content: center;
 }
 
 .form-title {
+  margin-top: 24px;
+  margin-bottom: 16px;
+
+  font-size: 16px;
   text-transform: uppercase;
-  display: inline-block;
-  margin: 24px 0 8px 0;
 }
 
 .form-group {
-  display: flex;
-  flex-direction: column;
-
   margin-bottom: 12px;
 }
 
@@ -30,8 +30,16 @@
   margin-bottom: 4px;
 }
 
+.form-error-message {
+  font-size: 14px;
+  color: $color-error;
+}
+
+.input {
+  width: 100%;
+}
+
 .submit-button {
-  display: block;
   width: 100%;
 
   margin-top: 24px;
@@ -56,12 +64,16 @@
 
   text-transform: uppercase;
   font-weight: bold;
-  line-height: 24px;
 }
 
 .sign-in-vk-button {
   background-color: #4a76bb;
+  border: none;
   font-size: 16px;
+
+  &:hover {
+    background-color: #4a76bb;
+  }
 }
 
 .vk-icon {
@@ -71,20 +83,21 @@
 }
 
 @media (min-width: $tablet-width) {
-  .wrapper {
-    display: flex;
-    margin: 56px 72px 0 72px;
-  }
-
   .card {
-    width: 100%;
+    max-width: 625px;
     padding: 0 56px 48px 56px;
     border-radius: 8px;
+    margin: 0 auto;
+    margin-top: 56px;
+  }
 
-    background-color: $color-fg;
+  .form-title {
+    font-size: 18px;
+    margin-bottom: 36px;
   }
 
   .submit-button {
+    display: block;
     width: 300px;
     margin-left: auto;
     margin-right: auto;
@@ -99,5 +112,27 @@
   .sign-in-vk-button {
     width: 300px;
     margin: 0 auto;
+  }
+
+  .form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 36px;
+  }
+
+  .form-error-message {
+    display: block;
+    margin-top: -18px;
+    margin-bottom: -18px;
+  }
+
+  .input {
+    width: auto;
+    flex-grow: 1;
+  }
+
+  .form-label {
+    width: 128px;
+    padding-right: 4px;
   }
 }

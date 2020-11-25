@@ -1,20 +1,47 @@
 .button {
-  min-width: 150px;
-  padding: 16px;
+  height: 56px;
+  padding: 0 16px;
   cursor: pointer;
 
   color: $color-text-light;
-  background-color: $color-primary;
-  border: none;
+  background-color: $color-secondary;
+  border: 1px solid $color-fg-light;
   border-radius: 4px;
 
   text-transform: uppercase;
   line-height: 24px;
   font-weight: bold;
-  font-size: 14px;
+  font-size: 16px;
   font-family: inherit;
 
   &:focus {
     outline: none;
   }
+
+  &:hover {
+    background-color: lighten($color: $color-secondary, $amount: 5);
+  }
+
+  &--primary {
+    border: none;
+    background-color: $color-primary;
+
+    &:hover {
+      background-color: lighten($color: $color-primary, $amount: 5);
+    }
+  }
+
+  &--small {
+    height: 40px;
+    padding: 0 8px;
+
+    text-transform: none;
+    font-size: 14px;
+  }
+}
+
+.button-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }

@@ -13,7 +13,7 @@ interface IRegisterPageState {
   email: string;
   password: string;
   confirmPassword: string;
-  msg: string;
+  errorMessage: string;
 }
 
 class RegisterPage extends React.Component<
@@ -28,7 +28,7 @@ class RegisterPage extends React.Component<
       email: "",
       password: "",
       confirmPassword: "",
-      msg: null,
+      errorMessage: null,
     };
   }
 
@@ -36,11 +36,11 @@ class RegisterPage extends React.Component<
     const { username, email, password, confirmPassword } = this.state;
 
     if (password !== confirmPassword) {
-      this.setState({ msg: "Пароли должны совпадать" });
+      this.setState({ errorMessage: "Пароли должны совпадать" });
       return;
     }
 
-    this.setState({ msg: "" }, () => {
+    this.setState({ errorMessage: "" }, () => {
       const req = {
         username,
         email,
@@ -53,24 +53,24 @@ class RegisterPage extends React.Component<
         body: JSON.stringify(req),
         headers: {
           "Content-Type": "application/json",
-          "Accept": "*/*"
+          Accept: "*/*",
         },
-        mode: "cors"
+        mode: "cors",
       }).then((res) => {
         if (res.status === 422) {
           this.setState({
-            msg: "Пользователь с таким именем уже существует",
+            errorMessage: "Пользователь с таким именем уже существует",
           });
           return;
         }
         if (res.status !== 200) {
           this.setState({
-            msg: "Ошибка сервера",
+            errorMessage: "Ошибка сервера",
           });
           return;
         }
 
-        this.setState({ msg: "Регистрация произведена успешно" });
+        this.setState({ errorMessage: "Регистрация произведена успешно" });
       });
     });
   };
@@ -89,51 +89,75 @@ class RegisterPage extends React.Component<
   };
 
   public render() {
-    const { username, email, password, confirmPassword, msg } = this.state;
+    const {
+      username,
+      email,
+      password,
+      confirmPassword,
+      errorMessage,
+    } = this.state;
 
     return (
-      <div className={styles.wrapper}>
-        <div className={styles.card}>
-          <div className={styles.form}>
-            <div className={styles.formHeader}>
-              <h3 className={styles.formTitle}>Регистрация</h3>
-              <div style={{ fontSize: "12px" }}>{msg}</div>
+      <div className={styles.card}>
+        <div className={styles.form}>
+          <div className={styles.formHeader}>
+            <h3 className={styles.formTitle}>Регистрация</h3>
+          </div>
+          <div className={styles.formBody}>
+            <div className={styles.formGroup}>
+              <FormLabel className={styles.formLabel} htmlFor="email">
+                E-mail
+              </FormLabel>
+              <Input
+                id="email"
+                className={styles.input}
+                value={email}
+                onChange={this.handleChangeEmail}
+              ></Input>
             </div>
-            <div className={styles.formBody}>
-              <div className={styles.formGroup}>
-                <FormLabel className={styles.formLabel}>E-mail</FormLabel>
-                <Input value={email} onChange={this.handleChangeEmail}></Input>
-              </div>
-              <div className={styles.formGroup}>
-                <FormLabel>Имя пользователя</FormLabel>
-                <Input
-                  value={username}
-                  onChange={this.handleChangeUsername}
-                ></Input>
-              </div>
-              <div className={styles.formGroup}>
-                <FormLabel>Пароль</FormLabel>
-                <Input
-                  value={password}
-                  type={"password"}
-                  onChange={this.handleChangePassword}
-                ></Input>
-              </div>
-              <div className={styles.formGroup}>
-                <FormLabel>Повторите пароль</FormLabel>
-                <Input
-                  value={confirmPassword}
-                  type={"password"}
-                  onChange={this.handleChangeConfirmPassword}
-                ></Input>
-              </div>
-              <Button
-                className={styles.submitButton}
-                onClick={this.handleSubmit}
-              >
-                Зарегистрироваться
-              </Button>
+            <div className={styles.formGroup}>
+              <FormLabel className={styles.formLabel} htmlFor="username">
+                Имя пользователя
+              </FormLabel>
+              <Input
+                id="username"
+                className={styles.input}
+                value={username}
+                onChange={this.handleChangeUsername}
+              ></Input>
             </div>
+            <div className={styles.formGroup}>
+              <FormLabel className={styles.formLabel} htmlFor="password">
+                Пароль
+              </FormLabel>
+              <Input
+                id="password"
+                className={styles.input}
+                value={password}
+                type={"password"}
+                onChange={this.handleChangePassword}
+              ></Input>
+            </div>
+            <div className={styles.formGroup}>
+              <FormLabel className={styles.formLabel} htmlFor="confirmPassword">
+                Повторите пароль
+              </FormLabel>
+              <Input
+                id="confirmPassword"
+                className={styles.input}
+                value={confirmPassword}
+                type={"password"}
+                onChange={this.handleChangeConfirmPassword}
+              ></Input>
+            </div>
+            <span className={styles.formErrorMessage}>{errorMessage}</span>
+            <Button
+              className={styles.submitButton}
+              variant="primary"
+              onClick={this.handleSubmit}
+            >
+              Зарегистрироваться
+            </Button>
           </div>
         </div>
       </div>

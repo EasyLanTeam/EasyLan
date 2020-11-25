@@ -1,21 +1,17 @@
 import * as React from "react";
 import cn from "classnames";
 
-import IBaseComponentProps from "../../../../infrastructure/ui/interfaces/IBaseComponentProps";
-
 import styles from "./FormLabel.style.scss";
 
-interface IFormLabelProps extends IBaseComponentProps {
-  for?: string;
-  children?: React.ReactNode;
-}
+type IFormLabelProps = {
+} & React.LabelHTMLAttributes<HTMLLabelElement>
 
 const FormLabel: React.FunctionComponent<IFormLabelProps> = (
-  props: IFormLabelProps
+  {className, children, ...rest} : IFormLabelProps
 ) => {
   return (
-    <label className={cn(props.className, styles.label)} htmlFor={props.for}>
-      {props.children}
+    <label className={cn(className, styles.label)} {...rest}>
+      {children}
     </label>
   );
 };
