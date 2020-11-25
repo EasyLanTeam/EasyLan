@@ -56,7 +56,8 @@ namespace EasyLan.Web
                 options.Password.RequireUppercase = false;
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequireDigit = false;
-            }).AddEntityFrameworkStores<AppDbContext>();
+            })
+                .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddTransient<IGenericRepository<Tournament>, GenericRepository<Tournament>>();
             services.AddTransient<ITournamentService, TournamentService>();
@@ -75,12 +76,10 @@ namespace EasyLan.Web
                 });
             }
 
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
