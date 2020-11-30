@@ -3,6 +3,7 @@ import cn from "classnames";
 import { mdiAccountCircle, mdiMenu } from "@mdi/js";
 import Icon from "@mdi/react";
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../../domain/auth/appAuth";
 
 import styles from "./MainNav.style.scss";
 
@@ -10,6 +11,7 @@ interface IMainNavProps {}
 
 const MainNav: React.FunctionComponent<IMainNavProps> = (props) => {
   const [closeMainNav, setCloseMainNav] = React.useState(() => true);
+  const { user } = useAuth();
 
   const handleMainNavToggleClick = () => {
     setCloseMainNav(!closeMainNav);
@@ -45,35 +47,42 @@ const MainNav: React.FunctionComponent<IMainNavProps> = (props) => {
           </NavLink>
         </div>
         <div className={styles.userNav} onClick={handleNavItemClick}>
-          {/* <NavLink
-              className={cn(styles.userNavItem, styles.userNavItemRegister)}
-              to={"/register"}
-            >
-              Зарегистрироваться
-            </NavLink>
-            <NavLink
-              className={cn(styles.userNavItem, styles.userNavItemLogin)}
-              to={"/login"}
-            >
-              Войти
-            </NavLink> */}
-          <NavLink
-            className={cn(styles.userNavItem, styles.userNavItemProfile)}
-            to={"/user"}
-          >
-            <Icon
-              path={mdiAccountCircle}
-              size="24px"
-              className={styles.userNavIcon}
-            ></Icon>
-            <span>Профиль</span>
-          </NavLink>
-          <NavLink
-            className={cn(styles.userNavItem, styles.userNavItemLogout)}
-            to={"/logout"}
-          >
-            Выход
-          </NavLink>
+          {user ? (
+            <>
+              <NavLink
+                className={cn(styles.userNavItem, styles.userNavItemProfile)}
+                to={`/user/${user.id}`}
+              >
+                <Icon
+                  path={mdiAccountCircle}
+                  size="24px"
+                  className={styles.userNavIcon}
+                ></Icon>
+                <span>Профиль</span>
+              </NavLink>
+              <NavLink
+                className={cn(styles.userNavItem, styles.userNavItemLogout)}
+                to={"/logout"}
+              >
+                Выход
+              </NavLink>
+            </>
+          ) : (
+            <>
+              <NavLink
+                className={cn(styles.userNavItem, styles.userNavItemRegister)}
+                to={"/register"}
+              >
+                Зарегистрироваться
+              </NavLink>
+              <NavLink
+                className={cn(styles.userNavItem, styles.userNavItemLogin)}
+                to={"/login"}
+              >
+                Войти
+              </NavLink>
+            </>
+          )}
         </div>
       </div>
     </div>

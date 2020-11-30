@@ -1,165 +1,175 @@
 import * as React from "react";
+import * as yup from "yup";
+import { ErrorMessage, Formik, FormikBag, FormikProps } from "formik";
+import { toast } from "react-toastify";
 
 import Input from "../../components/base/Input/Input";
 import FormLabel from "../../components/base/FormLabel";
 import Button from "../../components/base/Button";
 
+import AccountService from "../../../data/services/AccountService";
 import styles from "./RegisterPage.style.scss";
+import { ApiFailureResult } from "../../../data/services/ApiResult";
 
 interface IRegisterPageProps {}
 
-interface IRegisterPageState {
+type RegitsterFormValues = {
   username: string;
   email: string;
   password: string;
   confirmPassword: string;
-  errorMessage: string;
-}
+};
 
-class RegisterPage extends React.Component<
-  IRegisterPageProps,
-  IRegisterPageState
-> {
+const regitsterFormInitialValues: RegitsterFormValues = {
+  username: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
+
+const registerFormValidationSchema = yup.object().shape({
+  username: yup.string().required("Обязательное поле"),
+  email: yup.string().email("Введите корректный e-mail"),
+  password: yup
+    .string()
+    .required("Обязательное поле")
+    .min(6, "Длина пароля не должна быть меньше 6 символов"),
+  confirmPassword: yup
+    .string()
+    .required("Обязательное поле")
+    .oneOf([yup.ref("password"), null], "Пароли должны совпадать"),
+});
+
+class RegisterPage extends React.Component<IRegisterPageProps> {
   constructor(props: IRegisterPageProps) {
     super(props);
-
-    this.state = {
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-      errorMessage: null,
-    };
   }
 
-  handleSubmit = (evt: any) => {
-    const { username, email, password, confirmPassword } = this.state;
-
-    if (password !== confirmPassword) {
-      this.setState({ errorMessage: "Пароли должны совпадать" });
-      return;
-    }
-
-    this.setState({ errorMessage: "" }, () => {
-      const req = {
-        username,
-        email,
-        password,
-        fullname: username,
-      };
-
-      fetch("/api/Registration", {
-        method: "POST",
-        body: JSON.stringify(req),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "*/*",
-        },
-        mode: "cors",
-      }).then((res) => {
-        if (res.status === 422) {
-          this.setState({
-            errorMessage: "Пользователь с таким именем уже существует",
-          });
-          return;
-        }
-        if (res.status !== 200) {
-          this.setState({
-            errorMessage: "Ошибка сервера",
-          });
-          return;
-        }
-
-        this.setState({ errorMessage: "Регистрация произведена успешно" });
-      });
-    });
-  };
-
-  handleChangeUsername = (evt: any) => {
-    this.setState({ username: evt.target.value });
-  };
-  handleChangeEmail = (evt: any) => {
-    this.setState({ email: evt.target.value });
-  };
-  handleChangePassword = (evt: any) => {
-    this.setState({ password: evt.target.value });
-  };
-  handleChangeConfirmPassword = (evt: any) => {
-    this.setState({ confirmPassword: evt.target.value });
-  };
-
-  public render() {
-    const {
+  handleSubmit = (
+    values: RegitsterFormValues,
+    actions: FormikBag<any, RegitsterFormValues>
+  ) => {
+    const { username, email, password, confirmPassword } = values;
+    const registerData = {
       username,
       email,
       password,
+      fullname: username,
       confirmPassword,
-      errorMessage,
-    } = this.state;
+    };
+
+    const accountService = new AccountService();
+    accountService.create(registerData).then((res) => {
+      if (res.success) {
+        console.log("ok, user created");
+        toast("Пользователь был успешно создан", { type: "success" });
+      } else {
+        const { error } = res as ApiFailureResult;
+        if (error.error === "LOGIN_ALREADY_USE") {
+          actions.setFieldError("username", "Данный логин уже занят");
+        } else {
+          toast(error.error, { type: "error" });
+        }
+      }
+    });
+  };
+
+  renderForm = (props: FormikProps<RegitsterFormValues>) => {
+    const { email, password, confirmPassword, username } = props.values;
+    const { handleSubmit, handleChange, handleBlur } = props;
 
     return (
-      <div className={styles.card}>
-        <div className={styles.form}>
-          <div className={styles.formHeader}>
-            <h3 className={styles.formTitle}>Регистрация</h3>
-          </div>
-          <div className={styles.formBody}>
-            <div className={styles.formGroup}>
-              <FormLabel className={styles.formLabel} htmlFor="email">
-                E-mail
-              </FormLabel>
-              <Input
-                id="email"
-                className={styles.input}
-                value={email}
-                onChange={this.handleChangeEmail}
-              ></Input>
-            </div>
-            <div className={styles.formGroup}>
-              <FormLabel className={styles.formLabel} htmlFor="username">
-                Имя пользователя
-              </FormLabel>
-              <Input
-                id="username"
-                className={styles.input}
-                value={username}
-                onChange={this.handleChangeUsername}
-              ></Input>
-            </div>
-            <div className={styles.formGroup}>
-              <FormLabel className={styles.formLabel} htmlFor="password">
-                Пароль
-              </FormLabel>
-              <Input
-                id="password"
-                className={styles.input}
-                value={password}
-                type={"password"}
-                onChange={this.handleChangePassword}
-              ></Input>
-            </div>
-            <div className={styles.formGroup}>
-              <FormLabel className={styles.formLabel} htmlFor="confirmPassword">
-                Повторите пароль
-              </FormLabel>
-              <Input
-                id="confirmPassword"
-                className={styles.input}
-                value={confirmPassword}
-                type={"password"}
-                onChange={this.handleChangeConfirmPassword}
-              ></Input>
-            </div>
-            <span className={styles.formErrorMessage}>{errorMessage}</span>
-            <Button
-              className={styles.submitButton}
-              variant="primary"
-              onClick={this.handleSubmit}
-            >
-              Зарегистрироваться
-            </Button>
-          </div>
+      <div className={styles.form}>
+        <div className={styles.formHeader}>
+          <h3 className={styles.formTitle}>Регистрация</h3>
         </div>
+        <div className={styles.formBody}>
+          <div className={styles.formGroup}>
+            <FormLabel className={styles.formLabel} htmlFor="email">
+              E-mail
+            </FormLabel>
+            <Input
+              id="email"
+              className={styles.input}
+              value={email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+            ></Input>
+            <span className={styles.inputError}>
+              <ErrorMessage name="email" />
+            </span>
+          </div>
+          <div className={styles.formGroup}>
+            <FormLabel className={styles.formLabel} htmlFor="username">
+              Имя пользователя
+            </FormLabel>
+            <Input
+              id="username"
+              className={styles.input}
+              value={username}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            ></Input>
+            <span className={styles.inputError}>
+              <ErrorMessage name="username" />
+            </span>
+          </div>
+          <div className={styles.formGroup}>
+            <FormLabel className={styles.formLabel} htmlFor="password">
+              Пароль
+            </FormLabel>
+            <Input
+              id="password"
+              className={styles.input}
+              value={password}
+              type={"password"}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            ></Input>
+            <span className={styles.inputError}>
+              <ErrorMessage name="password" />
+            </span>
+          </div>
+          <div className={styles.formGroup}>
+            <FormLabel className={styles.formLabel} htmlFor="confirmPassword">
+              Повторите пароль
+            </FormLabel>
+            <Input
+              id="confirmPassword"
+              className={styles.input}
+              value={confirmPassword}
+              type={"password"}
+              onBlur={handleBlur}
+              onChange={handleChange}
+            ></Input>
+            <span className={styles.inputError}>
+              <ErrorMessage name="confirmPassword" />
+            </span>
+          </div>
+          <Button
+            type="submit"
+            className={styles.submitButton}
+            variant="primary"
+            onClick={() => handleSubmit()}
+          >
+            Зарегистрироваться
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
+  public render() {
+    return (
+      <div className={styles.card}>
+        <Formik
+          initialValues={regitsterFormInitialValues}
+          onSubmit={this.handleSubmit}
+          validateOnBlur={true}
+          validationSchema={registerFormValidationSchema}
+        >
+          {(props) => this.renderForm(props)}
+        </Formik>
       </div>
     );
   }

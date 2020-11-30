@@ -1,6 +1,6 @@
 import * as React from "react";
-import { Tournament } from "../../../data/Tournament";
-import TournamentRepository from "../../../data/TournamentRepository";
+import { Tournament } from "../../../data/entities/Tournament";
+import TournamentRepository from "../../../data/services/TournamentRepository";
 import TournamentForm from "../../components/TournamentForm/TournamentForm";
 import Paper from "../../components/Paper";
 

@@ -105,6 +105,13 @@ module.exports = {
           },
         ],
       },
+      {
+        test: /\.css$/,
+        loader: [
+          isDev ? "style-loader" : MiniCssExtractPlugin.loader,
+          "css-loader",
+        ],
+      },
     ],
   },
   devtool: isDev ? "source-map" : "",

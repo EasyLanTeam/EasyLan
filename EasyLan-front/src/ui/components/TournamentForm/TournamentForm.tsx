@@ -4,6 +4,7 @@ import dayjs from "dayjs";
 import { Formik, FormikProps } from "formik";
 import Button from "../base/Button";
 import { TournamentFormValues } from "./TournamentFormValues";
+import { Tournament } from "../../../data/entities/Tournament";
 import PrizesSection from "./PrizesSection";
 import ParticipantsSection from "./ParticipantsSection";
 import LocationSection from "./LocationSection";
@@ -11,7 +12,6 @@ import DateTimeSection from "./DateTimeSection";
 import TournamentTypeSection from "./TornamentTypeSection";
 import GameSection from "./GameSection";
 import AdditionalInfoSection from "./AdditionalInfoSection";
-import { Tournament } from "../../../data/Tournament";
 
 import styles from "./TournamentForm.style.scss";
 

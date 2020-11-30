@@ -2,11 +2,11 @@ import * as React from "react";
 import { NavLink, Route, Switch, useParams, useRouteMatch } from "react-router-dom";
 import PageMenu from "../../components/PageMenu";
 import Paper from "../../components/Paper";
-import { Tournament } from "../../../data/Tournament";
+import { Tournament } from "../../../data/entities/Tournament";
+import TournamentRepository from "../../../data/services/TournamentRepository";
 import Button from "../../components/base/Button";
 import { mdiClose, mdiPencil } from "@mdi/js";
 import TournamentGrid from "./TournamentGrid";
-import TournamentRepository from "../../../data/TournamentRepository";
 
 import styles from "./TournamentPage.style.scss";
 

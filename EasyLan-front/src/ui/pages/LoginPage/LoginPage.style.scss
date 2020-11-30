@@ -30,7 +30,7 @@
   margin-bottom: 4px;
 }
 
-.form-error-message {
+.input-error {
   font-size: 14px;
   color: $color-error;
 }
@@ -48,44 +48,10 @@
   font-size: 16px;
 }
 
-.alt-signs {
-  padding-top: 20px;
-  position: relative;
-  border-top: 1px solid #c4c4c4;
-}
-
-.alt-signs-title {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  padding: 0 16px;
-  background-color: $color-fg;
-
-  text-transform: uppercase;
-  font-weight: bold;
-}
-
-.sign-in-vk-button {
-  background-color: #4a76bb;
-  border: none;
-  font-size: 16px;
-
-  &:hover {
-    background-color: #4a76bb;
-  }
-}
-
-.vk-icon {
-  @include icon-size;
-  margin-right: 4px;
-  vertical-align: bottom;
-}
-
 @media (min-width: $tablet-width) {
   .card {
     max-width: 625px;
-    padding: 0 56px 48px 56px;
+    padding: 0 56px 36px 56px;
     border-radius: 8px;
     margin: 0 auto;
     margin-top: 56px;
@@ -101,7 +67,7 @@
     width: 300px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 36px;
+    margin-top: 16px;
     margin-bottom: 24px;
   }
 
@@ -109,26 +75,23 @@
     display: flex;
   }
 
-  .sign-in-vk-button {
-    width: 300px;
-    margin: 0 auto;
-  }
-
   .form-group {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    margin-bottom: 36px;
-  }
-
-  .form-error-message {
-    display: block;
-    margin-top: -18px;
-    margin-bottom: -18px;
+    margin-bottom: 24px;
   }
 
   .input {
-    width: auto;
+    width: 150px;
     flex-grow: 1;
+  }
+
+  .input-error {
+    width: 280px;
+    flex-grow: 1;
+    margin-top: 4px;
+    margin-left: 128px;
   }
 
   .form-label {
