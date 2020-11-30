@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using EasyLan.LogicLayer.DTOs;
 using EasyLan.LogicLayer.Interfaces;
+using EasyLan.Web.Mappers;
+using EasyLan.Web.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,10 +13,10 @@ namespace EasyLan.Web.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class MatchesController : ControllerBase
+    public class MatchController : ControllerBase
     {
         private IMatchService matchService;
-        public MatchesController(IMatchService matchService)
+        public MatchController(IMatchService matchService)
         {
             this.matchService = matchService;
         }
@@ -24,13 +26,16 @@ namespace EasyLan.Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public List<List<MatchDTO>> GetMatches(Guid id)
+        public List<List<MatchViewModel>> GetMatches(Guid id)
         {
-            return matchService.Get(id);
+            var matchDtos = matchService.Get(id);
+            var result = new List<List<MatchViewModel>>();      
+            matchDtos.ForEach(list => result.Add(list.Select(MatchMapper.Map).ToList()));
+            return result;
         }
 
         [HttpPost]
-        public void SetWiiner(Guid matchId, string userId)
+        public void SetWinner(Guid matchId, string userId)
         {
             matchService.SetWinner(matchId, userId);
         }

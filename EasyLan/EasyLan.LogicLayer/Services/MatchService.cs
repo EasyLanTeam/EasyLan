@@ -86,7 +86,8 @@ namespace EasyLan.LogicLayer.Services
         public List<List<MatchDTO>> Get(Guid tournamentId)
         {
             var mapper = config.CreateMapper();
-            var matches = matchRepository.Get(p => p.TournamentId == tournamentId);
+            var matches = matchRepository.GetWithInclude(p => p.FirstPlayer, p => p.SecondPlayer, p => p.Winner)
+                .Where(p => p.TournamentId == tournamentId);
             var result = new List<List<MatchDTO>>();
             var levelCount = 1;
             int count;
