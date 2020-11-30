@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EasyLan.DataLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201119201151_Init")]
+    [Migration("20201130103943_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,6 +37,63 @@ namespace EasyLan.DataLayer.Migrations
                     b.HasKey("LocationId");
 
                     b.ToTable("locations");
+                });
+
+            modelBuilder.Entity("EasyLan.DataLayer.Entites.Match", b =>
+                {
+                    b.Property<Guid>("MatchId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("FirstPlayerId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<int>("Level")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NavNumber")
+                        .HasColumnType("int");
+
+                    b.Property<Guid?>("NextMatchId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("SecondPlayerId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("WinnerId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.HasKey("MatchId");
+
+                    b.HasIndex("FirstPlayerId");
+
+                    b.HasIndex("NextMatchId");
+
+                    b.HasIndex("SecondPlayerId");
+
+                    b.HasIndex("TournamentId");
+
+                    b.HasIndex("WinnerId");
+
+                    b.ToTable("Matches");
+                });
+
+            modelBuilder.Entity("EasyLan.DataLayer.Entites.PlayerTournament", b =>
+                {
+                    b.Property<Guid>("TournamentId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("varchar(255) CHARACTER SET utf8mb4");
+
+                    b.HasKey("TournamentId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("PlayerTournaments");
                 });
 
             modelBuilder.Entity("EasyLan.DataLayer.Entites.Prize", b =>
@@ -298,6 +355,46 @@ namespace EasyLan.DataLayer.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("EasyLan.DataLayer.Entites.Match", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "FirstPlayer")
+                        .WithMany()
+                        .HasForeignKey("FirstPlayerId");
+
+                    b.HasOne("EasyLan.DataLayer.Entites.Match", "NextMatch")
+                        .WithMany()
+                        .HasForeignKey("NextMatchId");
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "SecondPlayer")
+                        .WithMany()
+                        .HasForeignKey("SecondPlayerId");
+
+                    b.HasOne("EasyLan.DataLayer.Entites.Tournament", "Tournament")
+                        .WithMany()
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "Winner")
+                        .WithMany()
+                        .HasForeignKey("WinnerId");
+                });
+
+            modelBuilder.Entity("EasyLan.DataLayer.Entites.PlayerTournament", b =>
+                {
+                    b.HasOne("EasyLan.DataLayer.Entites.Tournament", "Tournament")
+                        .WithMany("Players")
+                        .HasForeignKey("TournamentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("EasyLan.DataLayer.Entites.Prize", b =>

@@ -190,6 +190,78 @@ namespace EasyLan.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Matches",
+                columns: table => new
+                {
+                    MatchId = table.Column<Guid>(nullable: false),
+                    NextMatchId = table.Column<Guid>(nullable: true),
+                    NavNumber = table.Column<int>(nullable: false),
+                    Level = table.Column<int>(nullable: false),
+                    FirstPlayerId = table.Column<string>(nullable: true),
+                    SecondPlayerId = table.Column<string>(nullable: true),
+                    WinnerId = table.Column<string>(nullable: true),
+                    TournamentId = table.Column<Guid>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Matches", x => x.MatchId);
+                    table.ForeignKey(
+                        name: "FK_Matches_AspNetUsers_FirstPlayerId",
+                        column: x => x.FirstPlayerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Matches_Matches_NextMatchId",
+                        column: x => x.NextMatchId,
+                        principalTable: "Matches",
+                        principalColumn: "MatchId",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Matches_AspNetUsers_SecondPlayerId",
+                        column: x => x.SecondPlayerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Matches_tournaments_TournamentId",
+                        column: x => x.TournamentId,
+                        principalTable: "tournaments",
+                        principalColumn: "TournamentId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_Matches_AspNetUsers_WinnerId",
+                        column: x => x.WinnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PlayerTournaments",
+                columns: table => new
+                {
+                    TournamentId = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PlayerTournaments", x => new { x.TournamentId, x.UserId });
+                    table.ForeignKey(
+                        name: "FK_PlayerTournaments_tournaments_TournamentId",
+                        column: x => x.TournamentId,
+                        principalTable: "tournaments",
+                        principalColumn: "TournamentId",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PlayerTournaments_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "prizes",
                 columns: table => new
                 {
@@ -248,6 +320,36 @@ namespace EasyLan.DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_Matches_FirstPlayerId",
+                table: "Matches",
+                column: "FirstPlayerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_NextMatchId",
+                table: "Matches",
+                column: "NextMatchId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_SecondPlayerId",
+                table: "Matches",
+                column: "SecondPlayerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_TournamentId",
+                table: "Matches",
+                column: "TournamentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Matches_WinnerId",
+                table: "Matches",
+                column: "WinnerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PlayerTournaments_UserId",
+                table: "PlayerTournaments",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_prizes_TournamentId",
                 table: "prizes",
                 column: "TournamentId");
@@ -272,6 +374,12 @@ namespace EasyLan.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "locations");
+
+            migrationBuilder.DropTable(
+                name: "Matches");
+
+            migrationBuilder.DropTable(
+                name: "PlayerTournaments");
 
             migrationBuilder.DropTable(
                 name: "prizes");
