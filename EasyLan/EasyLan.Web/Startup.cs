@@ -37,17 +37,32 @@ namespace EasyLan.Web
             services.AddAuthentication();
             services.AddSwaggerGen();
             string connectionString;
-            //connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
 
-            //if (WebHostEnvironment.IsEnvironment("azure"))
-            //{
-            //}
-            //else
-            //{
-            connectionString = Configuration.GetConnectionString("DefaultConnection");
-            //}
+            if (WebHostEnvironment.IsEnvironment("heroku"))
+            {
+                // Heroku provides PostgreSQL connection URL via env variable
+                var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 
-            services.AddDbContext<AppDbContext>(o => o.UseMySql(connectionString));
+                // Parse connection URL to connection string for Npgsql
+                connUrl = connUrl.Replace("postgres://", string.Empty);
+
+                var pgUserPass = connUrl.Split("@")[0];
+                var pgHostPortDb = connUrl.Split("@")[1];
+                var pgHostPort = pgHostPortDb.Split("/")[0];
+
+                var pgDb = pgHostPortDb.Split("/")[1];
+                var pgUser = pgUserPass.Split(":")[0];
+                var pgPass = pgUserPass.Split(":")[1];
+                var pgHost = pgHostPort.Split(":")[0];
+                var pgPort = pgHostPort.Split(":")[1];
+                connectionString = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb}";
+            }
+            else
+            {
+                connectionString = Configuration.GetConnectionString("DefaultConnection");
+            }
+
+            services.AddDbContext<AppDbContext>(o => o.UseNpgsql(connectionString));
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {

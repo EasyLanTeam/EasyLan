@@ -14,7 +14,7 @@ namespace EasyLan.DataLayer
         public DbSet<PlayerTournament> PlayerTournaments { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            
+            Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
