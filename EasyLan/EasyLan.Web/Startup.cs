@@ -37,7 +37,7 @@ namespace EasyLan.Web
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "wwwroot";
+                configuration.RootPath = "FrontBuild";
             });
 
             services.AddAuthentication();
