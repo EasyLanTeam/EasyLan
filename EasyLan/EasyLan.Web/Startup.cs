@@ -24,6 +24,7 @@ namespace EasyLan.Web
     {
         public IConfiguration Configuration { get; }
         public IWebHostEnvironment WebHostEnvironment { get; }
+
         public Startup(IConfiguration configuration, IWebHostEnvironment environment)
         {
             Configuration = configuration;
@@ -38,6 +39,7 @@ namespace EasyLan.Web
             services.AddAuthentication();
             services.AddSwaggerGen();
             string connectionString;
+            services.AddSpaStaticFiles(configuration => { configuration.RootPath = "wwwroot"; });
             //connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
 
             //if (WebHostEnvironment.IsEnvironment("azure"))
@@ -51,17 +53,16 @@ namespace EasyLan.Web
             services.AddDbContext<AppDbContext>(o => o.UseMySql(connectionString));
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
-            {
-                options.Password.RequireLowercase = false;
-                options.Password.RequireUppercase = false;
-                options.Password.RequireNonAlphanumeric = false;
-                options.Password.RequireDigit = false;
-            })
+                {
+                    options.Password.RequireLowercase = false;
+                    options.Password.RequireUppercase = false;
+                    options.Password.RequireNonAlphanumeric = false;
+                    options.Password.RequireDigit = false;
+                })
                 .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddTransient<IGenericRepository<Tournament>, GenericRepository<Tournament>>();
             services.AddTransient<ITournamentService, TournamentService>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -85,24 +86,39 @@ namespace EasyLan.Web
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
-            
+
             Console.WriteLine(env.IsDevelopment());
-            
+
             if (env.IsDevelopment())
             {
                 app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             }
-
-            app.UseEndpoints(endpoints =>
+            
+            if (!env.IsDevelopment())
             {
-                endpoints.MapControllers();
-            });
+                app.UseStaticFiles();
+                app.UseSpaStaticFiles();
+                
+                app.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "wwwroot";
+                    spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
+                    {
+                        OnPrepareResponse = context =>
+                        {
+                            context.Context.Response.Headers.Add("Cache-Control", "public,max-age=6000");
+                        }
+                    };
+                });
+            }
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            app.UseEndpoints(endpoints => { endpoints.MapControllers(); });
+
+            if (env.IsDevelopment())
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyLan");
-            });
+                app.UseSwagger();
+                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyLan"); });
+            }
         }
     }
 }
