@@ -1,26 +1,36 @@
 ﻿{
   "iisSettings": {
-    "windowsAuthentication": false, 
-    "anonymousAuthentication": true, 
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
     "iisExpress": {
       "applicationUrl": "http://localhost:65510",
-      "sslPort": 44383
-    }
-  },
-  "profiles": {
-    "IIS Express": {
-      "commandName": "IISExpress",
-      "launchBrowser": true,
+      "sslPort": 44383,
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "azure"
+        "ASPNETCORE_ENVIRONMENT": "Development"
+
       }
     },
-    "EasyLan.Web": {
-      "commandName": "Project",
-      "launchBrowser": true,
-      "applicationUrl": "https://localhost:5001;http://localhost:5000",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Production"
+    "profiles": {
+      "IIS Express": {
+        "commandName": "IISExpress",
+        "launchBrowser": true,
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "azure"
+        }
+      },
+      "EasyLan.Web": {
+        "commandName": "Project",
+        "launchBrowser": true,
+        "applicationUrl": "https://localhost:5001;http://localhost:5000",
+        "environmentVariables": {
+          "ASPNETCORE_ENVIRONMENT": "Production"
+        }
+      },
+
+      "EasyLan.Web Production": {
+        "commandName": "Project",
+        "launchBrowser": true,
+        "applicationUrl": "https://localhost:5001;http://localhost:5000"
       }
     }
   }

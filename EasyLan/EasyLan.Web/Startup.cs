@@ -142,6 +142,7 @@ namespace EasyLan.Web
                 app.UseSpa(spa =>
                 {
                     spa.Options.SourcePath = "wwwroot";
+                    spa.ApplicationBuilder.UseDeveloperExceptionPage();
                     spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
                     {
                         OnPrepareResponse = context =>
