@@ -14,6 +14,6 @@ namespace EasyLan.DataLayer.Interfaces
         void Remove(T entitu);
         void Update(T entity);
         List<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties);
-
+        List<T> ReadAll();
     }
 }

@@ -10,6 +10,7 @@ namespace EasyLan.DataLayer
         public DbSet<Tournament> Tournaments { get; set; } 
         public DbSet<Location> Locations { get; set; }
         public DbSet<Prize> Pryzes { get; set; }
+        public DbSet<UserScore> UserScores { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
             
