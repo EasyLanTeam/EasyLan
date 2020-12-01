@@ -16,7 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Text.RegularExpressions;
 
 namespace EasyLan.Web
 {
@@ -60,7 +59,14 @@ namespace EasyLan.Web
                 .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddTransient<IGenericRepository<Tournament>, GenericRepository<Tournament>>();
+            services.AddTransient<IGenericRepository<Match>, GenericRepository<Match>>();
+            services.AddTransient<IGenericRepository<PlayerTournament>, GenericRepository<PlayerTournament>>();
+
+
+
             services.AddTransient<ITournamentService, TournamentService>();
+            services.AddTransient<IMatchService, MatchService>();
+
 
         }
 
@@ -85,9 +91,9 @@ namespace EasyLan.Web
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
-            
+
             Console.WriteLine(env.IsDevelopment());
-            
+
             if (env.IsDevelopment())
             {
                 app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());

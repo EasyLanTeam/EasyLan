@@ -32,5 +32,6 @@ namespace EasyLan.DataLayer.Entites
         public string Comment { get; set; }
         public string InitiatorId { get; set; }
         public string Initiator { get; set; }
+        public List<PlayerTournament> Players { get; set; }
     }
 }
