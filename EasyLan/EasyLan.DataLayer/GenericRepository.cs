@@ -27,7 +27,10 @@ namespace EasyLan.DataLayer
         {
             return dbSet.Skip((pageNumber - 1)* count).Take(count).Where(predicate).ToList();
         }
-
+        public List<T> Get(Func<T, bool> predicate)
+        {
+            return dbSet.Where(predicate).ToList();
+        }
         public T Find(Guid guid)
         {
             return dbSet.Find(guid);

@@ -16,7 +16,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Text.RegularExpressions;
 
 namespace EasyLan.Web
 {
@@ -38,17 +37,32 @@ namespace EasyLan.Web
             services.AddAuthentication();
             services.AddSwaggerGen();
             string connectionString;
-            //connectionString = Environment.GetEnvironmentVariable("MYSQLCONNSTR_localdb");
 
-            //if (WebHostEnvironment.IsEnvironment("azure"))
-            //{
-            //}
-            //else
-            //{
-            connectionString = Configuration.GetConnectionString("DefaultConnection");
-            //}
+            if (WebHostEnvironment.IsEnvironment("Production"))
+            {
+                // Heroku provides PostgreSQL connection URL via env variable
+                var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
 
-            services.AddDbContext<AppDbContext>(o => o.UseMySql(connectionString));
+                // Parse connection URL to connection string for Npgsql
+                connUrl = connUrl.Replace("postgres://", string.Empty);
+
+                var pgUserPass = connUrl.Split("@")[0];
+                var pgHostPortDb = connUrl.Split("@")[1];
+                var pgHostPort = pgHostPortDb.Split("/")[0];
+
+                var pgDb = pgHostPortDb.Split("/")[1];
+                var pgUser = pgUserPass.Split(":")[0];
+                var pgPass = pgUserPass.Split(":")[1];
+                var pgHost = pgHostPort.Split(":")[0];
+                var pgPort = pgHostPort.Split(":")[1];
+                connectionString = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb}";
+            }
+            else
+            {
+                connectionString = Configuration.GetConnectionString("DefaultConnection");
+            }
+
+            services.AddEntityFrameworkNpgsql().AddDbContext<AppDbContext>(o => o.UseNpgsql(connectionString));
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
@@ -60,7 +74,14 @@ namespace EasyLan.Web
                 .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddTransient<IGenericRepository<Tournament>, GenericRepository<Tournament>>();
+            services.AddTransient<IGenericRepository<Match>, GenericRepository<Match>>();
+            services.AddTransient<IGenericRepository<PlayerTournament>, GenericRepository<PlayerTournament>>();
+
+
+
             services.AddTransient<ITournamentService, TournamentService>();
+            services.AddTransient<IMatchService, MatchService>();
+
 
         }
 
@@ -85,9 +106,9 @@ namespace EasyLan.Web
             app.UseHttpsRedirection();
             app.UseRouting();
             app.UseAuthorization();
-            
+
             Console.WriteLine(env.IsDevelopment());
-            
+
             if (env.IsDevelopment())
             {
                 app.UseCors(builder => builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
