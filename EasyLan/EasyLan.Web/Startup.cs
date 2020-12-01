@@ -38,7 +38,7 @@ namespace EasyLan.Web
             services.AddSwaggerGen();
             string connectionString;
 
-            if (WebHostEnvironment.IsEnvironment("heroku"))
+            if (WebHostEnvironment.IsEnvironment("Production"))
             {
                 // Heroku provides PostgreSQL connection URL via env variable
                 var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
@@ -62,7 +62,7 @@ namespace EasyLan.Web
                 connectionString = Configuration.GetConnectionString("DefaultConnection");
             }
 
-            services.AddDbContext<AppDbContext>(o => o.UseNpgsql(connectionString));
+            services.AddEntityFrameworkNpgsql().AddDbContext<AppDbContext>(o => o.UseNpgsql(connectionString));
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
