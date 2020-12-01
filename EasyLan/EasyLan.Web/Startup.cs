@@ -132,6 +132,12 @@ namespace EasyLan.Web
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyLan");
             });
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "FrontBuild";
+
+            });
         }
     }
 }
