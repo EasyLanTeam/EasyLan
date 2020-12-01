@@ -13,7 +13,6 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="3.1.4" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="4.9.3" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="3.1.4" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
@@ -23,5 +22,38 @@
   <ItemGroup>
     <ProjectReference Include="..\EasyLan.LogicLayer\EasyLan.LogicLayer.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot" />
+  </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="Build" Condition="$(Configuration) == Release">
+    <!-- Ensure Node.js is installed -->
+    <Exec Command="node --version" ContinueOnError="true">
+      <Output TaskParameter="ExitCode" PropertyName="ErrorCode" />
+    </Exec>
+    <Error Condition="'$(ErrorCode)' != '0'" Text="Node.js is required to build and run this project. To continue, please install Node.js from https://nodejs.org/, and then restart your command prompt or IDE." />
+    <Message Importance="high" Text="Performing first-run Webpack build..." />
+
+    <Exec Command="cd $(ProjectDir)..\..\EasyLan-front &#xD;&#xA;        if not exist node_modules npm i" />
+    <Exec Command="&#xD;&#xA;        cd $(ProjectDir)..\..\EasyLan-front &#xD;&#xA;        npm run build" />
+
+    <Exec Command="if not exist $(ProjectDir)wwwroot mkdir $(ProjectDir)wwwroot" />
+    <Exec Command="if exist $(ProjectDir)wwwroot del /s /q $(ProjectDir)wwwroot\*.*" />
+    <Exec Command="copy $(ProjectDir)..\..\EasyLan-front\dist\* $(ProjectDir)wwwroot" />
+  </Target>
+
+  <Target Name="PublishRunWebpack" AfterTargets="ComputeFilesToPublish">
+    <!-- As part of publishing, ensure the JS resources are freshly built in production mode -->
+
+    <!-- Include the newly-built files in the publish output -->
+    <ItemGroup>
+      <DistFiles Include="wwwroot\**;" />
+      <ResolvedFileToPublish Include="@(DistFiles->'%(FullPath)')" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>%(DistFiles.Identity)</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
 
 </Project>

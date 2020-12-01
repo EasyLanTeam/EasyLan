@@ -37,7 +37,7 @@ namespace EasyLan.Web
 
             services.AddSpaStaticFiles(configuration =>
             {
-                configuration.RootPath = "FrontBuild";
+                configuration.RootPath = "wwwroot";
             });
 
             services.AddAuthentication();
@@ -127,17 +127,30 @@ namespace EasyLan.Web
                 endpoints.MapControllers();
             });
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            if (env.IsDevelopment())
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyLan");
-            });
+                app.UseSwagger();
+                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyLan"); });
+            }
 
-            app.UseSpa(spa =>
+            if (!env.IsDevelopment())
             {
-                spa.Options.SourcePath = "FrontBuild";
-                spa.ApplicationBuilder.UseDeveloperExceptionPage();
-            });
+
+                app.UseStaticFiles();
+                app.UseSpaStaticFiles();
+
+                app.UseSpa(spa =>
+                {
+                    spa.Options.SourcePath = "wwwroot";
+                    spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
+                    {
+                        OnPrepareResponse = context =>
+                        {
+                            context.Context.Response.Headers.Add("Cache-Control", "public,max-age=6000");
+                        }
+                    };
+                });
+            }
         }
     }
 }
