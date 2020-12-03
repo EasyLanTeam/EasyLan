@@ -41,7 +41,7 @@ export default class App extends React.Component<IAppProps> {
                 <Route path="/tournaments">
                   <TournamentsPage />
                 </Route>
-                <Route path="/user">
+                <Route path="/user/:id">
                   <UserPage />
                 </Route>
                 <Route path="*">
