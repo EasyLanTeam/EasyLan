@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NavLink, Route, Switch, useParams, useRouteMatch } from "react-router-dom";
+import { Route, Switch, useParams, useRouteMatch } from "react-router-dom";
 import PageMenu from "../../components/PageMenu";
 import Paper from "../../components/Paper";
 import { Tournament } from "../../../data/entities/Tournament";
@@ -99,11 +99,9 @@ const TournamentMain: React.FunctionComponent<ITournamentMainProps> = ({
 
 let tournament: Tournament = null;
 
-const TournamentPage: React.FunctionComponent<ITournamentsPageProps> = (
-  props
-) => {
+const TournamentPage: React.FunctionComponent<ITournamentsPageProps> = () => {
   const [isLoaded, setIsLoaded] = React.useState(false);
-  const { path, url } = useRouteMatch();
+  const { url } = useRouteMatch();
   const { tournamentId } = useParams<{ tournamentId: string }>();
 
   if (!isLoaded) {

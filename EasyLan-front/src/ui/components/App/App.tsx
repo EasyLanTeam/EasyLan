@@ -1,5 +1,5 @@
 import React from "react";
-import { Redirect, Route, Switch, BrowserRouter } from "react-router-dom";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
 import Header from "../Header";
 import LoginPage from "../../pages/LoginPage";
 import Main from "../Main";
@@ -27,7 +27,6 @@ export default class App extends React.Component<IAppProps> {
             <Main>
               <Switch>
                 <Route path="/" exact>
-                  {/* <Redirect to="/login"></Redirect> */}
                   <MainPage />
                 </Route>
                 <Route path="/login">

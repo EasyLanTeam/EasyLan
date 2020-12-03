@@ -7,7 +7,7 @@ import { TournamentFormValues } from "./TournamentFormValues";
 
 import styles from "./TournamentForm.style.scss";
 
-const GameSection = () => {
+const GameSection = (): JSX.Element => {
   const {
     values,
     handleChange,

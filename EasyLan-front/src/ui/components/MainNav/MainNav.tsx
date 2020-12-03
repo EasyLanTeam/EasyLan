@@ -47,7 +47,7 @@ const MainNav: React.FunctionComponent<IMainNavProps> = (props) => {
           </NavLink>
         </div>
         <div className={styles.userNav} onClick={handleNavItemClick}>
-          {user ? (
+          {user == null ? null : user !== false ? (
             <>
               <NavLink
                 className={cn(styles.userNavItem, styles.userNavItemProfile)}

@@ -1,5 +1,4 @@
 import * as React from "react";
-import cn from "classnames";
 import Paper from "../../components/Paper";
 import PageMenu from "../../components/PageMenu";
 
@@ -7,7 +6,7 @@ import styles from "./UserPage.style.scss";
 
 interface IUserPageProps {}
 
-const UserPage: React.FunctionComponent<IUserPageProps> = (props) => {
+const UserPage: React.FunctionComponent<IUserPageProps> = () => {
   return (
     <div className={styles.container}>
       <PageMenu>

@@ -85,9 +85,7 @@ const renderForm = (props: FormikProps<LoginFormValues>) => {
   );
 };
 
-const LoginPage: React.FunctionComponent<ILoginPageProps> = (
-  props: ILoginPageProps
-) => {
+const LoginPage: React.FunctionComponent<ILoginPageProps> = () => {
   const { setUser } = useAuth();
   const history = useHistory();
   const location = useLocation<LocationState>();

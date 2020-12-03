@@ -11,4 +11,5 @@ export default interface IAccountService {
     oldPassword: string
   ) => Promise<ApiResult<unknown>>;
   getUserData: (id: string) => Promise<ApiResult<UserData>>;
+  get: () => Promise<ApiResult<UserData>>;
 }

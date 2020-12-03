@@ -29,11 +29,26 @@ const devServer = () =>
   isProd
     ? undefined
     : {
+        https: true,
         port: 8022,
         proxy: [
           {
             context: ["/api"],
-            target: "http://localhost:5000",
+            target: "https://localhost:5001",
+            onProxyReq: (proxyReq) => {
+              if (proxyReq.getHeader("origin")) {
+                proxyReq.setHeader("origin", "https://localhost:5001");
+              }
+            },
+            onProxyRes: (proxyRes, req, res) => {
+              Object.keys(proxyRes.headers).forEach((key) => {
+                res.append(key, proxyRes.headers[key]);
+              });
+            },
+            secure: false,
+            changeOrigin: true,
+            ws: true,
+            xfwd: true,
           },
         ],
         historyApiFallback: true,

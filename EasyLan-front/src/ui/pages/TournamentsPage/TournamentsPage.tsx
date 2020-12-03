@@ -116,9 +116,7 @@ const TournamentList: React.FunctionComponent<ITournamentListProps> = () => {
   );
 };
 
-const TournamentsPage: React.FunctionComponent<ITournamentsPageProps> = (
-  props
-) => {
+const TournamentsPage: React.FunctionComponent<ITournamentsPageProps> = () => {
   const { path } = useRouteMatch();
 
   return (

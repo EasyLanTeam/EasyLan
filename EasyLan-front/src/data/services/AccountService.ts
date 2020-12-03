@@ -9,7 +9,40 @@ import {
 import IAccountService from "./IAccountService";
 
 export default class AccountService implements IAccountService {
-  getUserData(id: string) {
+  get(): Promise<ApiResult<UserData>> {
+    return new Promise<ApiResult<UserData>>((resolve, reject) => {
+      fetch("/api/Account", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+        },
+        mode: "cors",
+      })
+        .then((res) => {
+          if (res.status === 401) {
+            return reject(ApiError("UNAUTHORIZED"));
+          }
+
+          if (res.status !== 200) {
+            return reject(ApiError(`Ошибка сервера, ${res.status}`));
+          }
+
+          return res.json();
+        })
+        .catch((e) => {
+          console.error(e);
+          return reject(ApiError("Ошибка клиента"));
+        })
+        .then((userData: UserData) => {
+          return resolve(ApiSuccessResult(userData));
+        });
+    }).then(
+      (successResult: ApiSuccessResult<UserData>) => successResult,
+      (error: ApiFailureResult) => error
+    );
+  }
+  getUserData(id: string): Promise<ApiResult<UserData>> {
     return new Promise<ApiResult<UserData>>((resolve, reject) => {
       fetch(`/api/Account/GetUserData?id=${id}`, {
         method: "GET",
@@ -66,7 +99,7 @@ export default class AccountService implements IAccountService {
       .then((res) => res);
   }
 
-  login(username: string, password: string) {
+  login(username: string, password: string): Promise<ApiResult<UserData>> {
     return new Promise<ApiResult<UserData>>((resolve, reject) => {
       fetch(
         `/api/Account/Login?userLogin=${username}&userPassword=${password}`,
@@ -102,7 +135,7 @@ export default class AccountService implements IAccountService {
     );
   }
 
-  logout() {
+  logout(): Promise<ApiResult<unknown>> {
     return fetch("/api/Account/LogoutUser", {
       method: "POST",
       headers: {
@@ -127,7 +160,10 @@ export default class AccountService implements IAccountService {
       });
   }
 
-  changePassword(newPassword: string, oldPassword: string) {
+  changePassword(
+    newPassword: string,
+    oldPassword: string
+  ): Promise<ApiResult<unknown>> {
     return fetch(
       `/api/Account/ChangePassword?=newPassword=${newPassword}&oldPassword=${oldPassword}`,
       {

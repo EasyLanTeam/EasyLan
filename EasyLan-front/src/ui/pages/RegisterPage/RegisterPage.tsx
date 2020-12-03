@@ -48,7 +48,7 @@ class RegisterPage extends React.Component<IRegisterPageProps> {
   handleSubmit = (
     values: RegitsterFormValues,
     actions: FormikBag<any, RegitsterFormValues>
-  ) => {
+  ): void => {
     const { username, email, password, confirmPassword } = values;
     const registerData = {
       username,
@@ -74,7 +74,7 @@ class RegisterPage extends React.Component<IRegisterPageProps> {
     });
   };
 
-  renderForm = (props: FormikProps<RegitsterFormValues>) => {
+  renderForm = (props: FormikProps<RegitsterFormValues>): JSX.Element => {
     const { email, password, confirmPassword, username } = props.values;
     const { handleSubmit, handleChange, handleBlur } = props;
 
@@ -159,7 +159,7 @@ class RegisterPage extends React.Component<IRegisterPageProps> {
     );
   };
 
-  public render() {
+  public render(): JSX.Element {
     return (
       <div className={styles.card}>
         <Formik

@@ -7,10 +7,13 @@ import { TournamentFormValues } from "./TournamentFormValues";
 
 import styles from "./TournamentForm.style.scss";
 
-const LocationSection = () => {
-  const { values, handleChange, setFieldValue, setFieldTouched } = useFormikContext<
-    TournamentFormValues
-  >();
+const LocationSection = (): JSX.Element => {
+  const {
+    values,
+    handleChange,
+    setFieldValue,
+    setFieldTouched,
+  } = useFormikContext<TournamentFormValues>();
   const handleInputBlur = (evt: React.FocusEvent<HTMLInputElement>) => {
     const { id, name, value } = evt.target;
 

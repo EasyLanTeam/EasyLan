@@ -101,7 +101,7 @@ export default class TournamentRepository implements ITournamentService {
       .then((t) => getTournamentFromApi(t));
   }
 
-  addTournament(tournament: Tournament) {
+  addTournament(tournament: Tournament): Promise<void> {
     return fetch("/api/Tournament", {
       method: "POST",
       body: JSON.stringify(tournament),
