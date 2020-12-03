@@ -1,4 +1,9 @@
 import * as React from "react";
+import styles from "./ErrorPage.style.scss";
+
+const errorDefinitions: { [code: number]: string } = {
+  404: "Запрашиваемый ресурс не найден",
+};
 
 interface IErrorPageProps {
   code: number;
@@ -7,9 +12,17 @@ interface IErrorPageProps {
 const ErrorPage: React.FunctionComponent<IErrorPageProps> = (
   props: IErrorPageProps
 ) => {
-  const message = props.code === 404 ? "Ресурс не найден" : null;
+  const { code } = props;
+  const message = errorDefinitions[code] || null;
 
-  return <span>{message}</span>;
+  return (
+    <div className={styles.container}>
+      <div className={styles.errorWrapper}>
+        <div className={styles.errorCode}>{code}</div>
+        <div>{message}</div>
+      </div>
+    </div>
+  );
 };
 
 export default ErrorPage;
