@@ -106,6 +106,15 @@ module.exports = {
                 localIdentName: isDev ? "[name]__[local]" : "[hash:base64:5]",
                 exportLocalsConvention: "camelCase",
               },
+              importLoaders: 1,
+            },
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: ["autoprefixer"],
+              },
             },
           },
           "sass-loader",
@@ -124,7 +133,20 @@ module.exports = {
         test: /\.css$/,
         loader: [
           isDev ? "style-loader" : MiniCssExtractPlugin.loader,
-          "css-loader",
+          {
+            loader: "css-loader",
+            options: {
+              importLoaders: 1,
+            },
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: ["autoprefixer"],
+              },
+            },
+          },
         ],
       },
     ],

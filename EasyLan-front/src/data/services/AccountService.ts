@@ -73,7 +73,7 @@ export default class AccountService implements IAccountService {
   }
 
   create(data: RegistrationData): Promise<ApiResult<unknown>> {
-    return fetch("/api/Account/CreateUser", {
+    return fetch("/api/Account/Create", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

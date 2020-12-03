@@ -17,6 +17,7 @@ import styles from "./TournamentForm.style.scss";
 
 interface ITournamentFormProps {
   onSubmit: (tournament: Tournament) => void;
+  tournament?: Tournament;
 }
 
 const renderForm = (props: FormikProps<TournamentFormValues>) => {
