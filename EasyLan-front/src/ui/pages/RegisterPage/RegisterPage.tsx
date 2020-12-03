@@ -28,12 +28,19 @@ const regitsterFormInitialValues: RegitsterFormValues = {
 };
 
 const registerFormValidationSchema = yup.object().shape({
-  username: yup.string().required("Обязательное поле"),
-  email: yup.string().email("Введите корректный e-mail"),
+  username: yup
+    .string()
+    .required("Обязательное поле")
+    .max(150, "Слишком длинное имя пользователя"),
+  email: yup
+    .string()
+    .email("Введите корректный e-mail")
+    .max(150, "Слишком длинный e-mail"),
   password: yup
     .string()
     .required("Обязательное поле")
-    .min(6, "Длина пароля не должна быть меньше 6 символов"),
+    .min(6, "Длина пароля не должна быть меньше 6 символов")
+    .max(150, "Слишком длинный пароль"),
   confirmPassword: yup
     .string()
     .required("Обязательное поле")

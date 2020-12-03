@@ -69,7 +69,7 @@ const renderForm = (props: FormikProps<LoginFormValues>) => {
             onBlur={handleBlur}
           ></Input>
           <span className={styles.inputError}>
-            <ErrorMessage name="username" />
+            <ErrorMessage name="password" />
           </span>
         </div>
         <Button
