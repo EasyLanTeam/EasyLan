@@ -8,7 +8,7 @@ using System.Text;
 
 namespace EasyLan.Web.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class RegistrationController : ControllerBase
     {

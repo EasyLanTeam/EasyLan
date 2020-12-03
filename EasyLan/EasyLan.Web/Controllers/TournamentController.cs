@@ -12,7 +12,7 @@ using System.Collections.Generic;
 
 namespace EasyLan.Web.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class TournamentController : ControllerBase
     {

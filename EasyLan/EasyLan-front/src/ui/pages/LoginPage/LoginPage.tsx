@@ -38,7 +38,7 @@ export default class LoginPage extends React.Component<
         password,
       };
 
-      fetch("/api/Identity", {
+      fetch("/Identity", {
         method: "POST",
         body: JSON.stringify(req),
         headers: {

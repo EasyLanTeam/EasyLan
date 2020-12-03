@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyLan.Web.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("[controller]/[action]")]
     [ApiController]
     public class MatchController : ControllerBase
     {

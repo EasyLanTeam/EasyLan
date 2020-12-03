@@ -28,20 +28,20 @@ namespace EasyLan.Web
                 logger.Debug("init main");
                 var host = CreateHostBuilder(args).Build();
                 
-                using (var scope = host.Services.CreateScope())
-                {
-                    var services = scope.ServiceProvider;
-                    try
-                    {
-                        var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
-                        var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
-                        await UserRoleInitializer.InitializeAsync(userManager, rolesManager);
-                    }
-                    catch (Exception ex)
-                    {
-                        logger.Error(ex, "An error occurred while seeding the database.");
-                    }
-                }
+                //using (var scope = host.Services.CreateScope())
+                //{
+                //    var services = scope.ServiceProvider;
+                //    try
+                //    {
+                //        var userManager = services.GetRequiredService<UserManager<IdentityUser>>();
+                //        var rolesManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+                //        await UserRoleInitializer.InitializeAsync(userManager, rolesManager);
+                //    }
+                //    catch (Exception ex)
+                //    {
+                //        logger.Error(ex, "An error occurred while seeding the database.");
+                //    }
+                //}
                 
                 host.Run();
             }

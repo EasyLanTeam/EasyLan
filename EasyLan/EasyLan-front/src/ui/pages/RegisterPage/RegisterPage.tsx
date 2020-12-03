@@ -48,7 +48,7 @@ class RegisterPage extends React.Component<
         fullname: username,
       };
 
-      fetch("/api/Registration", {
+      fetch("/Registration", {
         method: "POST",
         body: JSON.stringify(req),
         headers: {

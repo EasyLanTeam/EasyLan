@@ -110,8 +110,10 @@ namespace EasyLan.Web
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
             app.UseRouting();
             app.UseAuthorization();
 
@@ -133,25 +135,19 @@ namespace EasyLan.Web
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyLan"); });
             }
 
-            if (!env.IsDevelopment())
+            app.UseSpa(spa =>
             {
-
-                app.UseStaticFiles();
-                app.UseSpaStaticFiles();
-
-                app.UseSpa(spa =>
+                spa.Options.SourcePath = "wwwroot";
+                spa.ApplicationBuilder.UseDeveloperExceptionPage();
+                spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
                 {
-                    spa.Options.SourcePath = "wwwroot";
-                    spa.ApplicationBuilder.UseDeveloperExceptionPage();
-                    spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
+                    OnPrepareResponse = context =>
                     {
-                        OnPrepareResponse = context =>
-                        {
-                            context.Context.Response.Headers.Add("Cache-Control", "public,max-age=6000");
-                        }
-                    };
-                });
-            }
+                        context.Context.Response.Headers.Add("Cache-Control", "public,max-age=6000");
+                    }
+                };
+            });
+
         }
     }
 }

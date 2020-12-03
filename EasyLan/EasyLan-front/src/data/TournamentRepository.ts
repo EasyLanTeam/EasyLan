@@ -54,7 +54,7 @@ const getTournamentFromApi = (tournamentFromApi: Tournament) => {
 
 export default class TournamentRepository {
   getAllTournaments(): Promise<Array<Tournament>> {
-    return fetch("/api/Tournament?PageNumber=1&PageSize=10", {
+    return fetch("/Tournament?PageNumber=1&PageSize=10", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -77,7 +77,7 @@ export default class TournamentRepository {
   }
 
   getTournamentById(id: string): Promise<Tournament> {
-    return fetch(`/api/Tournament/${id}`, {
+    return fetch(`/Tournament/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -96,7 +96,7 @@ export default class TournamentRepository {
   }
 
   addTournament(tournament: Tournament) {
-    return fetch("/api/Tournament", {
+    return fetch("/Tournament", {
       method: "POST",
       body: JSON.stringify(tournament),
       headers: {
