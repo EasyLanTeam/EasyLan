@@ -1,2 +1,1 @@
-# EasyLan
-Swagger : http://.../swagger
+
