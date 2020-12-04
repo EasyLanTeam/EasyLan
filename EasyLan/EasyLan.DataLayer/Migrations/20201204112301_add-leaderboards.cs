@@ -8,25 +8,11 @@ namespace EasyLan.DataLayer.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "users",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(nullable: false),
-                    Username = table.Column<string>(nullable: true),
-                    Password = table.Column<string>(nullable: true),
-                    Fullname = table.Column<string>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_users", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "leaderboard",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<Guid>(nullable: true),
+                    UserId = table.Column<string>(nullable: true),
                     Region = table.Column<string>(nullable: true),
                     Score = table.Column<int>(nullable: false)
                 },
@@ -34,9 +20,9 @@ namespace EasyLan.DataLayer.Migrations
                 {
                     table.PrimaryKey("PK_leaderboard", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_leaderboard_users_UserId",
+                        name: "FK_leaderboard_AspNetUsers_UserId",
                         column: x => x.UserId,
-                        principalTable: "users",
+                        principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                 });
@@ -51,9 +37,6 @@ namespace EasyLan.DataLayer.Migrations
         {
             migrationBuilder.DropTable(
                 name: "leaderboard");
-
-            migrationBuilder.DropTable(
-                name: "users");
         }
     }
 }

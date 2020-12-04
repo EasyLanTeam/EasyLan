@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EasyLan.DataLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201204081202_add-leaderboards")]
+    [Migration("20201204112301_add-leaderboards")]
     partial class addleaderboards
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -167,25 +167,6 @@ namespace EasyLan.DataLayer.Migrations
                     b.ToTable("tournaments");
                 });
 
-            modelBuilder.Entity("EasyLan.DataLayer.Entites.User", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Fullname")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Password")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Username")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("users");
-                });
-
             modelBuilder.Entity("EasyLan.DataLayer.Entites.UserScore", b =>
                 {
                     b.Property<Guid>("Id")
@@ -198,8 +179,8 @@ namespace EasyLan.DataLayer.Migrations
                     b.Property<int>("Score")
                         .HasColumnType("integer");
 
-                    b.Property<Guid?>("UserId")
-                        .HasColumnType("uuid");
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -451,7 +432,7 @@ namespace EasyLan.DataLayer.Migrations
 
             modelBuilder.Entity("EasyLan.DataLayer.Entites.UserScore", b =>
                 {
-                    b.HasOne("EasyLan.DataLayer.Entites.User", "User")
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
                         .WithMany()
                         .HasForeignKey("UserId");
                 });

@@ -49,7 +49,7 @@ namespace EasyLan.LogicLayer.Services
         {
             await LoadSampleScores();
             var mapper = config.CreateMapper();
-            var userScore = repository.ReadAll();
+            var userScore = repository.GetWithInclude(x => x.User);
             return mapper.Map<List<UserScoreDTO>>(userScore);
         }
 
@@ -57,7 +57,7 @@ namespace EasyLan.LogicLayer.Services
         {
             if (appDbContext.UserScores.Count() == 0)
             {
-                var file = System.IO.File.ReadAllText("MockData\\mock-scores-100.json");
+                var file = System.IO.File.ReadAllText("MockData\\mock-scores-200.json");
                 IEnumerable<UserScore> scores = JsonConvert.DeserializeObject<List<UserScore>>(file);
                 scores = scores.Zip(appDbContext.Users, (score, user) => { score.User = user; return score; });
                 await appDbContext.UserScores.AddRangeAsync(scores).ConfigureAwait(false);
