@@ -1,0 +1,36 @@
+.container {
+  margin-top: 48px;
+  margin-left: 24px;
+  margin-right: 24px;
+  position: relative;
+
+  font-size: 20px;
+}
+
+.error-wrapper {
+  text-align: center;
+}
+
+.error-code {
+  margin-bottom: 24px;
+
+  font-size: 48px;
+  font-weight: bold;
+}
+
+@media (min-width: $tablet-width) {
+  .container {
+    font-size: 36px;
+    margin-top: 72px;
+  }
+
+  .error-wrapper {
+    width: 720px;
+    margin: 0 auto;
+  }
+
+  .error-code {
+    font-size: 64px;
+    margin-bottom: 48px;
+  }
+}

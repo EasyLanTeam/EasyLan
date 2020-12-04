@@ -1,11 +1,21 @@
 .container {
   position: relative;
-  width: $mobile-width;
+  display: flex;
+  flex-direction: column;
+  min-width: $mobile-width;
   min-height: 100vh;
-  margin: 0 auto;
   background-color: $color-bg;
+}
 
-  @media (min-width: $tablet-width) {
-    width: $tablet-width;
+@media (min-width: $desktop-lg-width) {
+  .container {
+    width: $desktop-lg-width;
+    margin: 0 auto;
+  }
+
+  .notification-container {
+    right: 50%;
+    transform: translateX($desktop-lg-width / 2 - 8px);
+    bottom: 8px;
   }
 }

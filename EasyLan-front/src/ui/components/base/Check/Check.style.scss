@@ -1,0 +1,44 @@
+.native-input {
+  @include visually-hidden;
+}
+
+.radio {
+  position: relative;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+
+  background-color: $color-fg-light;
+
+  &:hover {
+    background-color: lighten($color: $color-fg-light, $amount: 5);
+  }
+
+  &:active {
+    background-color: lighten($color: $color-fg-light, $amount: 10);
+  }
+}
+
+.native-input:checked + .radio::after {
+  content: "";
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  top: 9px;
+  left: 9px;
+  border-radius: 50%;
+
+  background-color: $color-text;
+}
+
+.container {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: bold;
+  margin-left: 20px;
+}

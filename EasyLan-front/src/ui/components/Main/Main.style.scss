@@ -1,3 +1,10 @@
 .main {
   padding-top: 56px;
+  flex-grow: 1;
+}
+
+@media (min-width: $tablet-width) {
+  .main {
+    padding-top: 0;
+  }
 }

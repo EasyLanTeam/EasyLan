@@ -5,6 +5,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using EasyLan.DataLayer;
 using EasyLan.Web.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EasyLan.Web.Controllers
 {
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -25,40 +26,101 @@ namespace EasyLan.Web.Controllers
         //private IHttpContextAccessor httpContextAccessor;
 
 
-        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, AppDbContext dbContext)
+        public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
+            AppDbContext dbContext)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.dbContext = dbContext;
             //this.httpContextAccessor = httpContextAccessor;
         }
-        [HttpPost]
-        public IActionResult Create([FromBody] RegistrationViewModel registrationViewModel)
+
+        [HttpGet]
+        public async Task<IActionResult> GetOwnUserData()
         {
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+                return Unauthorized();
+            
+            var userData = new UserDataViewModel
+            {
+                Id = user.Id,
+                Username = user.UserName,
+            };
+            var userRole = userManager.GetRolesAsync(user).Result.FirstOrDefault();
+            userData.Email = user.Email;
+            userData.Role = userRole;
 
-            var userFomDb = dbContext.Users.FirstOrDefault(u => u.UserName == registrationViewModel.Username);
-            if (userFomDb != null)
+            return new JsonResult(userData);
+        }
+
+
+        [HttpGet("[action]")]
+        public async Task<IActionResult> GetUserData(string id)
+        {
+            var userFromDb = dbContext.Users.FirstOrDefault(u => u.Id == id);
+            if (userFromDb == null)
+                return NotFound();
+
+            var userData = new UserDataViewModel
+            {
+                Id = userFromDb.Id,
+                Username = userFromDb.UserName,
+            };
+
+            var currentUser = await userManager.GetUserAsync(User);
+            if (currentUser != null && currentUser.Id == userFromDb.Id)
+            {
+                var userRole = userManager.GetRolesAsync(currentUser).Result.FirstOrDefault();
+                userData.Email = userFromDb.Email;
+                userData.Role = userRole;
+            }
+
+            return new JsonResult(userData);
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Create([FromBody] RegistrationViewModel registrationViewModel)
+        {
+            var userFromDb = dbContext.Users.FirstOrDefault(u => u.UserName == registrationViewModel.Username);
+            if (userFromDb != null)
                 return BadRequest("Такой Login уже зарегистрирован");
+            var newUser = new IdentityUser(registrationViewModel.Username) {Email = registrationViewModel.Email};
+            var result = await userManager.CreateAsync(newUser, registrationViewModel.Password);
 
-            var result = userManager.CreateAsync(new IdentityUser(registrationViewModel.Username), registrationViewModel.Password);
-            if (result.Result.Succeeded)
+            if (result.Succeeded)
+            {
+                await userManager.AddToRoleAsync(newUser, "user");
                 return Ok();
+            }
+
             return BadRequest();
         }
-        [HttpPost]
-        public IActionResult Login(string userLogin, string userPassword, bool rememberUser)
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Login(string userLogin, string userPassword, bool rememberUser)
         {
             var user = dbContext.Users.FirstOrDefault(u => u.UserName == userLogin);
             if (user == null)
                 return Unauthorized();
-            var result = Task.Run(() => signInManager.PasswordSignInAsync(user.UserName, userPassword, rememberUser, false));
-            if (result.Result.Succeeded)
+            var result = await signInManager.PasswordSignInAsync(user.UserName, userPassword, rememberUser, false);
+            if (result.Succeeded)
             {
-                return Ok();
+                var userRole = userManager.GetRolesAsync(user).Result.FirstOrDefault();
+                var userData = new UserDataViewModel
+                {
+                    Id = user.Id,
+                    Username = user.UserName,
+                    Email = user.Email,
+                    Role = userRole
+                };
+                return new JsonResult(userData);
             }
+
             return Unauthorized();
         }
-        [HttpPost]
+
+        [HttpPost("[action]")]
         public IActionResult LogoutUser()
         {
             var result = signInManager.SignOutAsync();
@@ -67,7 +129,7 @@ namespace EasyLan.Web.Controllers
             return BadRequest();
         }
 
-        [HttpPut]
+        [HttpPut("[action]")]
         public IActionResult ChangePassword(string newPassword, string oldPassword)
         {
             var userFromManager = userManager.GetUserAsync(User).Result;

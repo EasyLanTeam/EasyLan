@@ -6,9 +6,19 @@ html {
 
 * {
   box-sizing: border-box;
+
+  &:focus {
+    outline: none;
+  }
 }
 
 body {
   margin: 0;
   padding: 0;
+  line-height: 24px;
+}
+
+a {
+  text-decoration: none !important;
+  color: inherit !important;
 }

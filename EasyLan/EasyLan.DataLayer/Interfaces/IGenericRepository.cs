@@ -10,6 +10,7 @@ namespace EasyLan.DataLayer.Interfaces
         T Find(Guid id);
         List<T> Get(int count, int pageNumber);
         List<T> Get(int count, int pageNumber, Func<T, bool> predicate);
+        List<T> Get(Func<T, bool> predicate);
         void Create(T entity);
         void Remove(T entitu);
         void Update(T entity);
