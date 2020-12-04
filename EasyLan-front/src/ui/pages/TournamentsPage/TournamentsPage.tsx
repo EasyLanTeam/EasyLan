@@ -2,14 +2,16 @@ import * as React from "react";
 import Icon from "@mdi/react";
 import cn from "classnames";
 import { mdiClockTimeThree, mdiCalendar, mdiHumanMale, mdiPlus } from "@mdi/js";
-import TournamentRepository from "../../../data/TournamentRepository";
-import { Tournament } from "../../../data/Tournament";
+import { Tournament } from "../../../data/entities/Tournament";
+import TournamentRepository from "../../../data/services/TournamentRepository";
 import Button from "../../components/base/Button";
 import CreateTournamentPage from "../CreateTournamentPage";
 import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import TournamentPage from "../TournamentPage";
 
 import styles from "./TournamentsPage.style.scss";
+import { PrivateRoute } from "../../components/PrivateRoute/PrivateRoute";
+import { useAuth } from "../../../domain/auth/appAuth";
 
 interface ITournamentsPageProps {}
 interface ITournamentListProps {}
@@ -76,6 +78,7 @@ let tournamentList: Tournament[] = null;
 const TournamentList: React.FunctionComponent<ITournamentListProps> = () => {
   const [isLoaded, setIsLoaded] = React.useState(false);
   const { url } = useRouteMatch();
+  const { user } = useAuth();
 
   if (!isLoaded) {
     tournamentRepo.getAllTournaments().then((tournaments) => {
@@ -93,11 +96,13 @@ const TournamentList: React.FunctionComponent<ITournamentListProps> = () => {
 
   return (
     <div className={styles.container}>
-      <Link to={`${url}/create`}>
-        <Button size={"small"} variant={"primary"} icon={{ path: mdiPlus }}>
-          Провести турнир
-        </Button>
-      </Link>
+      {user && user.role && user.role !== "user" ? (
+        <Link to={`${url}/create`}>
+          <Button size={"small"} variant={"primary"} icon={{ path: mdiPlus }}>
+            Провести турнир
+          </Button>
+        </Link>
+      ) : null}
       <div className={styles.tournamentList}>
         {tournamentList.map((tournament) => {
           return (
@@ -116,9 +121,7 @@ const TournamentList: React.FunctionComponent<ITournamentListProps> = () => {
   );
 };
 
-const TournamentsPage: React.FunctionComponent<ITournamentsPageProps> = (
-  props
-) => {
+const TournamentsPage: React.FunctionComponent<ITournamentsPageProps> = () => {
   const { path } = useRouteMatch();
 
   return (
@@ -126,9 +129,9 @@ const TournamentsPage: React.FunctionComponent<ITournamentsPageProps> = (
       <Route path={`${path}`} exact>
         <TournamentList />
       </Route>
-      <Route path={`${path}/create`}>
+      <PrivateRoute roles={["initiator"]} path={`${path}/create`}>
         <CreateTournamentPage></CreateTournamentPage>
-      </Route>
+      </PrivateRoute>
       <Route path={`${path}/:tournamentId`}>
         <TournamentPage></TournamentPage>
       </Route>

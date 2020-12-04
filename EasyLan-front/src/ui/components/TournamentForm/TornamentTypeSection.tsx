@@ -6,7 +6,7 @@ import { TournamentFormValues } from "./TournamentFormValues";
 
 import styles from "./TournamentForm.style.scss";
 
-const TournamentTypeSection = () => {
+const TournamentTypeSection = (): JSX.Element => {
   const { values, handleChange } = useFormikContext<TournamentFormValues>();
 
   return (

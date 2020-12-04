@@ -1,4 +1,5 @@
-import { Tournament } from "./Tournament";
+import ITournamentService from "./ITournamentService";
+import { Tournament } from "../entities/Tournament";
 
 // const tournaments: Array<Tournament> = [
 //   {
@@ -52,7 +53,7 @@ const getTournamentFromApi = (tournamentFromApi: Tournament) => {
   return tournamentFromApi;
 };
 
-export default class TournamentRepository {
+export default class TournamentRepository implements ITournamentService {
   getAllTournaments(): Promise<Array<Tournament>> {
     return fetch("/api/Tournament?PageNumber=1&PageSize=10", {
       method: "GET",
@@ -65,11 +66,13 @@ export default class TournamentRepository {
       .then((res) => {
         if (res.status !== 200) {
           console.error("Ошибка серевера", res.status);
-
           return;
         }
 
         return res.json();
+      })
+      .catch((e) => {
+        console.error("Ошибка сети", e);
       })
       .then((tournaments) =>
         tournaments.map((t: Tournament) => getTournamentFromApi(t))
@@ -92,10 +95,13 @@ export default class TournamentRepository {
         }
         return res.json();
       })
+      .catch((e) => {
+        console.error("Ошибка сети", e);
+      })
       .then((t) => getTournamentFromApi(t));
   }
 
-  addTournament(tournament: Tournament) {
+  addTournament(tournament: Tournament): Promise<void> {
     return fetch("/api/Tournament", {
       method: "POST",
       body: JSON.stringify(tournament),
@@ -104,11 +110,15 @@ export default class TournamentRepository {
         Accept: "*/*",
       },
       mode: "cors",
-    }).then((res) => {
-      if (res.status !== 200) {
-        console.error("Ошибка серевера", res.status);
-        return;
-      }
-    });
+    })
+      .then((res) => {
+        if (res.status !== 200) {
+          console.error("Ошибка серевера", res.status);
+          return;
+        }
+      })
+      .catch((e) => {
+        console.error("Ошибка сети", e);
+      });
   }
 }
