@@ -31,11 +31,11 @@ namespace EasyLan.Web.Controllers
         }
 
         // GET: api/<LeaderboardController>
-        [HttpGet("{id}")]
-        public IEnumerable<UserScoreModel> Get(string region)
+        [HttpGet("{region}")]
+        public async Task<IEnumerable<UserScoreModel>> Get(string region)
         {
             var mapper = config.CreateMapper();
-            var leaderboard = leaderboardService.GetTop20(region);
+            var leaderboard = await leaderboardService.GetTop20Async(region);
             return mapper.Map<List<UserScoreDTO>, List<UserScoreModel>>(leaderboard);
         }
     }

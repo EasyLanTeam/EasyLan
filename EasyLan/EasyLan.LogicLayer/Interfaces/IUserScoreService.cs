@@ -2,15 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EasyLan.LogicLayer.Interfaces
 {
-    internal interface IUserScoreService
+    public interface IUserScoreService
     {
-        void Create(UserScoreDTO userScore);
-        void Delete(UserScoreDTO userScore);
-        UserScoreDTO Read(Guid userScoreId);
-        void Update(UserScoreDTO userScore);
-        List<UserScoreDTO> ReadAll();
+        Task CreateAsync(UserScoreDTO userScore);
+        Task DeleteAsync(UserScoreDTO userScore);
+        Task<UserScoreDTO> ReadAsync(Guid userScoreId);
+        Task UpdateAsync(UserScoreDTO userScore);
+        Task<List<UserScoreDTO>> ReadAllAsync();
     }
 }

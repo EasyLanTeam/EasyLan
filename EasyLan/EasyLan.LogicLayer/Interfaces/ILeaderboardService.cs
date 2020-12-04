@@ -2,12 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EasyLan.LogicLayer.Interfaces
 {
     public interface ILeaderboardService
     {
-        List<UserScoreDTO> GetTop(string region, int count);
-        List<UserScoreDTO> GetTop20(string region);
+        Task<List<UserScoreDTO>> GetTopAsync(string region, int count);
+        Task<List<UserScoreDTO>> GetTop20Async(string region);
     }
 }

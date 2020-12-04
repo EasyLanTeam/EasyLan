@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -79,6 +80,26 @@ namespace EasyLan.Web.Controllers
             return new JsonResult(userData);
         }
 
+        private async Task LoadSampleUsers()
+        {
+            int v = dbContext.Users.Count();
+            if (v < 10)
+            {
+                string file = System.IO.File.ReadAllText("MockData\\mock-users-1000.json");
+                var users = JsonConvert.DeserializeObject<List<dynamic>>(file);
+                foreach (var user in users)
+                {
+                    var newUser = new IdentityUser(user.Username.ToString()) { Email = user.ToString() };
+                    var result = await userManager.CreateAsync(newUser, user.Password.ToString());
+
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(newUser, "user");
+                    }
+                }
+            }
+        }
+
         [HttpPost("[action]")]
         public async Task<IActionResult> Create([FromBody] RegistrationViewModel registrationViewModel)
         {
@@ -100,6 +121,7 @@ namespace EasyLan.Web.Controllers
         [HttpPost("[action]")]
         public async Task<IActionResult> Login(string userLogin, string userPassword, bool rememberUser)
         {
+            await LoadSampleUsers();
             var user = dbContext.Users.FirstOrDefault(u => u.UserName == userLogin);
             if (user == null)
                 return Unauthorized();

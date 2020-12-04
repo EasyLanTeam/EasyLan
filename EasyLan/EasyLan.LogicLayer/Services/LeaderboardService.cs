@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EasyLan.LogicLayer.Services
 {
-    class LeaderboardService : ILeaderboardService
+    public class LeaderboardService : ILeaderboardService
     {
         private IUserScoreService userScoreService;
 
@@ -16,14 +17,14 @@ namespace EasyLan.LogicLayer.Services
             this.userScoreService = userScoreService;
         }
 
-        public List<UserScoreDTO> GetTop20(string region)
+        public async Task<List<UserScoreDTO>> GetTop20Async(string region)
         {
-            return userScoreService.ReadAll().Where(x => x.Region == region).OrderByDescending(x => x.Score).Take(20).ToList();
+            return (await userScoreService.ReadAllAsync()).Where(x => x.Region == region).OrderByDescending(x => x.Score).Take(20).ToList();
         }
 
-        public List<UserScoreDTO> GetTop(string region, int count)
+        public async Task<List<UserScoreDTO>> GetTopAsync(string region, int count)
         {
-            return userScoreService.ReadAll().Where(x => x.Region == region).OrderByDescending(x => x.Score).Take(count).ToList();
+            return (await userScoreService.ReadAllAsync()).Where(x => x.Region == region).OrderByDescending(x => x.Score).Take(count).ToList();
         }
     }
 }
