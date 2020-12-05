@@ -6,7 +6,6 @@ import TournamentRepository from "../../../data/services/TournamentRepository";
 import { TournamentMain } from "./TournamentMain";
 import TournamentGrid from "./TournamentGrid";
 
-
 const tournamentsRepository = new TournamentRepository();
 
 interface ITournamentsPageProps {}
@@ -22,8 +21,10 @@ const TournamentPage: React.FunctionComponent<ITournamentsPageProps> = () => {
   const { tournamentId } = useParams<{ tournamentId: string }>();
 
   if (!isLoaded) {
-    tournamentsRepository.getTournamentById(tournamentId).then((t) => {
-      tournament = t;
+    tournamentsRepository.getTournamentById(tournamentId).then((res) => {
+      if (!res.success) return;
+
+      tournament = res.result;
       setIsLoaded(true);
     });
 
@@ -34,7 +35,9 @@ const TournamentPage: React.FunctionComponent<ITournamentsPageProps> = () => {
     <div>
       <PageMenu>
         <PageMenu.Item linkTo={`${url}`}>Основное</PageMenu.Item>
-        <PageMenu.Item linkTo={`${url}/participants`}>Список участников</PageMenu.Item>
+        <PageMenu.Item linkTo={`${url}/participants`}>
+          Список участников
+        </PageMenu.Item>
         <PageMenu.Item linkTo={`${url}/grid`}>Турнирная сетка</PageMenu.Item>
       </PageMenu>
 

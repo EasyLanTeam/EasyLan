@@ -8,11 +8,11 @@ import TournamentsPage from "../../pages/TournamentsPage";
 import UserPage from "../../pages/UserPage";
 import { ToastContainer } from "react-toastify";
 import { ProvideAuth } from "../../../domain/auth/appAuth";
-
-import styles from "./App.style.scss";
 import MainPage from "../../pages/MainPage/MainPage";
 import LogoutPage from "../../pages/LogoutPage/LogoutPage";
 import ErrorPage from "../../pages/ErrorPage/ErrorPage";
+
+import styles from "./App.style.scss";
 
 export interface IAppProps {}
 

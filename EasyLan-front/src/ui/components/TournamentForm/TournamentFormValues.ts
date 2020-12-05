@@ -1,4 +1,6 @@
 export type TournamentFormValues = {
+  initiatorId: string;
+  initiatorFullname: string;
   date: string;
   time: string;
   city: string;

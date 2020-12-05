@@ -61,10 +61,10 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = ({
                 <div>{`${tournament.fee} рублей`}</div>
               </div>
             )}
-            {tournament.addditionalInfo && (
+            {tournament.additionalInfo && (
               <div>
                 <div>{"Дополнительная информация:"}</div>
-                <div>{tournament.addditionalInfo}</div>
+                <div>{tournament.additionalInfo}</div>
               </div>
             )}
           </div>
