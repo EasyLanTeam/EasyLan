@@ -12,6 +12,7 @@ namespace EasyLan.DataLayer
         public DbSet<Prize> Pryzes { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<PlayerTournament> PlayerTournaments { get; set; }
+        public DbSet<UserScore> UserScores { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
             Database.Migrate();
