@@ -11,9 +11,9 @@ import DateTimeSection from "./DateTimeSection";
 import TournamentTypeSection from "./TornamentTypeSection";
 import GameSection from "./GameSection";
 import AdditionalInfoSection from "./AdditionalInfoSection";
+import { tournamentFormValuesMapper } from "./tournamentFormValuesMapper";
 
 import styles from "./TournamentForm.style.scss";
-import { tournamentFormValuesMapper } from "./tournamentFormValuesMapper";
 
 interface ITournamentFormProps {
   onSubmit: (tournament: Tournament) => void;
@@ -55,10 +55,12 @@ const renderForm = (
   );
 };
 
+const getTodayDate = () => new Date(Date.now()).toISOString().split("T")[0];
+
 const formDefaultValues: TournamentFormValues = {
   initiatorId: null,
   initiatorFullname: null,
-  date: new Date().toISOString().split("T")[0],
+  date: getTodayDate(),
   time: "17:00",
   city: "",
   street: "",
@@ -92,7 +94,7 @@ const validationSchema = yup.object().shape({
 
       return value;
     })
-    .min(new Date().toISOString().split("T")[0], errorMessages.datePassed),
+    .min(getTodayDate(), errorMessages.datePassed),
   city: yup
     .string()
     .required(errorMessages.required)

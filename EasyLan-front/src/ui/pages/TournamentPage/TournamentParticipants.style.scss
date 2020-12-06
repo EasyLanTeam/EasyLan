@@ -1,0 +1,12 @@
+.paper {
+  padding-bottom: 24px;
+  font-weight: bold;
+}
+
+@media (min-width: $tablet-width) {
+  .paper {
+    border-radius: 8px;
+    width: 672px;
+    margin: 0 auto;
+  }
+}

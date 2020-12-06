@@ -112,13 +112,14 @@ export default class TournamentRepository implements ITournamentService {
             return reject(ApiError(`Ошибка сервера, ${res.status}`));
           }
 
-          return res.json();
+          return res
+            .json()
+            .then((t) => resolve(ApiSuccessResult(getTournamentFromApi(t))));
         })
         .catch((e) => {
           console.error(e);
           return reject(ApiError("Ошибка клиента"));
-        })
-        .then((t) => resolve(ApiSuccessResult(getTournamentFromApi(t))));
+        });
     }).then(
       (successResult: ApiSuccessResult<Tournament>) => successResult,
       (error: ApiFailureResult) => error
@@ -141,7 +142,116 @@ export default class TournamentRepository implements ITournamentService {
             return reject(ApiError(`Ошибка сервера, ${res.status}`));
           }
 
-          return ApiSuccessResult();
+          return resolve(ApiSuccessResult());
+        })
+        .catch((e) => {
+          console.error(e);
+          return reject(ApiError("Ошибка клиента"));
+        });
+    }).then(
+      (successResult: ApiSuccessResult<void>) => successResult,
+      (error: ApiFailureResult) => error
+    );
+  }
+
+  updateTournament(tournament: Tournament): Promise<ApiResult<void>> {
+    return new Promise<ApiResult<void>>((resolve, reject) => {
+      fetch(`/api/Tournament/${tournament.id}`, {
+        method: "POST",
+        body: JSON.stringify(tournament),
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+        },
+        mode: "cors",
+      })
+        .then((res) => {
+          if (res.status !== 200) {
+            return reject(ApiError(`Ошибка сервера, ${res.status}`));
+          }
+
+          return resolve(ApiSuccessResult());
+        })
+        .catch((e) => {
+          console.error(e);
+          return reject(ApiError("Ошибка клиента"));
+        });
+    }).then(
+      (successResult: ApiSuccessResult<void>) => successResult,
+      (error: ApiFailureResult) => error
+    );
+  }
+
+  deleteTournament(tournamentId: string): Promise<ApiResult<void>> {
+    return new Promise<ApiResult<void>>((resolve, reject) => {
+      fetch(`/api/Tournament/${tournamentId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+        },
+        mode: "cors",
+      })
+        .then((res) => {
+          if (res.status !== 200) {
+            return reject(ApiError(`Ошибка сервера, ${res.status}`));
+          }
+
+          return resolve(ApiSuccessResult());
+        })
+        .catch((e) => {
+          console.error(e);
+          return reject(ApiError("Ошибка клиента"));
+        });
+    }).then(
+      (successResult: ApiSuccessResult<void>) => successResult,
+      (error: ApiFailureResult) => error
+    );
+  }
+
+  takePartition(tournamentId: string): Promise<ApiResult<void>> {
+    return new Promise<ApiResult<void>>((resolve, reject) => {
+      fetch(`/api/Tournament/TakePart/${tournamentId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+        },
+        mode: "cors",
+      })
+        .then((res) => {
+          if (res.status !== 200) {
+            return reject(ApiError(`Ошибка сервера, ${res.status}`));
+          }
+
+          return resolve(ApiSuccessResult());
+        })
+        .catch((e) => {
+          console.error(e);
+          return reject(ApiError("Ошибка клиента"));
+        });
+    }).then(
+      (successResult: ApiSuccessResult<void>) => successResult,
+      (error: ApiFailureResult) => error
+    );
+  }
+
+  startTournament(tournamentId: string): Promise<ApiResult<void>> {
+    return new Promise<ApiResult<void>>((resolve, reject) => {
+      fetch(`/api/Tournament/Start/${tournamentId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+        },
+        mode: "cors",
+      })
+        .then((res) => {
+          if (res.status !== 200) {
+            return reject(ApiError(`Ошибка сервера, ${res.status}`));
+          }
+
+          return resolve(ApiSuccessResult());
         })
         .catch((e) => {
           console.error(e);

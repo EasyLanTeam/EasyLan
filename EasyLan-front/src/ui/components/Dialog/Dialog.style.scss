@@ -1,5 +1,6 @@
 .dialog {
   display: flex;
+  max-width: 300px;
   position: relative;
   flex-direction: column;
   font-weight: bold;
@@ -47,4 +48,10 @@
   position: absolute;
   top: 16px;
   right: 16px;
+}
+
+@media (min-width: $tablet-width) {
+  .dialog {
+    max-width: 400px;
+  }
 }

@@ -7,7 +7,7 @@ import styles from "./MainPage.style.scss";
 interface IMainPageProps {}
 
 const MainPage: React.FunctionComponent<IMainPageProps> = () => {
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
 
   const handleClick = () => {
     setOpen(true);
@@ -26,6 +26,7 @@ const MainPage: React.FunctionComponent<IMainPageProps> = () => {
         onCancel={closeModal}
         message="Сообщение"
       ></Dialog>
+      {/* <img src={logo}></img> */}
     </>
   );
 };

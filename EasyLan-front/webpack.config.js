@@ -77,7 +77,12 @@ module.exports = {
     filename: "[name].[contenthash].js",
     publicPath: "/",
   },
-  resolve: { extensions: [".ts", ".tsx", ".js"] },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js"],
+    alias: {
+      "@assets": path.join(__dirname, "./assets"),
+    },
+  },
   module: {
     rules: [
       {
@@ -148,6 +153,14 @@ module.exports = {
             },
           },
         ],
+      },
+      {
+        test: /\.(svg|png|jpg|jpeg)$/,
+        loader: "file-loader",
+        options: {
+          name: "[name].[ext]",
+          outputPath: "assets/images",
+        },
       },
     ],
   },

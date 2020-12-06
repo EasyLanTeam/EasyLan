@@ -103,7 +103,6 @@ const LoginPage: React.FunctionComponent<ILoginPageProps> = () => {
 
         const { from } = location.state || { from: { pathname: "/" } };
         history.replace(from);
-        // toast("Вход произведен успешно", { type: "success" });
       } else {
         const { error } = res as ApiFailureResult;
         if (error.error === "UNAUTHORIZED") {

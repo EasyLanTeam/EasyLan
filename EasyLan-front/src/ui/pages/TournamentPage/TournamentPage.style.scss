@@ -47,15 +47,12 @@
 @media (min-width: $tablet-width) {
   .paper {
     border-radius: 8px;
+    width: 672px;
+    margin: 0 auto;
   }
 
   .info__header {
     padding-top: 16px;
-  }
-
-  .main-container {
-    width: 672px;
-    margin: 0 auto;
   }
 
   .menu {
@@ -91,10 +88,4 @@
 }
 
 @media (min-width: $desktop-width) {
-  .paper {
-    width: auto;
-    margin-top: 0;
-    margin-left: 0;
-    margin-right: 0;
-  }
 }
