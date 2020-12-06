@@ -13,6 +13,7 @@ namespace EasyLan.LogicLayer.Interfaces
         void Remove(TournamentDTO tournament);
         void Update(TournamentDTO tournament);
         void AddUserToTournament(string userId, Guid tournamentId);
+        void RemoveUserFromTournament(string userId, Guid tournamentId);
         void Start(Guid id);
     }
 }

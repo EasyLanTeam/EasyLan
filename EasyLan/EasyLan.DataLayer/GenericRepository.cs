@@ -35,6 +35,10 @@ namespace EasyLan.DataLayer
         {
             return dbSet.Find(guid);
         }
+        public T Find(params object[] keyValues)
+        {
+            return dbSet.Find(keyValues);
+        }
 
         public void Create(T entity)
         {
