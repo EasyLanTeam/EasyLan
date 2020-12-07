@@ -5,17 +5,17 @@ import { useParams, useRouteMatch } from "react-router-dom";
 import { toast } from "react-toastify";
 import AccountService from "../../../data/services/AccountService";
 import { UserData } from "../../../data/entities/UserData";
+import ErrorPage from "../ErrorPage/ErrorPage";
+import { ApiFailureResult } from "../../../data/services/ApiResult";
 
 import styles from "./UserPage.style.scss";
 
 interface IUserPageProps {}
-interface IUserPageState {
-  userInfo: UserData;
-}
 
 const UserPage: React.FunctionComponent<IUserPageProps> = () => {
+  console.log("call USERPAGE");
   const { url } = useRouteMatch();
-  const [userInfo, setUserInfo] = React.useState<UserData>(null);
+  const [userInfo, setUserInfo] = React.useState<UserData | false>(null);
   const { id } = useParams<{ id: string }>();
 
   React.useEffect(() => {
@@ -25,7 +25,9 @@ const UserPage: React.FunctionComponent<IUserPageProps> = () => {
       if (res.success) {
         if (!cleanupFunction) setUserInfo(res.result);
       } else {
-        toast("Произошла ошибка. Попробуете еще раз", { type: "error" });
+        const { error } = res as ApiFailureResult;
+        if (error.error === "NOT_FOUND") setUserInfo(false);
+        else toast("Произошла ошибка. Попробуете еще раз", { type: "error" });
       }
     });
 
@@ -34,6 +36,8 @@ const UserPage: React.FunctionComponent<IUserPageProps> = () => {
 
   if (userInfo == null) {
     return null;
+  } else if (userInfo == false) {
+    return <ErrorPage code={404} />;
   }
 
   const { email, username } = userInfo;

@@ -1,0 +1,21 @@
+.modal {
+  width: 310px;
+  min-height: auto;
+  padding: 24px 16px;
+  font-size: 16px;
+}
+
+.link {
+  text-decoration: underline !important;
+}
+
+.text {
+  margin-bottom: 8px;
+}
+
+@media (min-width: $tablet-width) {
+  .modal {
+    font-size: 18px;
+    width: 450px;
+  }
+}

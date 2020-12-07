@@ -8,11 +8,13 @@ type UserRoles = "admin" | "initiator";
 type PrivateRouteProps = {
   roles?: string[];
   children: React.ReactNode;
+  onlyAdmin?: boolean
 } & RouteProps;
 
 export function PrivateRoute({
   children,
-  roles: onlyFor,
+  roles,
+  onlyAdmin = false,
   ...rest
 }: PrivateRouteProps) {
   const auth = useAuth();
@@ -21,9 +23,12 @@ export function PrivateRoute({
     if (auth.user === null) return null;
 
     if (auth.user !== false && auth.user.role) {
-      if (!onlyFor) return children;
+      if (!roles && !onlyAdmin) return children;
 
-      if (auth.user.role === "admin" || onlyFor.includes(auth.user.role))
+      if (
+        auth.user.role === "admin" ||
+        (roles.includes(auth.user.role) && !onlyAdmin)
+      )
         return children;
       else return <ErrorPage code={404} />;
     } else {

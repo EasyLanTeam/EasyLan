@@ -53,6 +53,10 @@ export default class AccountService implements IAccountService {
         mode: "cors",
       })
         .then((res) => {
+          if (res.status === 404) {
+            return reject(ApiError("NOT_FOUND"));
+          }
+
           if (res.status !== 200) {
             return reject(ApiError(`Ошибка сервера, ${res.status}`));
           }

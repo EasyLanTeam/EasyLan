@@ -26,5 +26,5 @@ export type Tournament = {
   // Денежный взнос с каждого участника (руб.)
   fee: number;
   // Дополнительная информация
-  addditionalInfo?: string;
+  additionalInfo?: string;
 };
