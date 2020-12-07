@@ -27,7 +27,7 @@ export default class App extends React.Component<IAppProps> {
             <Main>
               <Switch>
                 <Route path="/" exact>
-                  <MainPage />
+                  <MainPage isMobile={false}/>
                 </Route>
                 <Route path="/login">
                   <LoginPage />
