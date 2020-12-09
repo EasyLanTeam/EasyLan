@@ -7,6 +7,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using EasyLan.DataLayer;
+using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -18,6 +23,7 @@ namespace EasyLan.Web.Controllers
     {
         ITournamentService tournamentService;
         IMatchService matchService;
+        private readonly AppDbContext dbContext;
         UserManager<IdentityUser> userManager;
 
         private MapperConfiguration config = new MapperConfiguration(cfg =>
@@ -31,12 +37,14 @@ namespace EasyLan.Web.Controllers
             cfg.CreateMap<PrizeViewModel, PrizeDTO>();
             cfg.CreateMap<PrizeDTO, PrizeViewModel>();
         });
-        
-        public TournamentController(ITournamentService tournamentService, UserManager<IdentityUser> userManager, IMatchService matchService)
+
+        public TournamentController(ITournamentService tournamentService, UserManager<IdentityUser> userManager,
+            IMatchService matchService, AppDbContext dbContext)
         {
             this.tournamentService = tournamentService;
             this.userManager = userManager;
             this.matchService = matchService;
+            this.dbContext = dbContext;
         }
 
         // GET: api/<TournamentController>
@@ -46,7 +54,6 @@ namespace EasyLan.Web.Controllers
             var mapper = config.CreateMapper();
             var tournaments = tournamentService.Get(pagingParameters.PageSize, pagingParameters.PageNumber);
             return mapper.Map<List<TournamentDTO>, List<TournamentViewModel>>(tournaments);
-
         }
 
         // GET api/<TournamentController>/5
@@ -97,7 +104,7 @@ namespace EasyLan.Web.Controllers
             tournamentService.Remove(tournament);
             return Ok();
         }
-        
+
         [Authorize]
         [HttpPost("[action]/{id}")]
         public void TakePart(Guid id)
@@ -105,7 +112,7 @@ namespace EasyLan.Web.Controllers
             var user = userManager.GetUserAsync(User).Result;
             tournamentService.AddUserToTournament(user.Id, id);
         }
-        
+
         /// <summary>
         /// Для удобства при разработке
         /// </summary>
@@ -118,10 +125,32 @@ namespace EasyLan.Web.Controllers
         }
 
         [HttpPost("[action]/{id}")]
+        public async Task<IActionResult> SetMultipleUsersToTournament(Guid id, [FromQuery] int count = 8)
+        {
+            var tournament = tournamentService.Find(id);
+            dbContext.Matches.RemoveRange(await dbContext.Matches.Where(m => m.TournamentId == id).ToArrayAsync());
+            dbContext.PlayerTournaments.RemoveRange(await dbContext.PlayerTournaments.Where(m => m.TournamentId == id).ToArrayAsync());
+            await dbContext.SaveChangesAsync();
+
+            var users = await dbContext.Users
+                .Skip(10)
+                .Take(count)
+                .Where(u => u.Id != tournament.InitiatorId)
+                .ToListAsync();
+
+            foreach (var user in users)
+            {
+                AddUserToTournament(id, user.Id);
+            }
+
+            return Ok();
+        }
+
+        [HttpPost("[action]/{id}")]
         public IActionResult Start(Guid id)
         {
             tournamentService.Start(id);
             return Ok();
-        }     
+        }
     }
 }

@@ -41,10 +41,12 @@ namespace EasyLan.DataLayer
             return dbSet.Find(guid);
         }
 
-        public void Create(T entity)
+        public T Create(T entity)
         {
-            dbSet.Add(entity);
+            var createdEntity = dbSet.Add(entity);
             dbContext.SaveChanges();
+
+            return createdEntity.Entity;
         }
 
         public void Update(T entity)

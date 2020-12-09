@@ -119,9 +119,16 @@ namespace EasyLan.Web.Controllers
         }
 
         [HttpPost("[action]")]
-        public async Task<IActionResult> Login(string userLogin, string userPassword, bool rememberUser)
+        public async Task<IActionResult> CreateUsersFromMockData()
         {
             await LoadSampleUsers();
+
+            return Ok();
+        }
+
+        [HttpPost("[action]")]
+        public async Task<IActionResult> Login(string userLogin, string userPassword, bool rememberUser)
+        {
             var user = dbContext.Users.FirstOrDefault(u => u.UserName == userLogin);
             if (user == null)
                 return Unauthorized();

@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using EasyLan.LogicLayer.Utils;
+using Match = EasyLan.DataLayer.Entites.Match;
 
 namespace EasyLan.LogicLayer.Services
 {
@@ -21,9 +23,10 @@ namespace EasyLan.LogicLayer.Services
         {
             cfg.CreateMap<Match, MatchDTO>();
             cfg.CreateMap<MatchDTO, Match>();
-
         });
-        public MatchService(IGenericRepository<Tournament> tournamnetRepository, IGenericRepository<Match> matchRepository,
+
+        public MatchService(IGenericRepository<Tournament> tournamnetRepository,
+            IGenericRepository<Match> matchRepository,
             UserManager<IdentityUser> userManager)
         {
             this.matchRepository = matchRepository;
@@ -33,23 +36,37 @@ namespace EasyLan.LogicLayer.Services
 
         public void InitilizeFirstMatches(Guid tournamentId)
         {
-            var tournament = tournamentRepository.GetWithInclude(t => t.Players).FirstOrDefault(t => t.TournamentId == tournamentId);
+            var tournament = tournamentRepository.GetWithInclude(t => t.Players)
+                .FirstOrDefault(t => t.TournamentId == tournamentId);
             if (tournament == null)
                 return;
-            var playersCount = tournament.Players.Count - 1;
-            int navNumber = 1;
-            for (var i = 0; i < playersCount; i += 2)
+
+            var players = tournament.Players;
+            var finalMatch = Bracket.Create(players);
+            var queue = new Queue<MatchNode>();
+            queue.Enqueue(finalMatch);
+            while (queue.Count > 0)
             {
-                matchRepository.Create(
-                    new Match
-                    {
-                        TournamentId = tournamentId,
-                        Level = 1,
-                        NavNumber = navNumber,
-                        FirstPlayerId = tournament.Players[i].UserId,
-                        SecondPlayerId = tournament.Players[i + 1].UserId
-                    });
-                navNumber++;
+                var currentMatchNode = queue.Dequeue();
+                var match = currentMatchNode.Match;
+                match.TournamentId = tournamentId;
+
+                if (currentMatchNode.NextMatchNode != null)
+                {
+                    match.NextMatchId = currentMatchNode.NextMatchNode.Match.MatchId;
+                }
+
+                currentMatchNode.Match = matchRepository.Create(match);
+
+                if (currentMatchNode.PrevLeftMatchNode != null)
+                {
+                    queue.Enqueue(currentMatchNode.PrevLeftMatchNode);
+                }
+
+                if (currentMatchNode.PrevRightMatchNode != null)
+                {
+                    queue.Enqueue(currentMatchNode.PrevRightMatchNode);
+                }
             }
         }
 
@@ -62,8 +79,8 @@ namespace EasyLan.LogicLayer.Services
                 return;
             match.WinnerId = userId;
             matchRepository.Update(match);
-
         }
+
         public void CreateNext(Guid firstMatchId, Guid secondMatchId)
         {
             var firstMatch = matchRepository.Find(firstMatchId);
@@ -97,8 +114,7 @@ namespace EasyLan.LogicLayer.Services
                 var filteredMatches = matches.Where(p => p.Level == levelCount).ToList();
                 result.Add(mapper.Map<List<Match>, List<MatchDTO>>(filteredMatches));
                 levelCount++;
-            }
-            while (count > 0);
+            } while (count > 0);
 
             return result;
         }
