@@ -1,3 +1,23 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.grid {
+  display: flex;
+  margin: 0 auto;
+}
+
+.column {
+  margin-right: 150px;
+  width: 150px;
+
+  &:last-child {
+    margin-right: 0;
+  }
+}
+
 .match {
   background-color: $color-fg;
   overflow: hidden;

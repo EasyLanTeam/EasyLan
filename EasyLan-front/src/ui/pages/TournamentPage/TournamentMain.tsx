@@ -6,7 +6,7 @@ import { ITournamentMainProps } from "./TournamentPage";
 import { useAuth } from "../../../domain/auth/appAuth";
 import TournamentInfo from "./TournamentInfo";
 import Dialog from "../../components/Dialog/Dialog";
-import PleaseLoginToTakePartitionModal from "./PleaseLoginToTakePartitionModal";
+import PleaseLoginToTakePartitionModal from "./PleaseLoginToTakePartitionModal/PleaseLoginToTakePartitionModal";
 import TournamentRepository from "../../../data/services/TournamentRepository";
 import { notifyError, notifySuccess } from "../../../domain/notify";
 import { useHistory } from "react-router-dom";

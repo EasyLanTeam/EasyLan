@@ -4,8 +4,8 @@ import PageMenu from "../../components/PageMenu";
 import { Tournament } from "../../../data/entities/Tournament";
 import TournamentRepository from "../../../data/services/TournamentRepository";
 import { TournamentMain } from "./TournamentMain";
-import TournamentParticipants from "./TournamentParticipants";
-import TournamentGrid from "./TournamentGrid";
+import TournamentParticipants from "./TournamentParticipants/TournamentParticipants";
+import TournamentGrid from "./TournamentGrid/TournamentGrid";
 import ErrorPage from "../ErrorPage/ErrorPage";
 
 const tournamentsRepository = new TournamentRepository();
@@ -56,7 +56,7 @@ const TournamentPage: React.FunctionComponent<ITournamentsPageProps> = () => {
           <TournamentParticipants />
         </Route>
         <Route path={`${url}/grid`}>
-          <TournamentGrid />
+          <TournamentGrid tournament={tournament} />
         </Route>
       </Switch>
     </div>
