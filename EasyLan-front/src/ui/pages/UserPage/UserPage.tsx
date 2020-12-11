@@ -13,7 +13,6 @@ import styles from "./UserPage.style.scss";
 interface IUserPageProps {}
 
 const UserPage: React.FunctionComponent<IUserPageProps> = () => {
-  console.log("call USERPAGE");
   const { url } = useRouteMatch();
   const [userInfo, setUserInfo] = React.useState<UserData | false>(null);
   const { id } = useParams<{ id: string }>();

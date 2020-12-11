@@ -40,11 +40,10 @@ namespace EasyLan.Web.Controllers
             matchService.SetWinner(matchId, userId);
         }
 
-        [HttpPost]
-        public void CreateNext(Guid firstMatchId, Guid secondMatchId)
-        {
-            matchService.CreateNext(firstMatchId, secondMatchId);
-        }
-
+        // [HttpPost]
+        // public void CreateNext(Guid firstMatchId, Guid secondMatchId)
+        // {
+        //     matchService.CreateNext(firstMatchId, secondMatchId);
+        // }
     }
 }

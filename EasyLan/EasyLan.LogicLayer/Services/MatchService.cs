@@ -58,6 +58,21 @@ namespace EasyLan.LogicLayer.Services
 
                 currentMatchNode.Match = matchRepository.Create(match);
 
+                if (currentMatchNode.NextMatchNode != null)
+                {
+                    var nextMatchNode = currentMatchNode.NextMatchNode;
+                    if (currentMatchNode == nextMatchNode.PrevLeftMatchNode)
+                    {
+                        nextMatchNode.Match.PrevFirstMatchId = currentMatchNode.Match.MatchId;
+                    }
+                    else if (currentMatchNode == nextMatchNode.PrevRightMatchNode)
+                    {
+                        nextMatchNode.Match.PrevSecondMatchId = currentMatchNode.Match.MatchId;
+                    }
+
+                    matchRepository.Update(nextMatchNode.Match);
+                }
+
                 if (currentMatchNode.PrevLeftMatchNode != null)
                 {
                     queue.Enqueue(currentMatchNode.PrevLeftMatchNode);
@@ -74,30 +89,32 @@ namespace EasyLan.LogicLayer.Services
         {
             var match = matchRepository.Find(matchId);
             if (match == null)
-                return;
-            if (userManager.FindByIdAsync(userId).Result == null)
-                return;
+                throw new ArgumentNullException("match");
+            if (userId != null && userManager.FindByIdAsync(userId).Result == null)
+                throw new ArgumentException($"user not found by id: {userId}");
             match.WinnerId = userId;
-            matchRepository.Update(match);
-        }
 
-        public void CreateNext(Guid firstMatchId, Guid secondMatchId)
-        {
-            var firstMatch = matchRepository.Find(firstMatchId);
-            var secondMatch = matchRepository.Find(secondMatchId);
-            if (firstMatch == null || secondMatch == null)
-                return;
-            if (firstMatch.Level != secondMatch.Level)
-                return;
-
-            matchRepository.Create(new Match
+            if (match.NextMatchId != null)
             {
-                TournamentId = firstMatch.TournamentId,
-                Level = firstMatch.Level + 1,
-                FirstPlayerId = firstMatch.WinnerId,
-                SecondPlayerId = secondMatch.WinnerId,
-                NavNumber = firstMatch.NavNumber * secondMatch.NavNumber
-            });
+                var nextMatch = matchRepository.Find(match.NextMatchId.Value);
+                if (nextMatch.WinnerId != null)
+                {
+                    throw new Exception("next Match winner don't be setted");
+                }
+
+                if (match.MatchId == nextMatch.PrevFirstMatchId)
+                {
+                    nextMatch.FirstPlayerId = userId;
+                }
+                else if (match.MatchId == nextMatch.PrevSecondMatchId)
+                {
+                    nextMatch.SecondPlayerId = userId;
+                }
+
+                matchRepository.Update(nextMatch);
+            }
+
+            matchRepository.Update(match);
         }
 
         public List<List<MatchDTO>> Get(Guid tournamentId)
@@ -105,16 +122,12 @@ namespace EasyLan.LogicLayer.Services
             var mapper = config.CreateMapper();
             var matches = matchRepository.GetWithInclude(p => p.FirstPlayer, p => p.SecondPlayer, p => p.Winner)
                 .Where(p => p.TournamentId == tournamentId);
-            var result = new List<List<MatchDTO>>();
-            var levelCount = 1;
-            int count;
-            do
-            {
-                count = matches.Count(p => p.Level == levelCount);
-                var filteredMatches = matches.Where(p => p.Level == levelCount).ToList();
-                result.Add(mapper.Map<List<Match>, List<MatchDTO>>(filteredMatches));
-                levelCount++;
-            } while (count > 0);
+
+            var result = matches
+                .GroupBy(m => m.Level)
+                .OrderBy(mGroup => mGroup.Key)
+                .Select(mList => mapper.Map<List<Match>, List<MatchDTO>>(mList.ToList()))
+                .ToList();
 
             return result;
         }

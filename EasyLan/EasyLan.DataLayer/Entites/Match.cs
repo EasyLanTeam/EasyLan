@@ -10,6 +10,8 @@ namespace EasyLan.DataLayer.Entites
         public Guid MatchId { get; set; }
         public Guid? NextMatchId { get; set; }
         public Match NextMatch { get; set; }
+        public Guid? PrevFirstMatchId { get; set; }
+        public Guid? PrevSecondMatchId { get; set; }
         public int NavNumber { get; set; }
         public int Level { get; set; }
         public string FirstPlayerId { get; set; }
