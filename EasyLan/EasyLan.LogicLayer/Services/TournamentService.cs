@@ -51,8 +51,11 @@ namespace EasyLan.LogicLayer.Services
         public TournamentDTO Find(Guid id)
         {
             var mapper = config.CreateMapper();
-            var tournament = repository.GetWithInclude(t => t.Prizes).FirstOrDefault(p => p.TournamentId == id);
+            var tournament = repository.GetWithInclude(t => t.Prizes, t => t.Players).FirstOrDefault(p => p.TournamentId == id);
+            if (tournament == null)
+                return null;
             var tournamentDto = mapper.Map<Tournament, TournamentDTO>(tournament);
+            tournamentDto.CurrentNumberOfParticipants = tournament.Players.Count();
             tournamentDto.Prizes = mapper.Map<List<Prize>, List<PrizeDTO>>(tournament.Prizes);
             return tournamentDto;
         }
@@ -83,6 +86,15 @@ namespace EasyLan.LogicLayer.Services
             if (repository.Find(tournamentId) == null)
                 return;
             playerTournamentRepository.Create(new PlayerTournament { TournamentId = tournamentId, UserId = userId });
+        }
+        public void RemoveUserFromTournament(string userId, Guid tournamentId)
+        {
+            if (userManager.FindByIdAsync(userId).Result == null)
+                return;
+            if (repository.Find(tournamentId) == null)
+                return;
+            var playerTournament = playerTournamentRepository.Find(tournamentId, userId);
+            playerTournamentRepository.Remove(playerTournament);
         }
 
         public void Start(Guid id)

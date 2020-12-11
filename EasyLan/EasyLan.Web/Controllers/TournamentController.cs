@@ -112,7 +112,16 @@ namespace EasyLan.Web.Controllers
             var user = userManager.GetUserAsync(User).Result;
             tournamentService.AddUserToTournament(user.Id, id);
         }
-
+        
+        [Authorize]
+        [HttpPost("[action]/{id}")]
+        public void UndoTakePart(Guid id)
+        {
+            var user = userManager.GetUserAsync(User).Result;
+            tournamentService.RemoveUserFromTournament(user.Id, id);
+        }
+        
+        
         /// <summary>
         /// Для удобства при разработке
         /// </summary>
