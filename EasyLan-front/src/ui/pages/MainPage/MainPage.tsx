@@ -1,5 +1,8 @@
 import React from "react";
-import { ContentAdvantages, ContentAdvantagesData, ContentCapabilities, ContentPartner, ContentPartnerData, ContentProductDataSource, Prices, PricesData } from ".";
+import { ContentAdvantages, ContentAdvantagesData, ContentCapabilities, ContentPartner, ContentPartnerData, ContentProductDataSource, Prices } from ".";
+import { Banner } from "./banner";
+import "./css/MainPage.css";
+import Footer, { FooterModel } from "./footer";
 
 export interface IMainPageState {
 }
@@ -15,13 +18,49 @@ class MainPage extends React.Component<IMainPageProps, IMainPageState> {
     this.divRef = React.createRef<HTMLDivElement>();
   }
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     this.divRef.current?.scrollIntoView();
+  }
+
+  getFooterModel(): FooterModel[] {
+    const footerData =
+      [
+        {
+          xs: 24,
+          md: 8,
+          title: "Навигация",
+          children: [
+            { href: "#", content: "Справочная информация" },
+            { href: "#", content: "Предложения и пожелания" },
+          ],
+        },
+        {
+          xs: 24,
+          md: 8,
+          title: "Карта сайта",
+          children: [
+            { href: "#", content: "О нас" },
+            { href: "#", content: "Команда" },
+          ],
+        },
+        {
+          xs: 24,
+          md: 8,
+          title: "Наши партнеры",
+          children: [
+            { href: "#", content: "SBER" },
+          ],
+        },
+      ];
+    // экспериментальный подход !
+    const model = JSON.parse(JSON.stringify(footerData)) as FooterModel[];
+    return model;
   }
 
   render(): JSX.Element {
     return (
       <div ref={this.divRef}>
+        <Banner />
         <ContentAdvantages
           id="Content"
           key="Content"
@@ -37,7 +76,7 @@ class MainPage extends React.Component<IMainPageProps, IMainPageState> {
         <Prices
           id="Pricing1_0"
           key="Pricing1_0"
-          dataSource={PricesData}
+          dataSource={null}
           isMobile={this.props.isMobile}
         />
         <ContentPartner
@@ -46,6 +85,7 @@ class MainPage extends React.Component<IMainPageProps, IMainPageState> {
           dataSource={ContentPartnerData}
           isMobile={this.props.isMobile}
         />
+        <Footer isMobile={this.props.isMobile} />
       </div>
     );
   }

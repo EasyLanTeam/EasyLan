@@ -2,7 +2,7 @@ import React from "react";
 import OverPack from "rc-scroll-anim/lib/ScrollOverPack";
 import { Row, Col } from "antd";
 import QueueAnim from "rc-queue-anim";
-// import "rc-banner-anim/assets/index.css";
+import "rc-banner-anim/assets/index.css";
 
 export class TeamModel {
   srmImage?: string;

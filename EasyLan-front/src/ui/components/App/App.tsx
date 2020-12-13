@@ -13,21 +13,49 @@ import styles from "./App.style.scss";
 import MainPage from "../../pages/MainPage/MainPage";
 import LogoutPage from "../../pages/LogoutPage/LogoutPage";
 import ErrorPage from "../../pages/ErrorPage/ErrorPage";
+import knowingScreen from "./enquire";
 
-export interface IAppProps {}
+import "./templates-wrapper.css";
+import ClubLandingPage from "../../pages/ClubLandingPage/ClubLandingPage";
+import DevTeamPage from "../../pages/DevTeamPage/DevTeamPage";
 
-export default class App extends React.Component<IAppProps> {
+export interface IAppProps { }
+export interface IAppState {
+  isMobile: boolean;
+}
+
+export default class App extends React.Component<IAppProps, IAppState> {
+  dom: HTMLDivElement | null = null;
+  constructor(props: IAppProps) {
+    super(props);
+    this.state = {
+      isMobile: false,
+    };
+  }
+
+  componentDidMount() {
+    knowingScreen.enquireScreen((b) => {
+      this.setState({ isMobile: !!b });
+    });
+  }
   public render(): JSX.Element {
     return (
       <ProvideAuth>
-        <div className={styles.container}>
+        <div className={styles.container + " templates-wrapper"}
+          ref={(d: HTMLDivElement | null) => { this.dom = d; }}>
           <BrowserRouter>
             <Header />
 
             <Main>
               <Switch>
                 <Route path="/" exact>
-                  <MainPage isMobile={false}/>
+                  <MainPage isMobile={this.state.isMobile} />
+                </Route>
+                <Route path="/clubinfo" exact>
+                  <ClubLandingPage isMobile={this.state.isMobile} />
+                </Route>
+                <Route path="/devteam" exact>
+                  <DevTeamPage isMobile={this.state.isMobile} />
                 </Route>
                 <Route path="/login">
                   <LoginPage />

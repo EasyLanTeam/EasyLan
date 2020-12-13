@@ -41,6 +41,22 @@ const MainNav: React.FunctionComponent<IMainNavProps> = (props) => {
             exact
             className={styles.siteNavItem}
             activeClassName={styles.siteNavItemActive}
+            to={"/clubinfo"}
+          >
+            Клубам
+          </NavLink>
+          <NavLink
+            exact
+            className={styles.siteNavItem}
+            activeClassName={styles.siteNavItemActive}
+            to={"/devteam"}
+          >
+            Наша команда
+          </NavLink>
+          <NavLink
+            exact
+            className={styles.siteNavItem}
+            activeClassName={styles.siteNavItemActive}
             to={"/tournaments"}
           >
             Турниры

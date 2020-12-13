@@ -15,10 +15,13 @@
   "dependencies": {
     "@mdi/js": "^5.7.55",
     "@mdi/react": "^1.4.0",
+    "@types/enquire.js": "^2.1.2",
     "antd": "^4.9.2",
     "classnames": "^2.2.6",
     "dayjs": "^1.9.6",
+    "enquire.js": "^2.1.6",
     "formik": "^2.2.3",
+    "rc-banner-anim": "^2.4.5",
     "rc-queue-anim": "^1.8.5",
     "rc-scroll-anim": "^2.7.6",
     "react": "^16.13.1",
