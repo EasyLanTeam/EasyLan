@@ -45,14 +45,14 @@ const MainNav: React.FunctionComponent<IMainNavProps> = (props) => {
           >
             Клубам
           </NavLink>
-          <NavLink
+          {/* <NavLink
             exact
             className={styles.siteNavItem}
             activeClassName={styles.siteNavItemActive}
             to={"/devteam"}
           >
             Наша команда
-          </NavLink>
+          </NavLink> */}
           <NavLink
             exact
             className={styles.siteNavItem}

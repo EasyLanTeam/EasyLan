@@ -8,13 +8,15 @@ import TournamentsPage from "../../pages/TournamentsPage";
 import UserPage from "../../pages/UserPage";
 import { ToastContainer } from "react-toastify";
 import { ProvideAuth } from "../../../domain/auth/appAuth";
-import MainPage from "../../pages/MainPage/MainPage";
+import styles from "./App.style.scss";
 import LogoutPage from "../../pages/LogoutPage/LogoutPage";
 import ErrorPage from "../../pages/ErrorPage/ErrorPage";
 import knowingScreen from "./enquire";
 
 import "./templates-wrapper.css";
 import ClubLandingPage from "../../pages/ClubLandingPage/ClubLandingPage";
+// import DevTeamPage from "../../pages/DevTeamPage/DevTeamPage";
+import MainPage from "../../pages/MainPage";
 import DevTeamPage from "../../pages/DevTeamPage/DevTeamPage";
 
 export interface IAppProps { }
