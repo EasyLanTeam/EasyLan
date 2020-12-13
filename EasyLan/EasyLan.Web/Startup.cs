@@ -82,11 +82,12 @@ namespace EasyLan.Web
             services.AddTransient<IGenericRepository<Tournament>, GenericRepository<Tournament>>();
             services.AddTransient<IGenericRepository<Match>, GenericRepository<Match>>();
             services.AddTransient<IGenericRepository<PlayerTournament>, GenericRepository<PlayerTournament>>();
-
-
+            services.AddTransient<IGenericRepository<UserScore>, GenericRepository<UserScore>>();
 
             services.AddTransient<ITournamentService, TournamentService>();
             services.AddTransient<IMatchService, MatchService>();
+            services.AddTransient<IUserScoreService, UserScoreService>();
+            services.AddTransient<ILeaderboardService, LeaderboardService>();
 
 
         }

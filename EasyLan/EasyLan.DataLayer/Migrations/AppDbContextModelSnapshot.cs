@@ -165,6 +165,28 @@ namespace EasyLan.DataLayer.Migrations
                     b.ToTable("tournaments");
                 });
 
+            modelBuilder.Entity("EasyLan.DataLayer.Entites.UserScore", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Region")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("leaderboard");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -404,6 +426,13 @@ namespace EasyLan.DataLayer.Migrations
                     b.HasOne("EasyLan.DataLayer.Entites.Tournament", null)
                         .WithMany("Prizes")
                         .HasForeignKey("TournamentId");
+                });
+
+            modelBuilder.Entity("EasyLan.DataLayer.Entites.UserScore", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

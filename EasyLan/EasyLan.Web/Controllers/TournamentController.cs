@@ -12,7 +12,11 @@ using System.Collections.Generic;
 
 namespace EasyLan.Web.Controllers
 {
+<<<<<<< HEAD
     [Route("[controller]/[action]")]
+=======
+    [Route("api/[controller]")]
+>>>>>>> master
     [ApiController]
     public class TournamentController : ControllerBase
     {
@@ -30,8 +34,8 @@ namespace EasyLan.Web.Controllers
             cfg.CreateMap<UserDTO, UserViewModel>();
             cfg.CreateMap<PrizeViewModel, PrizeDTO>();
             cfg.CreateMap<PrizeDTO, PrizeViewModel>();
-
         });
+        
         public TournamentController(ITournamentService tournamentService, UserManager<IdentityUser> userManager, IMatchService matchService)
         {
             this.tournamentService = tournamentService;
@@ -97,25 +101,36 @@ namespace EasyLan.Web.Controllers
             tournamentService.Remove(tournament);
             return Ok();
         }
+        
         [Authorize]
-        [HttpPost("{id}")]
+        [HttpPost("[action]/{id}")]
         public void TakePart(Guid id)
         {
             var user = userManager.GetUserAsync(User).Result;
             tournamentService.AddUserToTournament(user.Id, id);
         }
+        
+        [Authorize]
+        [HttpPost("[action]/{id}")]
+        public void UndoTakePart(Guid id)
+        {
+            var user = userManager.GetUserAsync(User).Result;
+            tournamentService.RemoveUserFromTournament(user.Id, id);
+        }
+        
+        
         /// <summary>
         /// Для удобства при разработке
         /// </summary>
         /// <param name="id"></param>
         /// <param name="userId"></param>
-        [HttpPost("{id}")]
+        [HttpPost("[action]/{id}")]
         public void AddUserToTournament(Guid id, string userId)
         {
             tournamentService.AddUserToTournament(userId, id);
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("[action]/{id}")]
         public IActionResult Start(Guid id)
         {
             tournamentService.Start(id);

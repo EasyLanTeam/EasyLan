@@ -1,5 +1,5 @@
 import * as React from "react";
-
+import cn from "classnames";
 import styles from "./TextArea.style.scss";
 
 interface ITextAreaProps
@@ -9,7 +9,9 @@ const TextArea: React.FunctionComponent<ITextAreaProps> = ({
   className,
   ...rest
 }: ITextAreaProps) => {
-  return <textarea className={styles.textarea} {...rest}></textarea>;
+  return (
+    <textarea className={cn(styles.textarea, className)} {...rest}></textarea>
+  );
 };
 
 export default TextArea;

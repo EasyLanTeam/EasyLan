@@ -10,7 +10,7 @@ import styles from "./TournamentForm.style.scss";
 
 const MAX_PRIZE_COUNT = 5;
 
-const PrizesSection = () => {
+const PrizesSection = (): JSX.Element => {
   const {
     values,
     handleChange,

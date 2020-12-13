@@ -7,10 +7,12 @@ import { TournamentFormValues } from "./TournamentFormValues";
 
 import styles from "./TournamentForm.style.scss";
 
-const DateTimeSection = () => {
-  const { values, handleChange, setFieldTouched } = useFormikContext<
-    TournamentFormValues
-  >();
+const DateTimeSection = (): JSX.Element => {
+  const {
+    values,
+    handleChange,
+    setFieldTouched,
+  } = useFormikContext<TournamentFormValues>();
 
   const handleInputBlur = ({ target }: React.FocusEvent<HTMLInputElement>) => {
     const { id, name } = target;

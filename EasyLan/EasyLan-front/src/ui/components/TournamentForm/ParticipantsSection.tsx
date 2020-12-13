@@ -9,7 +9,7 @@ import styles from "./TournamentForm.style.scss";
 
 const DEFAULT_MIN_PARTICIPANTS = 2;
 
-const ParticipantsSection = () => {
+const ParticipantsSection = (): JSX.Element => {
   const { values, setFieldValue } = useFormikContext<TournamentFormValues>();
 
   const handleParticipantsChange = (

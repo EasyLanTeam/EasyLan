@@ -8,6 +8,7 @@ namespace EasyLan.DataLayer.Interfaces
     public interface IGenericRepository<T> where T : class
     {
         T Find(Guid id);
+        T Find(params object[] keyValues);
         List<T> Get(int count, int pageNumber);
         List<T> Get(int count, int pageNumber, Func<T, bool> predicate);
         List<T> Get(Func<T, bool> predicate);
@@ -15,6 +16,6 @@ namespace EasyLan.DataLayer.Interfaces
         void Remove(T entitu);
         void Update(T entity);
         List<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties);
-
+        List<T> ReadAll();
     }
 }

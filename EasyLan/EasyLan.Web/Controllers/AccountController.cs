@@ -9,12 +9,17 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace EasyLan.Web.Controllers
 {
+<<<<<<< HEAD
     [Route("[controller]/[action]")]
+=======
+    [Route("api/[controller]")]
+>>>>>>> master
     [ApiController]
     public class AccountController : ControllerBase
     {
@@ -36,6 +41,26 @@ namespace EasyLan.Web.Controllers
         }
 
         [HttpGet]
+        public async Task<IActionResult> GetOwnUserData()
+        {
+            var user = await userManager.GetUserAsync(User);
+            if (user == null)
+                return Unauthorized();
+            
+            var userData = new UserDataViewModel
+            {
+                Id = user.Id,
+                Username = user.UserName,
+            };
+            var userRole = userManager.GetRolesAsync(user).Result.FirstOrDefault();
+            userData.Email = user.Email;
+            userData.Role = userRole;
+
+            return new JsonResult(userData);
+        }
+
+
+        [HttpGet("[action]")]
         public async Task<IActionResult> GetUserData(string id)
         {
             var userFromDb = dbContext.Users.FirstOrDefault(u => u.Id == id);
@@ -59,7 +84,27 @@ namespace EasyLan.Web.Controllers
             return new JsonResult(userData);
         }
 
-        [HttpPost]
+        private async Task LoadSampleUsers()
+        {
+            int v = dbContext.Users.Count();
+            if (v < 10)
+            {
+                string file = System.IO.File.ReadAllText("MockData\\mock-users-1000.json");
+                var users = JsonConvert.DeserializeObject<List<dynamic>>(file);
+                foreach (var user in users)
+                {
+                    var newUser = new IdentityUser(user.Username.ToString()) { Email = user.ToString() };
+                    var result = await userManager.CreateAsync(newUser, user.Password.ToString());
+
+                    if (result.Succeeded)
+                    {
+                        await userManager.AddToRoleAsync(newUser, "user");
+                    }
+                }
+            }
+        }
+
+        [HttpPost("[action]")]
         public async Task<IActionResult> Create([FromBody] RegistrationViewModel registrationViewModel)
         {
             var userFromDb = dbContext.Users.FirstOrDefault(u => u.UserName == registrationViewModel.Username);
@@ -77,9 +122,10 @@ namespace EasyLan.Web.Controllers
             return BadRequest();
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Login(string userLogin, string userPassword, bool rememberUser)
         {
+            await LoadSampleUsers();
             var user = dbContext.Users.FirstOrDefault(u => u.UserName == userLogin);
             if (user == null)
                 return Unauthorized();
@@ -100,7 +146,7 @@ namespace EasyLan.Web.Controllers
             return Unauthorized();
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public IActionResult LogoutUser()
         {
             var result = signInManager.SignOutAsync();
@@ -109,7 +155,7 @@ namespace EasyLan.Web.Controllers
             return BadRequest();
         }
 
-        [HttpPut]
+        [HttpPut("[action]")]
         public IActionResult ChangePassword(string newPassword, string oldPassword)
         {
             var userFromManager = userManager.GetUserAsync(User).Result;

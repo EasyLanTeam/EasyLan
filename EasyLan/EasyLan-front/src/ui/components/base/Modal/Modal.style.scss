@@ -1,0 +1,21 @@
+.overlay {
+  z-index: 10000;
+  position: fixed;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  background-color: rgba($color-deep, 0.75);
+}
+
+.body {
+  padding: 16px;
+  min-width: 250px;
+  min-height: 200px;
+  border-radius: 8px;
+
+  background-color: $color-bg;
+}

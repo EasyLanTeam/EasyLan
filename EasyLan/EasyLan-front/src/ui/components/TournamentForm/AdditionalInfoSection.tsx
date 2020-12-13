@@ -7,14 +7,16 @@ import styles from "./TournamentForm.style.scss";
 
 interface IAdditionalInfoSectionProps {}
 
-const AdditionalInfoSection: React.FunctionComponent<IAdditionalInfoSectionProps> = (
-  props
-) => {
-  const { values, handleChange, setFieldTouched } = useFormikContext<
-    TournamentFormValues
-  >();
+const AdditionalInfoSection: React.FunctionComponent<IAdditionalInfoSectionProps> = (): JSX.Element => {
+  const {
+    values,
+    handleChange,
+    setFieldTouched,
+  } = useFormikContext<TournamentFormValues>();
 
-  const handleAdditionalInfoBlur = ({ target }: React.FocusEvent<HTMLTextAreaElement>) => {
+  const handleAdditionalInfoBlur = ({
+    target,
+  }: React.FocusEvent<HTMLTextAreaElement>) => {
     const { id, name } = target;
     setFieldTouched(id || name);
   };

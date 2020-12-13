@@ -31,7 +31,7 @@
   margin-bottom: 4px;
 }
 
-.form-error-message {
+.input-error {
   font-size: 14px;
   color: $color-error;
 }
@@ -82,7 +82,7 @@
 @media (min-width: $tablet-width) {
   .card {
     max-width: 625px;
-    padding: 0 56px 48px 56px;
+    padding: 0 56px 36px 56px;
     border-radius: 8px;
     margin: 0 auto;
     margin-top: 56px;
@@ -95,31 +95,33 @@
 
   .form-group {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    margin-bottom: 36px;
+    margin-bottom: 24px;
   }
 
   .form-label {
-    width: 180px;
+    width: 140px;
     padding-right: 16px;
-  }
-
-  .form-error-message {
-    display: block;
-    margin-top: -18px;
-    margin-bottom: -18px;
   }
 
   .submit-button {
     width: 300px;
     margin-left: auto;
     margin-right: auto;
-    margin-top: 36px;
+    margin-top: 16px;
     margin-bottom: 24px;
   }
 
-  .sign-in-vk-button {
-    width: 300px;
-    margin: 0 auto;
+  .input {
+    width: 150px;
+    flex-grow: 1;
+  }
+
+  .input-error {
+    width: 280px;
+    flex-grow: 1;
+    margin-top: 4px;
+    margin-left: 140px;
   }
 }

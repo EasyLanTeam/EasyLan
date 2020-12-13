@@ -34,7 +34,7 @@ namespace EasyLan.Web.Models
         [JsonPropertyName("initiatorFullname")]
         public string Initiator { get; set; }
         public string InitiatorId { get; set; }
-
+        public int CurrentNumberOfParticipants { get; set; }
 
     }
 }

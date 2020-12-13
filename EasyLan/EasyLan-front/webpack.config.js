@@ -29,11 +29,26 @@ const devServer = () =>
   isProd
     ? undefined
     : {
+        https: true,
         port: 8022,
         proxy: [
           {
             context: ["/api"],
-            target: "http://localhost:5000",
+            target: "https://localhost:5001",
+            onProxyReq: (proxyReq) => {
+              if (proxyReq.getHeader("origin")) {
+                proxyReq.setHeader("origin", "https://localhost:5001");
+              }
+            },
+            onProxyRes: (proxyRes, req, res) => {
+              Object.keys(proxyRes.headers).forEach((key) => {
+                res.append(key, proxyRes.headers[key]);
+              });
+            },
+            secure: false,
+            changeOrigin: true,
+            ws: true,
+            xfwd: true,
           },
         ],
         historyApiFallback: true,
@@ -62,7 +77,12 @@ module.exports = {
     filename: "[name].[contenthash].js",
     publicPath: "/",
   },
-  resolve: { extensions: [".ts", ".tsx", ".js"] },
+  resolve: {
+    extensions: [".ts", ".tsx", ".js"],
+    alias: {
+      "@assets": path.join(__dirname, "./assets"),
+    },
+  },
   module: {
     rules: [
       {
@@ -91,6 +111,15 @@ module.exports = {
                 localIdentName: isDev ? "[name]__[local]" : "[hash:base64:5]",
                 exportLocalsConvention: "camelCase",
               },
+              importLoaders: 1,
+            },
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: ["autoprefixer"],
+              },
             },
           },
           "sass-loader",
@@ -104,6 +133,34 @@ module.exports = {
             },
           },
         ],
+      },
+      {
+        test: /\.css$/,
+        loader: [
+          isDev ? "style-loader" : MiniCssExtractPlugin.loader,
+          {
+            loader: "css-loader",
+            options: {
+              importLoaders: 1,
+            },
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              postcssOptions: {
+                plugins: ["autoprefixer"],
+              },
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(svg|png|jpg|jpeg)$/,
+        loader: "file-loader",
+        options: {
+          name: "[name].[ext]",
+          outputPath: "assets/images",
+        },
       },
     ],
   },
