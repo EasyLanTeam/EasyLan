@@ -15,7 +15,7 @@ namespace EasyLan.DataLayer
         public DbSet<UserScore> UserScores { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            Database.Migrate();
+            //Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
