@@ -33,7 +33,12 @@ namespace EasyLan.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllersWithViews();
+
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "wwwroot";
+            });
             services.AddAuthentication();
             services.AddSwaggerGen();
             string connectionString;
@@ -76,11 +81,15 @@ namespace EasyLan.Web
             services.AddTransient<IGenericRepository<Tournament>, GenericRepository<Tournament>>();
             services.AddTransient<IGenericRepository<Match>, GenericRepository<Match>>();
             services.AddTransient<IGenericRepository<PlayerTournament>, GenericRepository<PlayerTournament>>();
-
+            services.AddTransient<IGenericRepository<UserScore>, GenericRepository<UserScore>>();
+            services.AddTransient<IGenericRepository<ClubRequest>, GenericRepository<ClubRequest>>();
 
 
             services.AddTransient<ITournamentService, TournamentService>();
             services.AddTransient<IMatchService, MatchService>();
+            services.AddTransient<IUserScoreService, UserScoreService>();
+            services.AddTransient<ILeaderboardService, LeaderboardService>();
+            services.AddTransient<IClubService, ClubService>();
 
 
         }
@@ -104,6 +113,10 @@ namespace EasyLan.Web
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
             app.UseRouting();
             app.UseAuthorization();
 
@@ -119,10 +132,23 @@ namespace EasyLan.Web
                 endpoints.MapControllers();
             });
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            if (env.IsDevelopment())
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyLan");
+                app.UseSwagger();
+                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyLan"); });
+            }
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "wwwroot";
+                spa.ApplicationBuilder.UseDeveloperExceptionPage();
+                spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
+                {
+                    OnPrepareResponse = context =>
+                    {
+                        context.Context.Response.Headers.Add("Cache-Control", "public,max-age=6000");
+                    }
+                };
             });
         }
     }

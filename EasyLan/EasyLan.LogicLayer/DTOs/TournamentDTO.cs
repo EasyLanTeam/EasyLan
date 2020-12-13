@@ -21,6 +21,6 @@ namespace EasyLan.LogicLayer.DTOs
         public string InitiatorId { get; set; }
 
         public string Initiator { get; set; }
-
+        public int CurrentNumberOfParticipants { get; set; }
     }
 }

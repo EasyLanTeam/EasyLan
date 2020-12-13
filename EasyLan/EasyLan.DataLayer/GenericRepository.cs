@@ -18,6 +18,11 @@ namespace EasyLan.DataLayer
             dbSet = dbContext.Set<T>();
         }
 
+        public List<T> ReadAll()
+        {
+            return dbSet.ToList();
+        }
+
         public List<T> Get(int count, int pageNumber)
         {
             return dbSet.Skip((pageNumber - 1) * count).Take(count).ToList();
@@ -34,6 +39,10 @@ namespace EasyLan.DataLayer
         public T Find(Guid guid)
         {
             return dbSet.Find(guid);
+        }
+        public T Find(params object[] keyValues)
+        {
+            return dbSet.Find(keyValues);
         }
 
         public void Create(T entity)

@@ -1,0 +1,91 @@
+.container {
+  margin-top: 16px;
+}
+
+.paper {
+  padding-bottom: 24px;
+  font-weight: bold;
+}
+
+.info__header {
+  padding: 8px 0;
+  margin-bottom: 8px;
+  border-bottom: 1px solid $color-text-light;
+
+  font-size: 14px;
+  text-align: center;
+}
+
+.info__username {
+  font-size: 16px;
+  margin-bottom: 4px;
+}
+
+.info__body {
+  display: flex;
+  flex-direction: column;
+
+  & > * {
+    margin-bottom: 8px;
+  }
+}
+
+.tournament-main-actions {
+  display: flex;
+  flex-direction: column;
+  margin-top: 24px;
+}
+
+.tournament-main-actions__button {
+  margin-bottom: 8px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: $tablet-width) {
+  .paper {
+    border-radius: 8px;
+    width: 672px;
+    margin: 0 auto;
+  }
+
+  .info__header {
+    padding-top: 16px;
+  }
+
+  .menu {
+    margin-bottom: 16px;
+  }
+
+  .menu__item {
+    padding: 8px 16px;
+    border-radius: 8px;
+
+    &--active {
+      background-color: $color-primary;
+
+      &::after {
+        display: none;
+      }
+    }
+  }
+
+  .info__header {
+    font-size: 20px;
+    text-align: center;
+  }
+
+  .info__username {
+    font-size: 24px;
+    margin-bottom: 8px;
+  }
+
+  .tournament-main-actions {
+    width: 300px;
+  }
+}
+
+@media (min-width: $desktop-width) {
+}
