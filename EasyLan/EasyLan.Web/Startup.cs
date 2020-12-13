@@ -33,7 +33,12 @@ namespace EasyLan.Web
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllersWithViews();
+
+            services.AddSpaStaticFiles(configuration =>
+            {
+                configuration.RootPath = "wwwroot";
+            });
             services.AddAuthentication();
             services.AddSwaggerGen();
             string connectionString;
@@ -105,6 +110,10 @@ namespace EasyLan.Web
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles();
+            app.UseSpaStaticFiles();
+
             app.UseRouting();
             app.UseAuthorization();
 
@@ -120,10 +129,23 @@ namespace EasyLan.Web
                 endpoints.MapControllers();
             });
 
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            if (env.IsDevelopment())
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyLan");
+                app.UseSwagger();
+                app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyLan"); });
+            }
+
+            app.UseSpa(spa =>
+            {
+                spa.Options.SourcePath = "wwwroot";
+                spa.ApplicationBuilder.UseDeveloperExceptionPage();
+                spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
+                {
+                    OnPrepareResponse = context =>
+                    {
+                        context.Context.Response.Headers.Add("Cache-Control", "public,max-age=6000");
+                    }
+                };
             });
         }
     }
