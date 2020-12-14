@@ -50,7 +50,6 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = ({
   };
 
   const handleCancelTournament = () => {
-    console.log("Отмена турнира");
     setOpenCancelTournamentDialog(false);
     const rep = new TournamentRepository();
 
@@ -66,8 +65,15 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = ({
   };
 
   const handleExitCancelTournament = () => {
-    console.log("Выход из диалога");
     setOpenCancelTournamentDialog(false);
+  };
+
+  const handleClickStartTournament = () => {
+    console.log("start");
+  };
+
+  const handleClickUpdateTournament = () => {
+    history.push(`/tournaments/${tournament.id}/update`);
   };
 
   return (
@@ -87,12 +93,14 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = ({
             <Button
               variant={"primary"}
               className={styles.tournamentMainActionsButton}
+              onClick={handleClickStartTournament}
             >
               Начать турнир
             </Button>
             <Button
               icon={{ path: mdiPencil }}
               className={styles.tournamentMainActionsButton}
+              onClick={handleClickUpdateTournament}
             >
               Внести изменения
             </Button>

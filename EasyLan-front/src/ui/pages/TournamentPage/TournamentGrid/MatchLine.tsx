@@ -15,6 +15,7 @@ const MatchLine: React.FunctionComponent<IMatchLineProps> = ({
   startPosY,
   endPosX,
   endPosY,
+  ...rest
 }: IMatchLineProps) => {
   const width = endPosX - startPosX;
   const height = endPosY - startPosY;
@@ -24,11 +25,12 @@ const MatchLine: React.FunctionComponent<IMatchLineProps> = ({
       style={{
         position: "absolute",
         left: `${startPosX}px`,
-        top: `${(height > 0 ? startPosY : endPosY)}px`,
+        top: `${height > 0 ? startPosY : endPosY}px`,
       }}
       width={Math.abs(width)}
       height={Math.abs(height) + LINE_WIDTH}
       className={styles.matchLine}
+      {...rest}
     >
       {height < 0 ? (
         <path

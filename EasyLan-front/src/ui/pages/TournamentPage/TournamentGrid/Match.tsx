@@ -7,18 +7,20 @@ import styles from "./TournamentGrid.style.scss";
 interface IMatchBracketProps {
   match: TournamentMatch;
   onSetWinner: (matchId: string, winnerId: string) => void;
-  xPos: number,
-  yPos: number,
+  xPos: number;
+  yPos: number;
 }
 
 export const Match: React.FunctionComponent<IMatchBracketProps> = ({
   match,
   onSetWinner,
   xPos,
-  yPos
+  yPos,
+  ...rest
 }: IMatchBracketProps) => {
   const handleClickParticipant = (participantId: string) => {
-    console.log(match.winnerId, participantId);
+    if (participantId == null) return;
+
     if (match.winnerId === participantId) {
       participantId = null;
     }
@@ -32,7 +34,7 @@ export const Match: React.FunctionComponent<IMatchBracketProps> = ({
     match.secondPlayerId != null && match.secondPlayerId === match.winnerId;
 
   return (
-    <div className={styles.match} style={{top: yPos, left: xPos}}>
+    <div className={styles.match} style={{ top: yPos, left: xPos }} {...rest}>
       <div
         className={cn(
           styles.matchParticipant,

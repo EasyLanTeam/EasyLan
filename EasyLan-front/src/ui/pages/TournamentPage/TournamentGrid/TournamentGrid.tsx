@@ -170,7 +170,7 @@ const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
                 gridLayoutData.mapMatchIdToLayoutData[match.nextMatchId];
 
               return (
-                <>
+                <div key={match.matchId}>
                   {nextMatchLayoutData ? (
                     <MatchLine
                       startPosX={xPos + MATCH_WIDTH}
@@ -180,13 +180,12 @@ const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
                     />
                   ) : null}
                   <Match
-                    key={match.matchId}
                     match={match}
                     xPos={xPos}
                     yPos={yPos}
                     onSetWinner={onSetWinner}
                   />
-                </>
+                </div>
               );
             });
         })}
