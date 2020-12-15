@@ -13,9 +13,10 @@ namespace EasyLan.DataLayer
         public DbSet<Match> Matches { get; set; }
         public DbSet<PlayerTournament> PlayerTournaments { get; set; }
         public DbSet<UserScore> UserScores { get; set; }
+        public DbSet<ClubRequest> ClubRequests { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            Database.Migrate();
+            //Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

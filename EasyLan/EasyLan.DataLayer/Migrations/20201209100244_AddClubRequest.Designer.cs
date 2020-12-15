@@ -3,47 +3,23 @@ using System;
 using EasyLan.DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 namespace EasyLan.DataLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20201209100244_AddClubRequest")]
+    partial class AddClubRequest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
-
-            modelBuilder.Entity("EasyLan.DataLayer.Entites.ClubRequest", b =>
-                {
-                    b.Property<Guid>("ClubRequestId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uuid");
-
-                    b.Property<string>("Address")
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsCompleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("text");
-
-                    b.Property<int>("Status")
-                        .HasColumnType("integer");
-
-                    b.HasKey("ClubRequestId");
-
-                    b.ToTable("ClubRequests");
-                });
 
             modelBuilder.Entity("EasyLan.DataLayer.Entites.Location", b =>
                 {
@@ -83,12 +59,6 @@ namespace EasyLan.DataLayer.Migrations
                     b.Property<Guid?>("NextMatchId")
                         .HasColumnType("uuid");
 
-                    b.Property<Guid?>("PrevFirstMatchId")
-                        .HasColumnType("uuid");
-
-                    b.Property<Guid?>("PrevSecondMatchId")
-                        .HasColumnType("uuid");
-
                     b.Property<string>("SecondPlayerId")
                         .HasColumnType("text");
 
@@ -120,12 +90,6 @@ namespace EasyLan.DataLayer.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
-
-                    b.Property<int>("ScoreDelta")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("ScoreInMoment")
-                        .HasColumnType("integer");
 
                     b.HasKey("TournamentId", "UserId");
 
@@ -193,9 +157,6 @@ namespace EasyLan.DataLayer.Migrations
                         .HasColumnType("integer");
 
                     b.Property<int>("Payment")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("TournamentState")
                         .HasColumnType("integer");
 
                     b.Property<int>("TournamentType")

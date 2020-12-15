@@ -39,36 +39,35 @@ namespace EasyLan.Web
             {
                 configuration.RootPath = "wwwroot";
             });
-
             services.AddAuthentication();
             services.AddSwaggerGen();
             string connectionString;
 
-            // if (WebHostEnvironment.IsEnvironment("Production"))
-            // {
-            //     // Heroku provides PostgreSQL connection URL via env variable
-            //     var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
-            //
-            //     // Parse connection URL to connection string for Npgsql
-            //     connUrl = connUrl.Replace("postgres://", string.Empty);
-            //
-            //     var pgUserPass = connUrl.Split("@")[0];
-            //     var pgHostPortDb = connUrl.Split("@")[1];
-            //     var pgHostPort = pgHostPortDb.Split("/")[0];
-            //
-            //     var pgDb = pgHostPortDb.Split("/")[1];
-            //     var pgUser = pgUserPass.Split(":")[0];
-            //     var pgPass = pgUserPass.Split(":")[1];
-            //     var pgHost = pgHostPort.Split(":")[0];
-            //     var pgPort = pgHostPort.Split(":")[1];
-            //     connectionString = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb}";
-            // }
-            // else
+            if (WebHostEnvironment.IsEnvironment("Production"))
+            {
+                // Heroku provides PostgreSQL connection URL via env variable
+                var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+                // Parse connection URL to connection string for Npgsql
+                connUrl = connUrl.Replace("postgres://", string.Empty);
+
+                var pgUserPass = connUrl.Split("@")[0];
+                var pgHostPortDb = connUrl.Split("@")[1];
+                var pgHostPort = pgHostPortDb.Split("/")[0];
+
+                var pgDb = pgHostPortDb.Split("/")[1];
+                var pgUser = pgUserPass.Split(":")[0];
+                var pgPass = pgUserPass.Split(":")[1];
+                var pgHost = pgHostPort.Split(":")[0];
+                var pgPort = pgHostPort.Split(":")[1];
+                connectionString = $"Server={pgHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb}";
+            }
+            else
             {
                 connectionString = Configuration.GetConnectionString("DefaultConnection");
             }
 
-            services.AddDbContext<AppDbContext>(o => o.UseNpgsql(connectionString));
+            services.AddEntityFrameworkNpgsql().AddDbContext<AppDbContext>(o => o.UseNpgsql(connectionString));
 
             services.AddIdentity<IdentityUser, IdentityRole>(options =>
             {
@@ -83,11 +82,14 @@ namespace EasyLan.Web
             services.AddTransient<IGenericRepository<Match>, GenericRepository<Match>>();
             services.AddTransient<IGenericRepository<PlayerTournament>, GenericRepository<PlayerTournament>>();
             services.AddTransient<IGenericRepository<UserScore>, GenericRepository<UserScore>>();
+            services.AddTransient<IGenericRepository<ClubRequest>, GenericRepository<ClubRequest>>();
+
 
             services.AddTransient<ITournamentService, TournamentService>();
             services.AddTransient<IMatchService, MatchService>();
             services.AddTransient<IUserScoreService, UserScoreService>();
             services.AddTransient<ILeaderboardService, LeaderboardService>();
+            services.AddTransient<IClubService, ClubService>();
 
 
         }
@@ -111,8 +113,10 @@ namespace EasyLan.Web
 
             app.UseAuthentication();
             app.UseHttpsRedirection();
+
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
+
             app.UseRouting();
             app.UseAuthorization();
 
@@ -134,25 +138,18 @@ namespace EasyLan.Web
                 app.UseSwaggerUI(c => { c.SwaggerEndpoint("/swagger/v1/swagger.json", "EasyLan"); });
             }
 
-            if (!env.IsDevelopment())
+            app.UseSpa(spa =>
             {
-
-                app.UseStaticFiles();
-                app.UseSpaStaticFiles();
-
-                app.UseSpa(spa =>
+                spa.Options.SourcePath = "wwwroot";
+                spa.ApplicationBuilder.UseDeveloperExceptionPage();
+                spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
                 {
-                    spa.Options.SourcePath = "wwwroot";
-                    spa.ApplicationBuilder.UseDeveloperExceptionPage();
-                    spa.Options.DefaultPageStaticFileOptions = new StaticFileOptions
+                    OnPrepareResponse = context =>
                     {
-                        OnPrepareResponse = context =>
-                        {
-                            context.Context.Response.Headers.Add("Cache-Control", "public,max-age=6000");
-                        }
-                    };
-                });
-            }
+                        context.Context.Response.Headers.Add("Cache-Control", "public,max-age=6000");
+                    }
+                };
+            });
         }
     }
 }

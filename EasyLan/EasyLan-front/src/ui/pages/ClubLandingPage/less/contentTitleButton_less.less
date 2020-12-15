@@ -1,0 +1,25 @@
+@content11: content11;
+.@{content11}-wrapper {
+  height: 480px;
+  background: url("https://gw.alipayobjects.com/zos/rmsportal/ZsWYzLOItgeaWDSsXdZd.svg") no-repeat bottom;
+  background-size: cover;
+  background-size: 100%;
+  margin: 0 auto;
+  overflow: hidden;
+  padding-top: 96px;
+  
+  &.home-page-wrapper {
+    .title-wrapper {
+      margin-bottom: 32px;
+    }
+  }
+  .title-content {
+    line-height: 32px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .@{content11}-wrapper {
+    padding-bottom: 0;
+  }
+}
