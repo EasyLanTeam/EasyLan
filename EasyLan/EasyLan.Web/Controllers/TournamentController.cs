@@ -121,6 +121,12 @@ namespace EasyLan.Web.Controllers
             tournamentService.RemoveUserFromTournament(user.Id, id);
         }
         
+        [Authorize]
+        [HttpGet("[action]/{id}")]
+        public List<PlayerTournamentDTO> GetParticipants(Guid id)
+        {
+            return tournamentService.GetAllPlayersFromTournament(id);
+        }
         
         /// <summary>
         /// Для удобства при разработке
@@ -133,6 +139,11 @@ namespace EasyLan.Web.Controllers
             tournamentService.AddUserToTournament(userId, id);
         }
 
+        /// <summary>
+        /// Очищает данные игроков и добавляет первых count игроков
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="count"></param>
         [HttpPost("[action]/{id}")]
         public async Task<IActionResult> SetMultipleUsersToTournament(Guid id, [FromQuery] int count = 8)
         {
@@ -142,7 +153,7 @@ namespace EasyLan.Web.Controllers
             await dbContext.SaveChangesAsync();
 
             var users = await dbContext.Users
-                .Skip(10)
+                .Skip(1)
                 .Take(count)
                 .Where(u => u.Id != tournament.InitiatorId)
                 .ToListAsync();
@@ -159,6 +170,13 @@ namespace EasyLan.Web.Controllers
         public IActionResult Start(Guid id)
         {
             tournamentService.Start(id);
+            return Ok();
+        }        
+        
+        [HttpPost("[action]/{id}")]
+        public IActionResult Finish(Guid id)
+        {
+            tournamentService.Finish(id);
             return Ok();
         }
     }

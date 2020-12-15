@@ -9,6 +9,7 @@ namespace EasyLan.LogicLayer.DTOs
     {
         public Guid TournamentId { get; set; }
         public TournamentType TournamentType { get; set; }
+        public TournamentState TournamentState { get; set; }
         public DateTime DateTimeOfStart { get; set; }
         public string Location { get; set; }
         public string Game { get; set; }

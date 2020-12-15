@@ -13,5 +13,7 @@ namespace EasyLan.DataLayer.Entites
         [ForeignKey("User")]
         public string UserId { get; set; }
         public IdentityUser User { get; set; }
+        public int ScoreInMoment { get; set; }
+        public int ScoreDelta { get; set; }
     }
 }

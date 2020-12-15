@@ -87,7 +87,7 @@ namespace EasyLan.Web.Controllers
             {
                 string file = System.IO.File.ReadAllText("MockData\\mock-users-1000.json");
                 var users = JsonConvert.DeserializeObject<List<dynamic>>(file);
-                foreach (var user in users)
+                foreach (var user in users.Take(128))
                 {
                     var newUser = new IdentityUser(user.Username.ToString()) { Email = user.ToString() };
                     var result = await userManager.CreateAsync(newUser, user.Password.ToString());

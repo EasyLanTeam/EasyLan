@@ -11,6 +11,8 @@ namespace EasyLan.DataLayer.Entites
     {
         public Guid Id { get; set; }
         public IdentityUser User { get; set; }
+        [ForeignKey("User")]
+        public string UserId { get; set; }
         public string Region { get; set; }
         public int Score { get; set; }
     }
