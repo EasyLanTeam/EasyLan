@@ -61,6 +61,14 @@ const MainNav: React.FunctionComponent<IMainNavProps> = (props) => {
           >
             Турниры
           </NavLink>
+          <NavLink
+            exact
+            className={styles.siteNavItem}
+            activeClassName={styles.siteNavItemActive}
+            to={"/leaderboard"}
+          >
+            Рейтинг
+          </NavLink>
         </div>
         <div className={styles.userNav} onClick={handleNavItemClick}>
           {user == null ? null : user !== false ? (

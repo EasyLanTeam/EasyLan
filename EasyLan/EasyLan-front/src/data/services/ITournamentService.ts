@@ -11,4 +11,5 @@ export default interface ITournamentService {
   addTournament(tournament: Tournament): Promise<ApiResult<void>>;
   takePartition: (tournamentId: string) => Promise<ApiResult<void>>;
   startTournament: (tournamentId: string) => Promise<ApiResult<void>>;
+// eslint-disable-next-line semi
 }

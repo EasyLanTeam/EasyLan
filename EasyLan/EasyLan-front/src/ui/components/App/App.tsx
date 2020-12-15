@@ -18,6 +18,7 @@ import ClubLandingPage from "../../pages/ClubLandingPage/ClubLandingPage";
 // import DevTeamPage from "../../pages/DevTeamPage/DevTeamPage";
 import MainPage from "../../pages/MainPage";
 import DevTeamPage from "../../pages/DevTeamPage/DevTeamPage";
+import LeaderboardPage from "../../pages/LeaderboardPage/LeaderboardPage";
 
 export interface IAppProps { }
 export interface IAppState {
@@ -56,6 +57,9 @@ export default class App extends React.Component<IAppProps, IAppState> {
                 </Route>
                 <Route path="/devteam" exact>
                   <DevTeamPage isMobile={this.state.isMobile} />
+                </Route>
+                <Route path="/leaderboard" exact>
+                  <LeaderboardPage />
                 </Route>
                 <Route path="/login">
                   <LoginPage />

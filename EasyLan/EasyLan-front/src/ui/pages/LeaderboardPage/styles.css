@@ -1,0 +1,44 @@
+.ka {
+  overflow: hidden;
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  max-width: 700px;
+}
+.ka-table-wrapper {
+  height: 100%;
+  overflow-y: auto;
+}
+.ka-table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  max-width: 1000px;
+}
+.ka-tbody {
+  height: 100%;
+}
+.ka-row {
+  box-sizing: border-box;
+  border-bottom: 2px solid #555;
+  border-top: 2px solid #f9fbfc;
+}
+.ka-tr {
+  width: 100%;
+}
+.ka-cell {
+  padding: 8px 20px;
+  line-height: 29px;
+}
+.ka-thead-cell {
+  padding: 15px 20px;
+  color: #747d86;
+}
+.tablecontainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.title-wrapper {
+  margin: 36px auto;
+  text-align: center;
+}
