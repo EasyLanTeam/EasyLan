@@ -1,6 +1,6 @@
 import * as React from "react";
-import Paper from "../../components/Paper";
-import Table from "../../components/Table/Table";
+import Paper from "../../../components/Paper";
+import Table from "../../../components/Table/Table";
 
 import styles from "./TournamentParticipants.style.scss";
 

@@ -10,7 +10,7 @@ namespace EasyLan.LogicLayer.Interfaces
     {
         void InitilizeFirstMatches(Guid tournamentId);
         void SetWinner(Guid matchId, string userId);
-        void CreateNext(Guid firstMatchId, Guid secondMatchId);
+        // void CreateNext(Guid firstMatchId, Guid secondMatchId);
         List<List<MatchDTO>> Get(Guid tournamentId);
     }
 }

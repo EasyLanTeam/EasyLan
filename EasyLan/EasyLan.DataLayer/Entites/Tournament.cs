@@ -16,11 +16,22 @@ namespace EasyLan.DataLayer.Entites
         Dota2,
     }
 
+    public enum TournamentState
+    {
+        //В ожидании начала
+        Pending,
+        //Идущий в данный момент
+        Ongoing,
+        //Завершенный
+        Finished
+    }
+
     [Table("tournaments")]
     public class Tournament
     {
         public Guid TournamentId { get; set; }
         public TournamentType TournamentType { get; set; }
+        public TournamentState TournamentState { get; set; }
         public DateTime DateTimeOfStart { get; set; }
         public string Location { get; set; }
         public string Game { get; set; }

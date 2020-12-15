@@ -12,6 +12,8 @@ namespace EasyLan.Web.Models
         public Guid TournamentId { get; set; }
         [JsonPropertyName("type")]
         public TournamentType TournamentType { get; set; }
+        [JsonPropertyName("state")]
+        public TournamentState TournamentState { get; set; }
         [JsonPropertyName("datetime")]
         public DateTime DateTimeOfStart { get; set; }
         [JsonPropertyName("location")]
@@ -35,6 +37,5 @@ namespace EasyLan.Web.Models
         public string Initiator { get; set; }
         public string InitiatorId { get; set; }
         public int CurrentNumberOfParticipants { get; set; }
-
     }
 }

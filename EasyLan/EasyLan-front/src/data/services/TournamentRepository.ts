@@ -54,7 +54,11 @@ import {
 // ];
 
 const getTournamentFromApi = (tournamentFromApi: Tournament) => {
-  tournamentFromApi.datetime = new Date(tournamentFromApi.datetime);
+  const datetime = new Date(tournamentFromApi.datetime);
+  datetime.setTime(
+    datetime.getTime() + -datetime.getTimezoneOffset() * 60 * 1000
+  );
+  tournamentFromApi.datetime = datetime;
 
   return tournamentFromApi;
 };
@@ -108,6 +112,10 @@ export default class TournamentRepository implements ITournamentService {
         mode: "cors",
       })
         .then((res) => {
+          if (res.status === 404) {
+            return reject(ApiError("NOT_FOUND"));
+          }
+
           if (res.status !== 200) {
             return reject(ApiError(`Ошибка сервера, ${res.status}`));
           }
@@ -157,7 +165,7 @@ export default class TournamentRepository implements ITournamentService {
   updateTournament(tournament: Tournament): Promise<ApiResult<void>> {
     return new Promise<ApiResult<void>>((resolve, reject) => {
       fetch(`/api/Tournament/${tournament.id}`, {
-        method: "POST",
+        method: "PUT",
         body: JSON.stringify(tournament),
         headers: {
           "Content-Type": "application/json",
