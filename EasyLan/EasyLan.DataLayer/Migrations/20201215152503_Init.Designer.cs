@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace EasyLan.DataLayer.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20201201070743_Init")]
+    [Migration("20201215152503_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -20,6 +20,32 @@ namespace EasyLan.DataLayer.Migrations
                 .HasAnnotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn)
                 .HasAnnotation("ProductVersion", "3.1.9")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
+
+            modelBuilder.Entity("EasyLan.DataLayer.Entites.ClubRequest", b =>
+                {
+                    b.Property<Guid>("ClubRequestId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Address")
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsCompleted")
+                        .HasColumnType("boolean");
+
+                    b.Property<string>("Name")
+                        .HasColumnType("text");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
+
+                    b.HasKey("ClubRequestId");
+
+                    b.ToTable("ClubRequests");
+                });
 
             modelBuilder.Entity("EasyLan.DataLayer.Entites.Location", b =>
                 {
@@ -59,6 +85,12 @@ namespace EasyLan.DataLayer.Migrations
                     b.Property<Guid?>("NextMatchId")
                         .HasColumnType("uuid");
 
+                    b.Property<Guid?>("PrevFirstMatchId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid?>("PrevSecondMatchId")
+                        .HasColumnType("uuid");
+
                     b.Property<string>("SecondPlayerId")
                         .HasColumnType("text");
 
@@ -90,6 +122,12 @@ namespace EasyLan.DataLayer.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
+
+                    b.Property<int>("ScoreDelta")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("ScoreInMoment")
+                        .HasColumnType("integer");
 
                     b.HasKey("TournamentId", "UserId");
 
@@ -159,12 +197,37 @@ namespace EasyLan.DataLayer.Migrations
                     b.Property<int>("Payment")
                         .HasColumnType("integer");
 
+                    b.Property<int>("TournamentState")
+                        .HasColumnType("integer");
+
                     b.Property<int>("TournamentType")
                         .HasColumnType("integer");
 
                     b.HasKey("TournamentId");
 
                     b.ToTable("tournaments");
+                });
+
+            modelBuilder.Entity("EasyLan.DataLayer.Entites.UserScore", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uuid");
+
+                    b.Property<string>("Region")
+                        .HasColumnType("text");
+
+                    b.Property<int>("Score")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("leaderboard");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -406,6 +469,13 @@ namespace EasyLan.DataLayer.Migrations
                     b.HasOne("EasyLan.DataLayer.Entites.Tournament", null)
                         .WithMany("Prizes")
                         .HasForeignKey("TournamentId");
+                });
+
+            modelBuilder.Entity("EasyLan.DataLayer.Entites.UserScore", b =>
+                {
+                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

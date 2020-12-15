@@ -16,7 +16,8 @@ namespace EasyLan.DataLayer
         public DbSet<ClubRequest> ClubRequests { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
-            //Database.Migrate();
+            //Database.EnsureDeleted();
+            Database.Migrate();
         }
 
         protected override void OnModelCreating(ModelBuilder builder)

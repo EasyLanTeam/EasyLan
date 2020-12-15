@@ -48,6 +48,22 @@ namespace EasyLan.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ClubRequests",
+                columns: table => new
+                {
+                    ClubRequestId = table.Column<Guid>(nullable: false),
+                    Name = table.Column<string>(nullable: true),
+                    Address = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    Status = table.Column<int>(nullable: false),
+                    IsCompleted = table.Column<bool>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ClubRequests", x => x.ClubRequestId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "locations",
                 columns: table => new
                 {
@@ -67,6 +83,7 @@ namespace EasyLan.DataLayer.Migrations
                 {
                     TournamentId = table.Column<Guid>(nullable: false),
                     TournamentType = table.Column<int>(nullable: false),
+                    TournamentState = table.Column<int>(nullable: false),
                     DateTimeOfStart = table.Column<DateTime>(nullable: false),
                     Location = table.Column<string>(nullable: true),
                     Game = table.Column<string>(nullable: true),
@@ -190,11 +207,33 @@ namespace EasyLan.DataLayer.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "leaderboard",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(nullable: false),
+                    UserId = table.Column<string>(nullable: true),
+                    Region = table.Column<string>(nullable: true),
+                    Score = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_leaderboard", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_leaderboard_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Matches",
                 columns: table => new
                 {
                     MatchId = table.Column<Guid>(nullable: false),
                     NextMatchId = table.Column<Guid>(nullable: true),
+                    PrevFirstMatchId = table.Column<Guid>(nullable: true),
+                    PrevSecondMatchId = table.Column<Guid>(nullable: true),
                     NavNumber = table.Column<int>(nullable: false),
                     Level = table.Column<int>(nullable: false),
                     FirstPlayerId = table.Column<string>(nullable: true),
@@ -242,7 +281,9 @@ namespace EasyLan.DataLayer.Migrations
                 columns: table => new
                 {
                     TournamentId = table.Column<Guid>(nullable: false),
-                    UserId = table.Column<string>(nullable: false)
+                    UserId = table.Column<string>(nullable: false),
+                    ScoreInMoment = table.Column<int>(nullable: false),
+                    ScoreDelta = table.Column<int>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -320,6 +361,11 @@ namespace EasyLan.DataLayer.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_leaderboard_UserId",
+                table: "leaderboard",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Matches_FirstPlayerId",
                 table: "Matches",
                 column: "FirstPlayerId");
@@ -371,6 +417,12 @@ namespace EasyLan.DataLayer.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "ClubRequests");
+
+            migrationBuilder.DropTable(
+                name: "leaderboard");
 
             migrationBuilder.DropTable(
                 name: "locations");
