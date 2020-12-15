@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link, Redirect } from "react-router-dom";
-import Modal from "../../components/base/Modal/Modal";
+import Modal from "../../../components/base/Modal/Modal";
 import { useLocation } from "react-router-dom";
 
 import styles from "./PleaseLoginToTakePartitionModal.style.scss";

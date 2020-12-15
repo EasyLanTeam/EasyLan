@@ -3,6 +3,7 @@ import { TournamentFormValues } from "./TournamentFormValues";
 import { Tournament } from "../../../data/entities/Tournament";
 
 export const tournamentFormValuesMapper = ({
+  id,
   date: dateStr,
   time: timeStr,
   game,
@@ -27,6 +28,7 @@ export const tournamentFormValuesMapper = ({
   const location = [city, street, house].join(", ");
 
   return {
+    id,
     additionalInfo,
     initiatorId,
     initiatorFullname,

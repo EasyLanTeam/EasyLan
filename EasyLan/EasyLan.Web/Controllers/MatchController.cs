@@ -26,17 +26,13 @@ namespace EasyLan.Web.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("{id}")]
-        public List<MathesLevelViewModel> GetMatches(Guid id)
+        public List<List<MatchViewModel>> GetMatches(Guid id)
         {
             var matchDtos = matchService.Get(id);
-            var result = new List<MathesLevelViewModel>();
-            matchDtos.ForEach(list => {
-                var matchesLevel = new MathesLevelViewModel();
-                matchesLevel.Matches = list.Select(MatchMapper.Map).ToList();
-                matchesLevel.LevelNumber = (int)matchesLevel.Matches.FirstOrDefault()?.Level;
-            });
+            var result = new List<List<MatchViewModel>>();      
+            matchDtos.ForEach(list => result.Add(list.Select(MatchMapper.Map).ToList()));
             return result;
-        }       
+        }
 
         [HttpPost]
         public void SetWinner(Guid matchId, string userId)
@@ -44,11 +40,10 @@ namespace EasyLan.Web.Controllers
             matchService.SetWinner(matchId, userId);
         }
 
-        [HttpPost]
-        public void CreateNext(Guid firstMatchId, Guid secondMatchId)
-        {
-            matchService.CreateNext(firstMatchId, secondMatchId);
-        }
-
+        // [HttpPost]
+        // public void CreateNext(Guid firstMatchId, Guid secondMatchId)
+        // {
+        //     matchService.CreateNext(firstMatchId, secondMatchId);
+        // }
     }
 }

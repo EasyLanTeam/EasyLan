@@ -9,6 +9,8 @@ namespace EasyLan.LogicLayer.DTOs
     {
         public Guid MatchId { get; set; }
         public Guid? NextMatchId { get; set; }
+        public Guid? PrevFirstMatchId { get; set; }
+        public Guid? PrevSecondMatchId { get; set; }
         public MatchDTO NextMatch { get; set; }
         public int NavNumber { get; set; }
         public int Level { get; set; }

@@ -8,6 +8,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using EasyLan.LogicLayer.Utils;
+using Match = EasyLan.DataLayer.Entites.Match;
 
 namespace EasyLan.LogicLayer.Services
 {
@@ -21,9 +23,10 @@ namespace EasyLan.LogicLayer.Services
         {
             cfg.CreateMap<Match, MatchDTO>();
             cfg.CreateMap<MatchDTO, Match>();
-
         });
-        public MatchService(IGenericRepository<Tournament> tournamnetRepository, IGenericRepository<Match> matchRepository,
+
+        public MatchService(IGenericRepository<Tournament> tournamnetRepository,
+            IGenericRepository<Match> matchRepository,
             UserManager<IdentityUser> userManager)
         {
             this.matchRepository = matchRepository;
@@ -33,23 +36,52 @@ namespace EasyLan.LogicLayer.Services
 
         public void InitilizeFirstMatches(Guid tournamentId)
         {
-            var tournament = tournamentRepository.GetWithInclude(t => t.Players).FirstOrDefault(t => t.TournamentId == tournamentId);
+            var tournament = tournamentRepository.GetWithInclude(t => t.Players)
+                .FirstOrDefault(t => t.TournamentId == tournamentId);
             if (tournament == null)
                 return;
-            var playersCount = tournament.Players.Count - 1;
-            int navNumber = 1;
-            for (var i = 0; i < playersCount; i += 2)
+
+            var players = tournament.Players;
+            var finalMatch = Bracket.Create(players);
+            var queue = new Queue<MatchNode>();
+            queue.Enqueue(finalMatch);
+            while (queue.Count > 0)
             {
-                matchRepository.Create(
-                    new Match
+                var currentMatchNode = queue.Dequeue();
+                var match = currentMatchNode.Match;
+                match.TournamentId = tournamentId;
+
+                if (currentMatchNode.NextMatchNode != null)
+                {
+                    match.NextMatchId = currentMatchNode.NextMatchNode.Match.MatchId;
+                }
+
+                currentMatchNode.Match = matchRepository.Create(match);
+
+                if (currentMatchNode.NextMatchNode != null)
+                {
+                    var nextMatchNode = currentMatchNode.NextMatchNode;
+                    if (currentMatchNode == nextMatchNode.PrevLeftMatchNode)
                     {
-                        TournamentId = tournamentId,
-                        Level = 1,
-                        NavNumber = navNumber,
-                        FirstPlayerId = tournament.Players[i].UserId,
-                        SecondPlayerId = tournament.Players[i + 1].UserId
-                    });
-                navNumber++;
+                        nextMatchNode.Match.PrevFirstMatchId = currentMatchNode.Match.MatchId;
+                    }
+                    else if (currentMatchNode == nextMatchNode.PrevRightMatchNode)
+                    {
+                        nextMatchNode.Match.PrevSecondMatchId = currentMatchNode.Match.MatchId;
+                    }
+
+                    matchRepository.Update(nextMatchNode.Match);
+                }
+
+                if (currentMatchNode.PrevLeftMatchNode != null)
+                {
+                    queue.Enqueue(currentMatchNode.PrevLeftMatchNode);
+                }
+
+                if (currentMatchNode.PrevRightMatchNode != null)
+                {
+                    queue.Enqueue(currentMatchNode.PrevRightMatchNode);
+                }
             }
         }
 
@@ -57,30 +89,32 @@ namespace EasyLan.LogicLayer.Services
         {
             var match = matchRepository.Find(matchId);
             if (match == null)
-                return;
-            if (userManager.FindByIdAsync(userId).Result == null)
-                return;
+                throw new ArgumentNullException("match");
+            if (userId != null && userManager.FindByIdAsync(userId).Result == null)
+                throw new ArgumentException($"user not found by id: {userId}");
             match.WinnerId = userId;
-            matchRepository.Update(match);
 
-        }
-        public void CreateNext(Guid firstMatchId, Guid secondMatchId)
-        {
-            var firstMatch = matchRepository.Find(firstMatchId);
-            var secondMatch = matchRepository.Find(secondMatchId);
-            if (firstMatch == null || secondMatch == null)
-                return;
-            if (firstMatch.Level != secondMatch.Level)
-                return;
-
-            matchRepository.Create(new Match
+            if (match.NextMatchId != null)
             {
-                TournamentId = firstMatch.TournamentId,
-                Level = firstMatch.Level + 1,
-                FirstPlayerId = firstMatch.WinnerId,
-                SecondPlayerId = secondMatch.WinnerId,
-                NavNumber = firstMatch.NavNumber * secondMatch.NavNumber
-            });
+                var nextMatch = matchRepository.Find(match.NextMatchId.Value);
+                if (nextMatch.WinnerId != null)
+                {
+                    throw new Exception("next Match winner don't be setted");
+                }
+
+                if (match.MatchId == nextMatch.PrevFirstMatchId)
+                {
+                    nextMatch.FirstPlayerId = userId;
+                }
+                else if (match.MatchId == nextMatch.PrevSecondMatchId)
+                {
+                    nextMatch.SecondPlayerId = userId;
+                }
+
+                matchRepository.Update(nextMatch);
+            }
+
+            matchRepository.Update(match);
         }
 
         public List<List<MatchDTO>> Get(Guid tournamentId)
@@ -88,17 +122,12 @@ namespace EasyLan.LogicLayer.Services
             var mapper = config.CreateMapper();
             var matches = matchRepository.GetWithInclude(p => p.FirstPlayer, p => p.SecondPlayer, p => p.Winner)
                 .Where(p => p.TournamentId == tournamentId);
-            var result = new List<List<MatchDTO>>();
-            var levelCount = 1;
-            int count;
-            do
-            {
-                count = matches.Count(p => p.Level == levelCount);
-                var filteredMatches = matches.Where(p => p.Level == levelCount).ToList();
-                result.Add(mapper.Map<List<Match>, List<MatchDTO>>(filteredMatches));
-                levelCount++;
-            }
-            while (count > 0);
+
+            var result = matches
+                .GroupBy(m => m.Level)
+                .OrderBy(mGroup => mGroup.Key)
+                .Select(mList => mapper.Map<List<Match>, List<MatchDTO>>(mList.ToList()))
+                .ToList();
 
             return result;
         }

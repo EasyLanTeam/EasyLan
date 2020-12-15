@@ -12,6 +12,9 @@ namespace EasyLan.Web.Models
         public MatchViewModel NextMatch { get; set; }
         public int NavNumber { get; set; }
         public int Level { get; set; }
+        public string PrevFirstMatchId { get; set; }
+        public string PrevSecondMatchId { get; set; }
+        
         public string FirstPlayerId { get; set; }
         public string FirstPlayerName { get; set; }
 

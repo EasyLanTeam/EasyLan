@@ -12,7 +12,7 @@ namespace EasyLan.DataLayer.Interfaces
         List<T> Get(int count, int pageNumber);
         List<T> Get(int count, int pageNumber, Func<T, bool> predicate);
         List<T> Get(Func<T, bool> predicate);
-        void Create(T entity);
+        T Create(T entity);
         void Remove(T entitu);
         void Update(T entity);
         List<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties);

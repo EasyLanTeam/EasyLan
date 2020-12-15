@@ -58,6 +58,7 @@ const renderForm = (
 const getTodayDate = () => new Date(Date.now()).toISOString().split("T")[0];
 
 const formDefaultValues: TournamentFormValues = {
+
   initiatorId: null,
   initiatorFullname: null,
   date: getTodayDate(),
