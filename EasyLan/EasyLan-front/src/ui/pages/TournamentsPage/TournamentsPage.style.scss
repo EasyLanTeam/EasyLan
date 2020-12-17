@@ -65,6 +65,12 @@
   right: 8px;
 }
 
+.tournament-card__initiator {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .time__icon,
 .date__icon,
 .participants__icon {

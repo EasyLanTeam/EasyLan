@@ -1,11 +1,13 @@
 import * as React from "react";
+import cn from "classnames";
 import { TournamentMatch } from "../../../../data/entities/TournamentMatch";
 import { Tournament } from "../../../../data/entities/Tournament";
 import { Match } from "./Match";
 import MatchLine from "./MatchLine";
+import { notifyError, notifySuccess } from "../../../../domain/notify";
+import { useTournament } from "../../../../domain/tournamentContext";
 
 import styles from "./TournamentGrid.style.scss";
-import { notifyError, notifySuccess } from "../../../../domain/notify";
 
 interface ITournamentGridProps {
   tournament: Tournament;
@@ -17,23 +19,6 @@ type GridLayoutData = {
   height: number;
   mapMatchIdToLayoutData: { [key: string]: MatchLayoutData };
 };
-
-function getMatches(tournamentId: string) {
-  return fetch(`/api/Match/GetMatches/${tournamentId}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "*/*",
-    },
-    mode: "cors",
-  }).then((res) => {
-    if (res.status !== 200) {
-      console.error(res.status);
-    }
-
-    return res.json();
-  }) as Promise<TournamentMatch[][]>;
-}
 
 function fillMatchesDict(matches: TournamentMatch[][]) {
   const matchesDict: { [key: string]: TournamentMatch } = {};
@@ -115,13 +100,19 @@ const getGridLayoutData: (matches: TournamentMatch[][]) => GridLayoutData = (
 const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
   tournament,
 }: ITournamentGridProps) => {
-  const [matches, setMatches] = React.useState<TournamentMatch[][]>(null);
-  React.useEffect(() => {
-    let cleanupFunction = false;
-    getMatches(tournament.id).then((m) => setMatches(m));
+  const {
+    matches,
+    updateMatchesFromServer,
+    flags: { isEditable, isPending },
+  } = useTournament();
 
-    return () => (cleanupFunction = true);
-  }, []);
+  if (isPending) {
+    return (
+      <div className={cn(styles.container, styles.containerNoMatches)}>
+        Турнирная сетка будет сформирована после начала турнира
+      </div>
+    );
+  }
 
   if (!matches) {
     return null;
@@ -130,6 +121,8 @@ const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
   const matchesDict = fillMatchesDict(matches);
 
   const onSetWinner = (matchId: string, winnerId: string) => {
+    if (!isEditable) return;
+
     let nextMatch = matchesDict[matchesDict[matchId].nextMatchId];
     while (nextMatch) {
       if (nextMatch.winnerId != null) {
@@ -145,7 +138,7 @@ const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
     setWinner(matchId, winnerId).then((res) => {
       if (res.status === 200) {
         notifySuccess("Изменение успешно");
-        getMatches(tournament.id).then((m) => setMatches(m));
+        updateMatchesFromServer();
       }
     });
   };

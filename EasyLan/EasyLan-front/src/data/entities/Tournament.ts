@@ -7,6 +7,8 @@ export type Tournament = {
   initiatorId?: string;
   // Полное (Публичное) имя организатора
   initiatorFullname: string;
+  // Состояние турнира
+  state: number;
   // Дата и время
   datetime: Date;
   // Место проведения - пример: "Екатеринбург, Первомайская, 28"
@@ -23,6 +25,8 @@ export type Tournament = {
   minParticipants: number;
   // Максимальное число участников
   maxParticipants: number;
+  // Текущее число участников
+  currentNumberOfParticipants: number;
   // Денежный взнос с каждого участника (руб.)
   fee: number;
   // Дополнительная информация

@@ -2,7 +2,6 @@ import * as React from "react";
 import Paper from "../../components/Paper";
 import Button from "../../components/base/Button";
 import { mdiClose, mdiPencil } from "@mdi/js";
-import { ITournamentMainProps } from "./TournamentPage";
 import { useAuth } from "../../../domain/auth/appAuth";
 import TournamentInfo from "./TournamentInfo";
 import Dialog from "../../components/Dialog/Dialog";
@@ -10,14 +9,16 @@ import PleaseLoginToTakePartitionModal from "./PleaseLoginToTakePartitionModal/P
 import TournamentRepository from "../../../data/services/TournamentRepository";
 import { notifyError, notifySuccess } from "../../../domain/notify";
 import { useHistory } from "react-router-dom";
+import { useTournament } from "../../../domain/tournamentContext";
 import { ApiFailureResult } from "../../../data/services/ApiResult";
 
 import styles from "./TournamentPage.style.scss";
 
-export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = ({
-  tournament,
-}: ITournamentMainProps) => {
+interface ITournamentMainProps {}
+
+export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = () => {
   const { user } = useAuth();
+  const { tournament, flags } = useTournament();
   const history = useHistory();
   const [
     openCancelTournamentDialog,
@@ -76,27 +77,60 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = ({
     history.push(`/tournaments/${tournament.id}/update`);
   };
 
-  return (
-    <Paper className={styles.paper}>
-      <TournamentInfo tournament={tournament} />
-      <div className={styles.tournamentMainActions}>
-        {!userRole || userRole === "user" ? (
+  const renderUserActions = () => {
+    const { isTakeParticipation } = flags;
+
+    return !isTakeParticipation ? (
+      <Button
+        variant={"primary"}
+        className={styles.tournamentMainActionsButton}
+        onClick={handleClickTakePartitonButton}
+      >
+        Принять участие
+      </Button>
+    ) : (
+      <Button
+        className={styles.tournamentMainActionsButton}
+        onClick={() => {
+          console.log("отказ");
+        }}
+      >
+        Отказ от участия
+      </Button>
+    );
+  };
+
+  const renderInitiatorActions = () => {
+    const {
+      isPending,
+      isPossibleToFinish,
+      isEditable,
+    } = flags;
+
+    if (!isEditable) {
+      return renderUserActions();
+    }
+
+    return (
+      <>
+        {isPending ? (
           <Button
             variant={"primary"}
             className={styles.tournamentMainActionsButton}
-            onClick={handleClickTakePartitonButton}
+            onClick={handleClickStartTournament}
           >
-            Принять участие
+            Начать турнир
           </Button>
-        ) : (
+        ) : isPossibleToFinish ? (
+          <Button
+            variant={"primary"}
+            className={styles.tournamentMainActionsButton}
+          >
+            Завершить турнир
+          </Button>
+        ) : null}
+        {isPending ? (
           <>
-            <Button
-              variant={"primary"}
-              className={styles.tournamentMainActionsButton}
-              onClick={handleClickStartTournament}
-            >
-              Начать турнир
-            </Button>
             <Button
               icon={{ path: mdiPencil }}
               className={styles.tournamentMainActionsButton}
@@ -112,7 +146,18 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = ({
               Отменить турнир
             </Button>
           </>
-        )}
+        ) : null}
+      </>
+    );
+  };
+
+  return (
+    <Paper className={styles.paper}>
+      <TournamentInfo tournament={tournament} />
+      <div className={styles.tournamentMainActions}>
+        {!userRole || userRole === "user"
+          ? renderUserActions()
+          : renderInitiatorActions()}
       </div>
       <Dialog
         open={openCancelTournamentDialog}

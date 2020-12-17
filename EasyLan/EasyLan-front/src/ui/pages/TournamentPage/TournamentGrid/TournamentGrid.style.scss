@@ -3,6 +3,11 @@
   overflow: auto;
   padding: 0 24px;
   padding-bottom: 76px;
+
+  &--no-matches {
+    font-size: 16px;
+    text-align: center;
+  }
 }
 
 .grid {
@@ -40,7 +45,7 @@
     background-color: rgba($color-primary, 0.35);
 
     &:hover {
-      background-color: rgba($color-primary, 0.50);
+      background-color: rgba($color-primary, 0.5);
     }
 
     &::after {
@@ -93,4 +98,10 @@
   fill: none;
   stroke: $color-text;
   stroke-width: 2px;
+}
+
+@media (min-width: $tablet-width) {
+  .container--no-matches {
+    font-size: 20px;
+  }
 }

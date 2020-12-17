@@ -69,7 +69,7 @@ class RegisterPage extends React.Component<IRegisterPageProps> {
     accountService.create(registerData).then((res) => {
       if (res.success) {
         console.log("ok, user created");
-        toast("Пользователь был успешно создан", { type: "success" });
+        toast("Пользователь был успешно зарегистрирован", { type: "success" });
       } else {
         const { error } = res as ApiFailureResult;
         if (error.error === "LOGIN_ALREADY_USE") {

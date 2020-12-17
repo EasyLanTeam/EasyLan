@@ -22,7 +22,12 @@ export const TournamentCard: React.FunctionComponent<ITournamentCardProps> = ({
           {tournament.game +
             (tournament.gameFormat ? " – " + tournament.gameFormat : "")}
         </div>
-        <div>{mainPrize ? `Главный приз: ${mainPrize}` : "Без призов"}</div>
+        <div>{mainPrize ? `Главный приз: ${mainPrize}` : "Без призов"}</div>{" "}
+        {tournament.initiatorFullname ? (
+          <div
+            className={styles.tournamentCardInitiator}
+          >{`Организатор: ${tournament.initiatorFullname}`}</div>
+        ) : null}
         <div className={styles.tournamentCardDatetime}>
           <div>
             <Icon
@@ -54,7 +59,7 @@ export const TournamentCard: React.FunctionComponent<ITournamentCardProps> = ({
             className={styles.participantsIcon}
           ></Icon>
           <span className={styles.participantsText}>
-            {`${0}/${tournament.maxParticipants}`}
+            {`${tournament.currentNumberOfParticipants}/${tournament.maxParticipants}`}
           </span>
         </div>
       </div>
