@@ -10,5 +10,10 @@ namespace EasyLan.LogicLayer.Interfaces
     {
         Task<List<UserScoreDTO>> GetTopAsync(string region, int count);
         Task<List<UserScoreDTO>> GetTop20Async(string region);
+        /// <summary>
+        /// Sum of all player scores from all regions.
+        /// </summary>
+        /// <returns></returns>
+        Task<List<UserScoreDTO>> GetAllTotals();
     }
 }

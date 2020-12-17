@@ -11,6 +11,7 @@ namespace EasyLan.LogicLayer.Interfaces
         Task CreateAsync(UserScoreDTO userScore);
         Task DeleteAsync(UserScoreDTO userScore);
         Task<UserScoreDTO> ReadAsync(Guid userScoreId);
+        Task<int> GetSumScore(string userId);
         Task UpdateAsync(UserScoreDTO userScore);
         Task<List<UserScoreDTO>> ReadAllAsync();
     }

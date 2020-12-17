@@ -17,6 +17,16 @@
   margin-bottom: 4px;
 }
 
+.avatar_wrapper {
+  width: 200px;
+  height: 200px;
+  margin: auto;
+}
+
+img.avatar {
+  width: 100%;
+}
+
 @media (min-width: $tablet-width) {
   .paper {
     border-radius: 8px;

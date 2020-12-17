@@ -36,7 +36,7 @@ const tablePropsInit: ITableProps = {
 
 const getScores = (): Promise<ApiResult<PlayerScore[]>> => {
   return new Promise<ApiResult<PlayerScore[]>>((resolve, reject) => {
-    fetch("/api/leaderboard/ekb", {
+    fetch("/api/leaderboard/", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

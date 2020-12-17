@@ -26,5 +26,12 @@ namespace EasyLan.LogicLayer.Services
         {
             return (await userScoreService.ReadAllAsync()).Where(x => x.Region == region).OrderByDescending(x => x.Score).Take(count).ToList();
         }
+
+        public async Task<List<UserScoreDTO>> GetAllTotals()
+        {
+            return await userScoreService.ReadAllAsync().ContinueWith(x =>
+                x.Result.GroupBy(x => x.User.Id).Select(x => x.Aggregate((a, b) => new UserScoreDTO { Region = "total", Score = a.Score + b.Score, User = a.User }))
+                .ToList()).ConfigureAwait(false);
+        }
     }
 }

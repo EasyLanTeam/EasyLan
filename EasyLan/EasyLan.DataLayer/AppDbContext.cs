@@ -14,6 +14,7 @@ namespace EasyLan.DataLayer
         public DbSet<PlayerTournament> PlayerTournaments { get; set; }
         public DbSet<UserScore> UserScores { get; set; }
         public DbSet<ClubRequest> ClubRequests { get; set; }
+        public DbSet<PlayerProfile> PlayersProfiles { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
             //Database.EnsureDeleted();
