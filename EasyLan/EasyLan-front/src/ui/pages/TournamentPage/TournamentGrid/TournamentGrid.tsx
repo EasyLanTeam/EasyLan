@@ -102,8 +102,8 @@ const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
 }: ITournamentGridProps) => {
   const {
     matches,
-    updateMatchesFromServer,
-    flags: { isEditable, isPending },
+    updateAllFromServer,
+    flags: { isEditable, isPending, isPossibleToFinish },
   } = useTournament();
 
   if (isPending) {
@@ -138,7 +138,7 @@ const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
     setWinner(matchId, winnerId).then((res) => {
       if (res.status === 200) {
         notifySuccess("Изменение успешно");
-        updateMatchesFromServer();
+        updateAllFromServer();
       }
     });
   };
@@ -147,6 +147,12 @@ const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
 
   return (
     <div className={styles.container}>
+      {isPossibleToFinish ? (
+        <div className={styles.completeMsg}>
+          {`Победитель турнира определен. Для завершения турнира перейдите в
+          раздел "Основное"`}
+        </div>
+      ) : null}
       <div
         className={styles.grid}
         style={{ width: gridLayoutData.width, height: gridLayoutData.height }}

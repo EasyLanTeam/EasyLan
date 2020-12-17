@@ -10,8 +10,6 @@ interface ITournamentParticipantsProps {}
 const TournamentParticipants: React.FunctionComponent<ITournamentParticipantsProps> = () => {
   const { participants } = useTournament();
 
-  console.log(participants);
-
   return (
     <Paper className={styles.paper}>
       <Table>
@@ -27,7 +25,7 @@ const TournamentParticipants: React.FunctionComponent<ITournamentParticipantsPro
             return (
               <Table.Row key={p.userId}>
                 <Table.Cell className={styles.row}>{index}</Table.Cell>
-                <Table.Cell>{p.userId}</Table.Cell>
+                <Table.Cell>{p.username}</Table.Cell>
               </Table.Row>
             );
           })}

@@ -68,12 +68,16 @@ const mapTournamentToFormValues: (
 const UpdateTournamentPage: React.FunctionComponent<IUpdateTournamentPageProps> = ({
   tournament,
 }: IUpdateTournamentPageProps) => {
-  const {flags: {isEditable}} = useTournament();
+  const {
+    flags: { isEditable },
+    updateAllFromServer,
+  } = useTournament();
   const history = useHistory();
 
   const onSubmit = (tournament: Tournament) => {
     if (!isEditable) {
       notifyError("Вы не являетесь организатором. Изменение отклонено");
+      return;
     }
 
     console.log(tournament);
@@ -87,6 +91,8 @@ const UpdateTournamentPage: React.FunctionComponent<IUpdateTournamentPageProps> 
         const { error } = res as ApiFailureResult;
         notifyError(error.error);
       }
+
+      updateAllFromServer();
     });
 
     console.log("submit");

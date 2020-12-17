@@ -61,6 +61,7 @@ interface ITournamentContext {
   updateParticipantsFromServer: () => any;
   matches: TournamentMatch[][];
   updateMatchesFromServer: () => any;
+  updateAllFromServer: () => any;
 }
 
 const TournamentContext = createContext<ITournamentContext>({
@@ -71,6 +72,7 @@ const TournamentContext = createContext<ITournamentContext>({
   updateTournamentFromServer: null,
   updateParticipantsFromServer: null,
   updateMatchesFromServer: null,
+  updateAllFromServer: null,
 });
 
 const getTournamentFlags: (
@@ -89,7 +91,9 @@ const getTournamentFlags: (
   const { state } = tournament;
 
   const isTakeParticipation =
-    participants && userData && participants.find((p) => p.userId == userData.id) != null;
+    participants &&
+    userData &&
+    participants.find((p) => p.userId == userData.id) != null;
 
   const isPossibleToFinish =
     matches &&
@@ -176,6 +180,11 @@ function useProvideTournament() {
       updateParticipantsFromServer(false);
     },
     updateMatchesFromServer: () => {
+      updateMatchesFromServer(false);
+    },
+    updateAllFromServer: () => {
+      updateTournamentFromServer(false);
+      updateParticipantsFromServer(false);
       updateMatchesFromServer(false);
     },
   };

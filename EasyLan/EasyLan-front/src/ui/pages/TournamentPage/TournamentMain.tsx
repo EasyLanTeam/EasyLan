@@ -18,7 +18,7 @@ interface ITournamentMainProps {}
 
 export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = () => {
   const { user } = useAuth();
-  const { tournament, flags } = useTournament();
+  const { tournament, updateAllFromServer, flags } = useTournament();
   const history = useHistory();
   const [
     openCancelTournamentDialog,
@@ -28,7 +28,6 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = () 
     openLoginToTakePatiotionModal,
     setOpenLoginToTakePatiotionModal,
   ] = React.useState(false);
-  const userRole = user && user.role;
 
   const handleClickCancelTournamentButton = () => {
     setOpenCancelTournamentDialog(true);
@@ -46,6 +45,8 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = () 
           const { error } = res as ApiFailureResult;
           notifyError(error.error);
         }
+
+        updateAllFromServer();
       });
     }
   };
@@ -70,7 +71,56 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = () 
   };
 
   const handleClickStartTournament = () => {
-    console.log("start");
+    const isPossibleToStart = tournament.currentNumberOfParticipants >= 2;
+    if (!isPossibleToStart) {
+      notifyError(
+        "Невозможно начать турнир. Количество участников должно быть больше одного"
+      );
+
+      return;
+    }
+
+    const rep = new TournamentRepository();
+
+    rep.startTournament(tournament.id).then((res) => {
+      if (res.success) {
+        notifySuccess("Турнир открыт");
+      } else {
+        const { error } = res as ApiFailureResult;
+        notifyError(error.error);
+      }
+
+      updateAllFromServer();
+    });
+  };
+
+  const handleClickFinishTournament = () => {
+    const rep = new TournamentRepository();
+
+    rep.finishTournament(tournament.id).then((res) => {
+      if (res.success) {
+        notifySuccess("Турнир успешно завершен");
+      } else {
+        const { error } = res as ApiFailureResult;
+        notifyError(error.error);
+      }
+
+      updateAllFromServer();
+    });
+  };
+
+  const handleClickUndoTakePartition = () => {
+    const rep = new TournamentRepository();
+    rep.undoTakePartition(tournament.id).then((res) => {
+      if (res.success) {
+        notifySuccess("Вы отказались от участия");
+      } else {
+        const { error } = res as ApiFailureResult;
+        notifyError(error.error);
+      }
+
+      updateAllFromServer();
+    });
   };
 
   const handleClickUpdateTournament = () => {
@@ -91,9 +141,7 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = () 
     ) : (
       <Button
         className={styles.tournamentMainActionsButton}
-        onClick={() => {
-          console.log("отказ");
-        }}
+        onClick={handleClickUndoTakePartition}
       >
         Отказ от участия
       </Button>
@@ -101,11 +149,7 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = () 
   };
 
   const renderInitiatorActions = () => {
-    const {
-      isPending,
-      isPossibleToFinish,
-      isEditable,
-    } = flags;
+    const { isPending, isPossibleToFinish, isEditable } = flags;
 
     if (!isEditable) {
       return renderUserActions();
@@ -125,6 +169,7 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = () 
           <Button
             variant={"primary"}
             className={styles.tournamentMainActionsButton}
+            onClick={handleClickFinishTournament}
           >
             Завершить турнир
           </Button>
@@ -155,9 +200,7 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = () 
     <Paper className={styles.paper}>
       <TournamentInfo tournament={tournament} />
       <div className={styles.tournamentMainActions}>
-        {!userRole || userRole === "user"
-          ? renderUserActions()
-          : renderInitiatorActions()}
+        {renderInitiatorActions()}
       </div>
       <Dialog
         open={openCancelTournamentDialog}

@@ -65,6 +65,32 @@ namespace EasyLan.DataLayer
             dbContext.SaveChanges();
         }
 
+        public List<T> GetPageWithInclude(int count, int pageNumber, Func<T, bool> predicate, 
+            params Expression<Func<T, object>>[] includeProperties)
+        {
+            return Include(includeProperties)
+                .Skip((pageNumber - 1)* count)
+                .Take(count)
+                .Where(predicate)
+                .ToList();
+        }
+        
+        public List<T> GetPageWithInclude(int count, int pageNumber,
+            params Expression<Func<T, object>>[] includeProperties)
+        {
+            return Include(includeProperties)
+                .Skip((pageNumber - 1)* count)
+                .Take(count)
+                .ToList();
+        }
+        
+        public List<T> GetWithInclude(Func<T, bool> predicate, params Expression<Func<T, object>>[] includeProperties)
+        {
+            return Include(includeProperties)
+                .Where(predicate)
+                .ToList();
+        }
+        
         public List<T> GetWithInclude(params Expression<Func<T, object>>[] includeProperties)
         {
             return Include(includeProperties).ToList();

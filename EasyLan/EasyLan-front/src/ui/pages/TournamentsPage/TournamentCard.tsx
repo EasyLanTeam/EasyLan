@@ -13,7 +13,7 @@ interface ITournamentCardProps {
 export const TournamentCard: React.FunctionComponent<ITournamentCardProps> = ({
   tournament,
 }: ITournamentCardProps) => {
-  const mainPrize = tournament.prizes && tournament.prizes[0];
+  const mainPrize = tournament.prizes && tournament.prizes.find(p => p.place === 1);
 
   return (
     <div className={styles.tournamentCard}>
@@ -22,7 +22,7 @@ export const TournamentCard: React.FunctionComponent<ITournamentCardProps> = ({
           {tournament.game +
             (tournament.gameFormat ? " – " + tournament.gameFormat : "")}
         </div>
-        <div>{mainPrize ? `Главный приз: ${mainPrize}` : "Без призов"}</div>{" "}
+        <div>{mainPrize ? `Главный приз: ${mainPrize.prize}` : "Без призов"}</div>{" "}
         {tournament.initiatorFullname ? (
           <div
             className={styles.tournamentCardInitiator}

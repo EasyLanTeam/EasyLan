@@ -49,8 +49,16 @@ namespace EasyLan.LogicLayer.Services
         public List<TournamentDTO> Get(int count, int page)
         {
             var mapper = config.CreateMapper();
-            var tournaments = repository.Get(count, page);
-            return mapper.Map<List<Tournament>, List<TournamentDTO>>(tournaments);
+            var tournaments = repository.GetPageWithInclude(count, page, t => t.Prizes, t => t.Players);
+            return tournaments
+                .Select(tournament =>
+                {
+                    var tournamentDto = mapper.Map<Tournament, TournamentDTO>(tournament);
+                    tournamentDto.CurrentNumberOfParticipants = tournament.Players.Count();
+                    tournamentDto.Prizes = mapper.Map<List<Prize>, List<PrizeDTO>>(tournament.Prizes);
+
+                    return tournamentDto;
+                }).ToList();
         }
 
         public TournamentDTO Find(Guid id)
@@ -120,9 +128,15 @@ namespace EasyLan.LogicLayer.Services
             if (tournament == null)
                 throw new Exception($"don't find tournament with id: {tournamentId}");
 
-            var players = playerTournamentRepository.Get(p => p.TournamentId == tournamentId);
+            var players = playerTournamentRepository.GetWithInclude(p => p.TournamentId == tournamentId, p => p.User);
 
-            return mapper.Map<List<PlayerTournament>, List<PlayerTournamentDTO>>(players);
+            return players.Select(p =>
+            {
+                var playerDto = mapper.Map<PlayerTournament, PlayerTournamentDTO>(p);
+                playerDto.Username = p.User.UserName;
+
+                return playerDto;
+            }).ToList();
         }
 
         public void Start(Guid id)

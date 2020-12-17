@@ -244,9 +244,63 @@ export default class TournamentRepository implements ITournamentService {
     );
   }
 
+  undoTakePartition(tournamentId: string): Promise<ApiResult<void>> {
+    return new Promise<ApiResult<void>>((resolve, reject) => {
+      fetch(`/api/Tournament/UndoTakePart/${tournamentId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+        },
+        mode: "cors",
+      })
+        .then((res) => {
+          if (res.status !== 200) {
+            return reject(ApiError(`Ошибка сервера, ${res.status}`));
+          }
+
+          return resolve(ApiSuccessResult());
+        })
+        .catch((e) => {
+          console.error(e);
+          return reject(ApiError("Ошибка клиента"));
+        });
+    }).then(
+      (successResult: ApiSuccessResult<void>) => successResult,
+      (error: ApiFailureResult) => error
+    );
+  }
+
   startTournament(tournamentId: string): Promise<ApiResult<void>> {
     return new Promise<ApiResult<void>>((resolve, reject) => {
       fetch(`/api/Tournament/Start/${tournamentId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "*/*",
+        },
+        mode: "cors",
+      })
+        .then((res) => {
+          if (res.status !== 200) {
+            return reject(ApiError(`Ошибка сервера, ${res.status}`));
+          }
+
+          return resolve(ApiSuccessResult());
+        })
+        .catch((e) => {
+          console.error(e);
+          return reject(ApiError("Ошибка клиента"));
+        });
+    }).then(
+      (successResult: ApiSuccessResult<void>) => successResult,
+      (error: ApiFailureResult) => error
+    );
+  }
+
+  finishTournament(tournamentId: string): Promise<ApiResult<void>> {
+    return new Promise<ApiResult<void>>((resolve, reject) => {
+      fetch(`/api/Tournament/Finish/${tournamentId}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
