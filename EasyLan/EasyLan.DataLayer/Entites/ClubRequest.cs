@@ -18,5 +18,8 @@ namespace EasyLan.DataLayer.Entites
         public string PhoneNumber { get; set; }
         public Status Status { get; set; }
         public bool IsCompleted { get; set; }
+
+        public string UserName { get; set; }
+        public string Password { get; set; }
     }
 }

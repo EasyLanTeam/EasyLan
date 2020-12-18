@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EasyLan.LogicLayer.DTOs;
 using EasyLan.LogicLayer.Interfaces;
 using EasyLan.Web.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EasyLan.Web.Controllers
@@ -12,9 +13,11 @@ namespace EasyLan.Web.Controllers
     public class ClubController : Controller
     {
         IClubService clubService;
-        public ClubController(IClubService clubService)
+        UserManager<IdentityUser> userManager;
+        public ClubController(IClubService clubService, UserManager<IdentityUser> userManager)
         {
             this.clubService = clubService;
+            this.userManager = userManager;
         }
 
         [HttpGet]
@@ -33,6 +36,8 @@ namespace EasyLan.Web.Controllers
                 Address = feedbackForm.Address,
                 Name = feedbackForm.Name,
                 PhoneNumber = feedbackForm.PhoneNumber,
+                Password = feedbackForm.Password, 
+                UserName = feedbackForm.UserName,                
             });
 
             return "Ok";
