@@ -1,11 +1,13 @@
 import * as React from "react";
+import cn from "classnames";
 import { TournamentMatch } from "../../../../data/entities/TournamentMatch";
 import { Tournament } from "../../../../data/entities/Tournament";
 import { Match } from "./Match";
 import MatchLine from "./MatchLine";
+import { notifyError, notifySuccess } from "../../../../domain/notify";
+import { useTournament } from "../../../../domain/tournamentContext";
 
 import styles from "./TournamentGrid.style.scss";
-import { notifyError, notifySuccess } from "../../../../domain/notify";
 
 interface ITournamentGridProps {
   tournament: Tournament;
@@ -17,23 +19,6 @@ type GridLayoutData = {
   height: number;
   mapMatchIdToLayoutData: { [key: string]: MatchLayoutData };
 };
-
-function getMatches(tournamentId: string) {
-  return fetch(`/api/Match/GetMatches/${tournamentId}`, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Accept: "*/*",
-    },
-    mode: "cors",
-  }).then((res) => {
-    if (res.status !== 200) {
-      console.error(res.status);
-    }
-
-    return res.json();
-  }) as Promise<TournamentMatch[][]>;
-}
 
 function fillMatchesDict(matches: TournamentMatch[][]) {
   const matchesDict: { [key: string]: TournamentMatch } = {};
@@ -115,13 +100,20 @@ const getGridLayoutData: (matches: TournamentMatch[][]) => GridLayoutData = (
 const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
   tournament,
 }: ITournamentGridProps) => {
-  const [matches, setMatches] = React.useState<TournamentMatch[][]>(null);
-  React.useEffect(() => {
-    let cleanupFunction = false;
-    getMatches(tournament.id).then((m) => setMatches(m));
+  const {
+    matches,
+    updateAllFromServer,
+    flags: { isEditable, isPending, isPossibleToFinish, isFinished },
+  } = useTournament();
+  const [possibleEditGrid, setPossibleEditGrid] = React.useState(true);
 
-    return () => (cleanupFunction = true);
-  }, []);
+  if (isPending) {
+    return (
+      <div className={cn(styles.container, styles.containerNoMatches)}>
+        Турнирная сетка будет сформирована после начала турнира
+      </div>
+    );
+  }
 
   if (!matches) {
     return null;
@@ -130,6 +122,9 @@ const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
   const matchesDict = fillMatchesDict(matches);
 
   const onSetWinner = (matchId: string, winnerId: string) => {
+    if (!isEditable || isFinished || !possibleEditGrid) return;
+    setPossibleEditGrid(false);
+
     let nextMatch = matchesDict[matchesDict[matchId].nextMatchId];
     while (nextMatch) {
       if (nextMatch.winnerId != null) {
@@ -142,55 +137,67 @@ const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
       nextMatch = matchesDict[nextMatch.nextMatchId];
     }
 
-    setWinner(matchId, winnerId).then((res) => {
-      if (res.status === 200) {
-        notifySuccess("Изменение успешно");
-        getMatches(tournament.id).then((m) => setMatches(m));
-      }
-    });
+    setWinner(matchId, winnerId)
+      .then((res) => {
+        if (res.status === 200) {
+          notifySuccess("Изменение успешно");
+          updateAllFromServer();
+        }
+      })
+      .then(() => {
+        setPossibleEditGrid(true);
+      });
   };
 
   const gridLayoutData = getGridLayoutData(matches);
 
   return (
-    <div className={styles.container}>
-      <div
-        className={styles.grid}
-        style={{ width: gridLayoutData.width, height: gridLayoutData.height }}
-      >
-        {matches.map((matchesList) => {
-          return matchesList
-            .sort((m1, m2) => m1.navNumber - m2.navNumber)
-            .map((match) => {
-              const { xPos, yPos } = gridLayoutData.mapMatchIdToLayoutData[
-                match.matchId
-              ];
-              const nextMatchLayoutData =
-                match.nextMatchId &&
-                gridLayoutData.mapMatchIdToLayoutData[match.nextMatchId];
+    <>
+      {isPossibleToFinish && !isFinished ? (
+        <div className={styles.completeMsg}>
+          {`Победитель турнира определен. Для завершения турнира перейдите в
+          раздел "Основное"`}
+        </div>
+      ) : null}
+      <div className={styles.container}>
+        <div
+          className={styles.grid}
+          style={{ width: gridLayoutData.width, height: gridLayoutData.height }}
+        >
+          {matches.map((matchesList) => {
+            return matchesList
+              .sort((m1, m2) => m1.navNumber - m2.navNumber)
+              .map((match) => {
+                const { xPos, yPos } = gridLayoutData.mapMatchIdToLayoutData[
+                  match.matchId
+                ];
+                const nextMatchLayoutData =
+                  match.nextMatchId &&
+                  gridLayoutData.mapMatchIdToLayoutData[match.nextMatchId];
 
-              return (
-                <div key={match.matchId}>
-                  {nextMatchLayoutData ? (
-                    <MatchLine
-                      startPosX={xPos + MATCH_WIDTH}
-                      startPosY={yPos + MATCH_HEIGHT / 2}
-                      endPosX={nextMatchLayoutData.xPos}
-                      endPosY={nextMatchLayoutData.yPos + MATCH_HEIGHT / 2}
+                return (
+                  <div key={match.matchId}>
+                    {nextMatchLayoutData ? (
+                      <MatchLine
+                        startPosX={xPos + MATCH_WIDTH}
+                        startPosY={yPos + MATCH_HEIGHT / 2}
+                        endPosX={nextMatchLayoutData.xPos}
+                        endPosY={nextMatchLayoutData.yPos + MATCH_HEIGHT / 2}
+                      />
+                    ) : null}
+                    <Match
+                      match={match}
+                      xPos={xPos}
+                      yPos={yPos}
+                      onSetWinner={onSetWinner}
                     />
-                  ) : null}
-                  <Match
-                    match={match}
-                    xPos={xPos}
-                    yPos={yPos}
-                    onSetWinner={onSetWinner}
-                  />
-                </div>
-              );
-            });
-        })}
+                  </div>
+                );
+              });
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

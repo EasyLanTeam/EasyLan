@@ -2,7 +2,6 @@ import * as React from "react";
 import Paper from "../../components/Paper";
 import Button from "../../components/base/Button";
 import { mdiClose, mdiPencil } from "@mdi/js";
-import { ITournamentMainProps } from "./TournamentPage";
 import { useAuth } from "../../../domain/auth/appAuth";
 import TournamentInfo from "./TournamentInfo";
 import Dialog from "../../components/Dialog/Dialog";
@@ -10,14 +9,16 @@ import PleaseLoginToTakePartitionModal from "./PleaseLoginToTakePartitionModal/P
 import TournamentRepository from "../../../data/services/TournamentRepository";
 import { notifyError, notifySuccess } from "../../../domain/notify";
 import { useHistory } from "react-router-dom";
+import { useTournament } from "../../../domain/tournamentContext";
 import { ApiFailureResult } from "../../../data/services/ApiResult";
 
 import styles from "./TournamentPage.style.scss";
 
-export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = ({
-  tournament,
-}: ITournamentMainProps) => {
+interface ITournamentMainProps {}
+
+export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = () => {
   const { user } = useAuth();
+  const { tournament, updateAllFromServer, flags } = useTournament();
   const history = useHistory();
   const [
     openCancelTournamentDialog,
@@ -27,7 +28,6 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = ({
     openLoginToTakePatiotionModal,
     setOpenLoginToTakePatiotionModal,
   ] = React.useState(false);
-  const userRole = user && user.role;
 
   const handleClickCancelTournamentButton = () => {
     setOpenCancelTournamentDialog(true);
@@ -45,6 +45,8 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = ({
           const { error } = res as ApiFailureResult;
           notifyError(error.error);
         }
+
+        updateAllFromServer();
       });
     }
   };
@@ -69,34 +71,111 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = ({
   };
 
   const handleClickStartTournament = () => {
-    console.log("start");
+    const isPossibleToStart = tournament.currentNumberOfParticipants >= 2;
+    if (!isPossibleToStart) {
+      notifyError(
+        "Невозможно начать турнир. Количество участников должно быть больше одного"
+      );
+
+      return;
+    }
+
+    const rep = new TournamentRepository();
+
+    rep.startTournament(tournament.id).then((res) => {
+      if (res.success) {
+        notifySuccess("Турнир открыт");
+      } else {
+        const { error } = res as ApiFailureResult;
+        notifyError(error.error);
+      }
+
+      updateAllFromServer();
+    });
+  };
+
+  const handleClickFinishTournament = () => {
+    const rep = new TournamentRepository();
+
+    rep.finishTournament(tournament.id).then((res) => {
+      if (res.success) {
+        notifySuccess("Турнир успешно завершен");
+      } else {
+        const { error } = res as ApiFailureResult;
+        notifyError(error.error);
+      }
+
+      updateAllFromServer();
+    });
+  };
+
+  const handleClickUndoTakePartition = () => {
+    const rep = new TournamentRepository();
+    rep.undoTakePartition(tournament.id).then((res) => {
+      if (res.success) {
+        notifySuccess("Вы отказались от участия");
+      } else {
+        const { error } = res as ApiFailureResult;
+        notifyError(error.error);
+      }
+
+      updateAllFromServer();
+    });
   };
 
   const handleClickUpdateTournament = () => {
     history.push(`/tournaments/${tournament.id}/update`);
   };
 
-  return (
-    <Paper className={styles.paper}>
-      <TournamentInfo tournament={tournament} />
-      <div className={styles.tournamentMainActions}>
-        {!userRole || userRole === "user" ? (
+  const renderUserActions = () => {
+    const { isTakeParticipation, isPending } = flags;
+
+    return !isTakeParticipation ? (
+      <Button
+        variant={"primary"}
+        className={styles.tournamentMainActionsButton}
+        onClick={handleClickTakePartitonButton}
+      >
+        Принять участие
+      </Button>
+    ) : isPending ? (
+      <Button
+        className={styles.tournamentMainActionsButton}
+        onClick={handleClickUndoTakePartition}
+      >
+        Отказ от участия
+      </Button>
+    ) : null;
+  };
+
+  const renderInitiatorActions = () => {
+    const { isPending, isPossibleToFinish, isEditable, isFinished } = flags;
+
+    if (!isEditable) {
+      return renderUserActions();
+    }
+
+    return (
+      <>
+        {isPending ? (
           <Button
             variant={"primary"}
             className={styles.tournamentMainActionsButton}
-            onClick={handleClickTakePartitonButton}
+            onClick={handleClickStartTournament}
           >
-            Принять участие
+            Начать турнир
           </Button>
-        ) : (
+        ) : isPossibleToFinish && !isFinished ? (
+          <Button
+            variant={"primary"}
+            className={styles.tournamentMainActionsButton}
+            onClick={handleClickFinishTournament}
+          >
+            Завершить турнир
+          </Button>
+        ) : null}
+        {isPending ? (
           <>
-            <Button
-              variant={"primary"}
-              className={styles.tournamentMainActionsButton}
-              onClick={handleClickStartTournament}
-            >
-              Начать турнир
-            </Button>
             <Button
               icon={{ path: mdiPencil }}
               className={styles.tournamentMainActionsButton}
@@ -112,7 +191,16 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = ({
               Отменить турнир
             </Button>
           </>
-        )}
+        ) : null}
+      </>
+    );
+  };
+
+  return (
+    <Paper className={styles.paper}>
+      <TournamentInfo />
+      <div className={styles.tournamentMainActions}>
+        {renderInitiatorActions()}
       </div>
       <Dialog
         open={openCancelTournamentDialog}

@@ -56,6 +56,28 @@ namespace EasyLan.Web.Controllers
             return mapper.Map<List<TournamentDTO>, List<TournamentViewModel>>(tournaments);
         }
 
+        [HttpGet("[action]")]
+        public IActionResult GetAllByUser()
+        {
+            var user = userManager.GetUserAsync(User).Result;
+            if (user == null)
+            {
+                return BadRequest();
+            }
+
+            var mapper = config.CreateMapper();
+            var tournaments = tournamentService.Get(25, 1)
+                .Where(t =>
+                {
+                    var players = tournamentService.GetAllPlayersFromTournament(t.TournamentId);
+                    var hasUserInPlayers = players.FirstOrDefault(p => p.UserId == user.Id) != null;
+                    return t.InitiatorId == user.Id || hasUserInPlayers;
+                })
+                .ToList();
+            // var tournaments = tournamentService.Get(pagingParameters.PageSize, pagingParameters.PageNumber);
+            return new JsonResult(mapper.Map<List<TournamentDTO>, List<TournamentViewModel>>(tournaments));
+        }
+
         // GET api/<TournamentController>/5
         [HttpGet("{id}")]
         public IActionResult Get(Guid id)
@@ -112,7 +134,7 @@ namespace EasyLan.Web.Controllers
             var user = userManager.GetUserAsync(User).Result;
             tournamentService.AddUserToTournament(user.Id, id);
         }
-        
+
         [Authorize]
         [HttpPost("[action]/{id}")]
         public void UndoTakePart(Guid id)
@@ -120,14 +142,14 @@ namespace EasyLan.Web.Controllers
             var user = userManager.GetUserAsync(User).Result;
             tournamentService.RemoveUserFromTournament(user.Id, id);
         }
-        
+
         [Authorize]
         [HttpGet("[action]/{id}")]
         public List<PlayerTournamentDTO> GetParticipants(Guid id)
         {
             return tournamentService.GetAllPlayersFromTournament(id);
         }
-        
+
         /// <summary>
         /// Для удобства при разработке
         /// </summary>
@@ -149,7 +171,8 @@ namespace EasyLan.Web.Controllers
         {
             var tournament = tournamentService.Find(id);
             dbContext.Matches.RemoveRange(await dbContext.Matches.Where(m => m.TournamentId == id).ToArrayAsync());
-            dbContext.PlayerTournaments.RemoveRange(await dbContext.PlayerTournaments.Where(m => m.TournamentId == id).ToArrayAsync());
+            dbContext.PlayerTournaments.RemoveRange(await dbContext.PlayerTournaments.Where(m => m.TournamentId == id)
+                .ToArrayAsync());
             await dbContext.SaveChangesAsync();
 
             var users = await dbContext.Users
@@ -171,8 +194,8 @@ namespace EasyLan.Web.Controllers
         {
             tournamentService.Start(id);
             return Ok();
-        }        
-        
+        }
+
         [HttpPost("[action]/{id}")]
         public IActionResult Finish(Guid id)
         {

@@ -1,16 +1,14 @@
 import * as React from "react";
 import { Tournament } from "../../../data/entities/Tournament";
 import TournamentRepository from "../../../data/services/TournamentRepository";
-import { useAuth } from "../../../domain/auth/appAuth";
 import TournamentForm from "../../components/TournamentForm/TournamentForm";
 import Paper from "../../components/Paper";
 import { notifyError, notifySuccess } from "../../../domain/notify";
 import { useHistory } from "react-router-dom";
+import { useTournament } from "../../../domain/tournamentContext";
 import { TournamentFormValues } from "../../components/TournamentForm/TournamentFormValues";
 import dayjs from "dayjs";
 import { ApiFailureResult } from "../../../data/services/ApiResult";
-
-// import styles from "./CreateTournamentPage.style.scss";
 
 interface IUpdateTournamentPageProps {
   tournament: Tournament;
@@ -70,12 +68,16 @@ const mapTournamentToFormValues: (
 const UpdateTournamentPage: React.FunctionComponent<IUpdateTournamentPageProps> = ({
   tournament,
 }: IUpdateTournamentPageProps) => {
-  const auth = useAuth();
+  const {
+    flags: { isEditable },
+    updateAllFromServer,
+  } = useTournament();
   const history = useHistory();
 
   const onSubmit = (tournament: Tournament) => {
-    if (auth.user && auth.user.id !== tournament.initiatorId) {
+    if (!isEditable) {
       notifyError("Вы не являетесь организатором. Изменение отклонено");
+      return;
     }
 
     console.log(tournament);
@@ -89,6 +91,8 @@ const UpdateTournamentPage: React.FunctionComponent<IUpdateTournamentPageProps> 
         const { error } = res as ApiFailureResult;
         notifyError(error.error);
       }
+
+      updateAllFromServer();
     });
 
     console.log("submit");
