@@ -34,7 +34,7 @@ export class ContentTitleButton extends React.PureComponent<IContentTitleButtonP
           animation={{ y: 30, opacity: 0, type: "from", delay: 300 }}
         >
           <Button type="primary" className="">
-            <a className="button" href=".">
+            <a className="button" href="/club">
               {"Связаться"}
             </a>
           </Button>
