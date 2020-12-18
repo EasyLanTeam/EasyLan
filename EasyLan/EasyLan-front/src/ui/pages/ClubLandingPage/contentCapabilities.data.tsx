@@ -7,7 +7,7 @@ export const ContentProductDataSource = {
     children: [
       {
         name: "title",
-        children: "Lorem ipsum dolor sit.",
+        children: "Каким образом? Да-к вот же",
         className: "title-h1",
       },
     ],
@@ -24,13 +24,13 @@ export const ContentProductDataSource = {
           icon: {
             className: "content3-icon",
             children:
-              "https://zos.alipayobjects.com/rmsportal/ScHBSdwpTkAHZkJ.png",
+              "https://www.flaticon.com/svg/static/icons/svg/3798/3798294.svg",
           },
           textWrapper: { className: "content3-text" },
-          title: { className: "content3-title", children: "Lorem." },
+          title: { className: "content3-title", children: "Это просто!" },
           content: {
             className: "content3-content",
-            children: "Lorem ipsum dolor sit amet.",
+            children: "Организация мероприятия в один клик! С нашим сервисом нужно минимум усилий. Игроки сами собирутся на нашем сайте.",
           },
         },
       },
@@ -43,14 +43,14 @@ export const ContentProductDataSource = {
           icon: {
             className: "content3-icon",
             children:
-              "https://zos.alipayobjects.com/rmsportal/NKBELAOuuKbofDD.png",
+              "https://www.flaticon.com/premium-icon/icons/svg/839/839389.svg",
           },
           textWrapper: { className: "content3-text" },
-          title: { className: "content3-title", children: "Lorem, ipsum." },
+          title: { className: "content3-title", children: "Прозрачность" },
           content: {
             className: "content3-content",
             children:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat consequatur quo adipisci eius, ullam mollitia fugit nihil incidunt praesentium delectus.",
+              "Игроки, время, проведение, призы, доходы и тд и тп. Все на сайте. Зашел, чекнул, пошел по делам.",
           },
         },
       },
@@ -63,82 +63,82 @@ export const ContentProductDataSource = {
           icon: {
             className: "content3-icon",
             children:
-              "https://zos.alipayobjects.com/rmsportal/xMSBjgxBhKfyMWX.png",
+              "https://www.flaticon.com/svg/static/icons/svg/3269/3269691.svg",
           },
           textWrapper: { className: "content3-text" },
           title: {
             className: "content3-title",
-            children: "Lorem ipsum dolor sit.",
+            children: "Расписание",
           },
           content: {
             className: "content3-content",
             children:
-              "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tenetur sapiente mollitia velit cupiditate consequatur ipsam magnam, ut aliquam repellendus officiis. Ab maiores tenetur similique numquam cumque vitae pariatur, earum ex!",
+              "Днем никого нет? Игроки днем мало платят? Проводите днем турнир, не снижайте тарифы на компьютеры.",
           },
         },
       },
-      {
-        name: "block3",
-        className: "content3-block",
-        md: 8,
-        xs: 24,
-        children: {
-          icon: {
-            className: "content3-icon",
-            children:
-              "https://zos.alipayobjects.com/rmsportal/MNdlBNhmDBLuzqp.png",
-          },
-          textWrapper: { className: "content3-text" },
-          title: { className: "content3-title", children: "Lorem ipsum dolor sit amet consectetur." },
-          content: {
-            className: "content3-content",
-            children:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, voluptatum!",
-          },
-        },
-      },
-      {
-        name: "block4",
-        className: "content3-block",
-        md: 8,
-        xs: 24,
-        children: {
-          icon: {
-            className: "content3-icon",
-            children:
-              "https://zos.alipayobjects.com/rmsportal/UsUmoBRyLvkIQeO.png",
-          },
-          textWrapper: { className: "content3-text" },
-          title: { className: "content3-title", children: "Lorem." },
-          content: {
-            className: "content3-content",
-            children: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro vel totam in optio, inventore quos.",
-          },
-        },
-      },
-      {
-        name: "block5",
-        className: "content3-block",
-        md: 8,
-        xs: 24,
-        children: {
-          icon: {
-            className: "content3-icon",
-            children:
-              "https://zos.alipayobjects.com/rmsportal/ipwaQLBLflRfUrg.png",
-          },
-          textWrapper: { className: "content3-text" },
-          title: {
-            className: "content3-title",
-            children: "Lorem ipsum dolor sit amet.",
-          },
-          content: {
-            className: "content3-content",
-            children:
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt amet doloribus cupiditate earum minima autem nostrum similique ducimus fugiat nobis.",
-          },
-        },
-      },
+      // {
+      //   name: "block3",
+      //   className: "content3-block",
+      //   md: 8,
+      //   xs: 24,
+      //   children: {
+      //     icon: {
+      //       className: "content3-icon",
+      //       children:
+      //         "https://zos.alipayobjects.com/rmsportal/MNdlBNhmDBLuzqp.png",
+      //     },
+      //     textWrapper: { className: "content3-text" },
+      //     title: { className: "content3-title", children: "Lorem ipsum dolor sit amet consectetur." },
+      //     content: {
+      //       className: "content3-content",
+      //       children:
+      //         "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, voluptatum!",
+      //     },
+      //   },
+      // },
+      // {
+      //   name: "block4",
+      //   className: "content3-block",
+      //   md: 8,
+      //   xs: 24,
+      //   children: {
+      //     icon: {
+      //       className: "content3-icon",
+      //       children:
+      //         "https://zos.alipayobjects.com/rmsportal/UsUmoBRyLvkIQeO.png",
+      //     },
+      //     textWrapper: { className: "content3-text" },
+      //     title: { className: "content3-title", children: "Lorem." },
+      //     content: {
+      //       className: "content3-content",
+      //       children: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro vel totam in optio, inventore quos.",
+      //     },
+      //   },
+      // },
+      // {
+      //   name: "block5",
+      //   className: "content3-block",
+      //   md: 8,
+      //   xs: 24,
+      //   children: {
+      //     icon: {
+      //       className: "content3-icon",
+      //       children:
+      //         "https://zos.alipayobjects.com/rmsportal/ipwaQLBLflRfUrg.png",
+      //     },
+      //     textWrapper: { className: "content3-text" },
+      //     title: {
+      //       className: "content3-title",
+      //       children: "Lorem ipsum dolor sit amet.",
+      //     },
+      //     content: {
+      //       className: "content3-content",
+      //       children:
+      //         "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt amet doloribus cupiditate earum minima autem nostrum similique ducimus fugiat nobis.",
+      //     },
+      //   },
+      // },
     ],
   },
 };

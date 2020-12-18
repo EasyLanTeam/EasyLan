@@ -4,7 +4,7 @@ export const ContentAdvantagesData = {
   OverPack: { playScale: 0.3, className: "" },
   titleWrapper: {
     className: "title-wrapper",
-    children: [{ name: "title", children: "Lorem." }],
+    children: [{ name: "title", children: "Что мы даем" }],
   },
   childWrapper: {
     className: "content0-block-wrapper",
@@ -21,14 +21,14 @@ export const ContentAdvantagesData = {
               name: "image",
               className: "content0-block-icon",
               children:
-                "https://zos.alipayobjects.com/rmsportal/WBnVOjtIlGWbzyQivuyq.png",
+                "https://www.flaticon.com/svg/static/icons/svg/3921/3921928.svg",
             },
             {
               name: "title",
               className: "content0-block-title",
-              children: "Lorem, ipsum.",
+              children: "Долой простой!",
             },
-            { name: "content", children: "Lorem, ipsum dolor." },
+            { name: "content", children: "Днем мало игроков? Ну так это решаемо!" },
           ],
         },
       },
@@ -44,16 +44,16 @@ export const ContentAdvantagesData = {
               name: "image",
               className: "content0-block-icon",
               children:
-                "https://zos.alipayobjects.com/rmsportal/YPMsLQuCEXtuEkmXTTdk.png",
+                "https://www.flaticon.com/svg/static/icons/svg/3921/3921928.svg",
             },
             {
               name: "title",
               className: "content0-block-title",
-              children: "Lorem, ipsum.",
+              children: "Увеличьте свои тарифы",
             },
             {
               name: "content",
-              children: "Lorem ipsum dolor sit amet.",
+              children: "Мероприятия стоят дороже!",
             },
           ],
         },
@@ -70,16 +70,16 @@ export const ContentAdvantagesData = {
               name: "image",
               className: "content0-block-icon",
               children:
-                "https://zos.alipayobjects.com/rmsportal/EkXWVvAaFJKCzhMmQYiX.png",
+                "https://www.flaticon.com/svg/static/icons/svg/3921/3921928.svg",
             },
             {
               name: "title",
               className: "content0-block-title",
-              children: "Lorem, ipsum.",
+              children: "Плюс реп",
             },
             {
               name: "content",
-              children: "Lorem, ipsum.",
+              children: "Вложитесь в игровую индустрию - станьте популярнее.",
             },
           ],
         },

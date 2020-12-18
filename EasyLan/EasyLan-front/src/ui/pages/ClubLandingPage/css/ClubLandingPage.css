@@ -193,8 +193,8 @@
     padding-bottom: 0;
   }
 }
-.content12-wrapper {
-  /* background-color: #fafafa; */
+/* .content12-wrapper {
+  //background-color: #fafafa;
   min-height: 470px;
 }
 .content12-wrapper .content12 {
@@ -239,7 +239,7 @@
   .content12-wrapper .content12 ul li span {
     height: 168px;
   }
-}
+} */
 
 /* .ant-row {
   display: flex;
@@ -274,7 +274,7 @@
 
 .content11-wrapper {
   height: 480px;
-  background: url(https://cdn.discordapp.com/attachments/755062029278248989/785892706194292736/cyber-arena.png) no-repeat bottom;
+  background: url(https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Feng.belta.by%2Fimages%2Fstorage%2Fnews%2Fwith_archive%2F2018%2F000028_715296_1544806361_117372_big.jpg&f=1&nofb=1) no-repeat bottom;
   background-size: cover;
   background-size: 100%;
   margin: 0 auto;

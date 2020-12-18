@@ -7,7 +7,7 @@ export const ContentProductDataSource = {
     children: [
       {
         name: "title",
-        children: "Lorem ipsum dolor sit.",
+        children: "Мы тут вообще-то веселимся!",
         className: "title-h1",
       },
     ],
@@ -24,13 +24,13 @@ export const ContentProductDataSource = {
           icon: {
             className: "content3-icon",
             children:
-              "https://zos.alipayobjects.com/rmsportal/ScHBSdwpTkAHZkJ.png",
+              "https://www.flaticon.com/svg/static/icons/svg/3418/3418810.svg",
           },
           textWrapper: { className: "content3-text" },
-          title: { className: "content3-title", children: "Lorem." },
+          title: { className: "content3-title", children: "Сражайся" },
           content: {
             className: "content3-content",
-            children: "Lorem ipsum dolor sit amet.",
+            children: "Считаешь, что ты лучшый? Докажи!",
           },
         },
       },
@@ -43,14 +43,14 @@ export const ContentProductDataSource = {
           icon: {
             className: "content3-icon",
             children:
-              "https://zos.alipayobjects.com/rmsportal/NKBELAOuuKbofDD.png",
+              "https://www.flaticon.com/premium-icon/icons/svg/2671/2671441.svg",
           },
           textWrapper: { className: "content3-text" },
-          title: { className: "content3-title", children: "Lorem, ipsum." },
+          title: { className: "content3-title", children: "Веселись" },
           content: {
             className: "content3-content",
             children:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat consequatur quo adipisci eius, ullam mollitia fugit nihil incidunt praesentium delectus.",
+              "Ну, мы тут собираемся для веселья в конце концов.",
           },
         },
       },
@@ -63,17 +63,17 @@ export const ContentProductDataSource = {
           icon: {
             className: "content3-icon",
             children:
-              "https://zos.alipayobjects.com/rmsportal/xMSBjgxBhKfyMWX.png",
+              "https://cdn.frankerfacez.com/emoticon/260058/4",
           },
           textWrapper: { className: "content3-text" },
           title: {
             className: "content3-title",
-            children: "Lorem ipsum dolor sit.",
+            children: "Легко",
           },
           content: {
             className: "content3-content",
             children:
-              "Lorem ipsum dolor sit, amet consectetur adipisicing elit. Tenetur sapiente mollitia velit cupiditate consequatur ipsam magnam, ut aliquam repellendus officiis. Ab maiores tenetur similique numquam cumque vitae pariatur, earum ex!",
+              "Потеть можно только во время игры!",
           },
         },
       },
@@ -86,14 +86,14 @@ export const ContentProductDataSource = {
           icon: {
             className: "content3-icon",
             children:
-              "https://zos.alipayobjects.com/rmsportal/MNdlBNhmDBLuzqp.png",
+              "https://www.flaticon.com/svg/static/icons/svg/3034/3034900.svg",
           },
           textWrapper: { className: "content3-text" },
-          title: { className: "content3-title", children: "Lorem ipsum dolor sit amet consectetur." },
+          title: { className: "content3-title", children: "Заяви о себе" },
           content: {
             className: "content3-content",
             children:
-              "Lorem ipsum dolor sit amet consectetur adipisicing elit. Praesentium, voluptatum!",
+              "Участвуй в про турнирах, сделай первый шаг на про сцену.",
           },
         },
       },
@@ -106,13 +106,13 @@ export const ContentProductDataSource = {
           icon: {
             className: "content3-icon",
             children:
-              "https://zos.alipayobjects.com/rmsportal/UsUmoBRyLvkIQeO.png",
+              "https://www.flaticon.com/svg/static/icons/svg/2057/2057748.svg",
           },
           textWrapper: { className: "content3-text" },
-          title: { className: "content3-title", children: "Lorem." },
+          title: { className: "content3-title", children: "Найди друзей" },
           content: {
             className: "content3-content",
-            children: "Lorem ipsum dolor sit amet consectetur adipisicing elit. Porro vel totam in optio, inventore quos.",
+            children: "Проводи время с лучшими, становись лучше.",
           },
         },
       },
@@ -125,17 +125,17 @@ export const ContentProductDataSource = {
           icon: {
             className: "content3-icon",
             children:
-              "https://zos.alipayobjects.com/rmsportal/ipwaQLBLflRfUrg.png",
+              "https://www.flaticon.com/svg/static/icons/svg/1622/1622540.svg",
           },
           textWrapper: { className: "content3-text" },
           title: {
             className: "content3-title",
-            children: "Lorem ipsum dolor sit amet.",
+            children: "Нет лагов",
           },
           content: {
             className: "content3-content",
             children:
-              "Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nesciunt amet doloribus cupiditate earum minima autem nostrum similique ducimus fugiat nobis.",
+              "Ну это так 😉",
           },
         },
       },

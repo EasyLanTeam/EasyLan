@@ -35,7 +35,18 @@ namespace EasyLan.Web.Controllers
         public async Task<IEnumerable<UserScoreModel>> Get(string region)
         {
             var mapper = config.CreateMapper();
-            var leaderboard = await leaderboardService.GetTop20Async(region);
+            //var leaderboard = await leaderboardService.GetTop20Async(region);
+            var leaderboard = await leaderboardService.GetAllTotals();
+            return mapper.Map<List<UserScoreDTO>, List<UserScoreModel>>(leaderboard);
+        }
+
+        // GET: api/<LeaderboardController>
+        [HttpGet]
+        public async Task<IEnumerable<UserScoreModel>> Get()
+        {
+            var mapper = config.CreateMapper();
+            //var leaderboard = await leaderboardService.GetTop20Async(region);
+            var leaderboard = await leaderboardService.GetAllTotals().ConfigureAwait(false);
             return mapper.Map<List<UserScoreDTO>, List<UserScoreModel>>(leaderboard);
         }
     }

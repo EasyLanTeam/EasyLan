@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "../MainPage/footer";
 import { Banner } from "./banner";
-import "./css/DevTeamPage.css";
+// import "./css/DevTeamPage.css";
 import { FeatureImage, FeatureModel } from "./featureImage";
 import Team from "./team";
 

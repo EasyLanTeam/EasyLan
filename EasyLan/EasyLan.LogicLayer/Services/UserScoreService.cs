@@ -45,6 +45,11 @@ namespace EasyLan.LogicLayer.Services
             return mapper.Map<UserScoreDTO>(userScore);
         }
 
+        public async Task<int> GetSumScore(string userId)
+        {
+            return await ReadAllAsync().ContinueWith(allScores => allScores.Result.Where(x => x.User.Id == userId).Sum(x => x.Score)).ConfigureAwait(false);
+        }
+
         public async Task<List<UserScoreDTO>> ReadAllAsync()
         {
             await LoadSampleScores();

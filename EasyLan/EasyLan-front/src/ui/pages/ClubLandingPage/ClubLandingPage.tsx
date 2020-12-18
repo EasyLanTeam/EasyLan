@@ -45,12 +45,12 @@ class ClubLandingPage extends React.Component<IClubLandingPageProps, IClubLandin
           dataSource={null}
           isMobile={this.props.isMobile}
         />
-        <ContentPartner
+        {/* <ContentPartner
           id="Content12_0"
           key="Content12_0"
           dataSource={ContentPartnerData}
           isMobile={this.props.isMobile}
-        />
+        /> */}
         <ContentTitleButton isMobile={this.props.isMobile} />
         <Footer isMobile={this.props.isMobile} />
       </div>

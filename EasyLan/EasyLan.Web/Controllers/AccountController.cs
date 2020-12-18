@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using EasyLan.DataLayer;
+using EasyLan.DataLayer.Entites;
+using EasyLan.LogicLayer.Interfaces;
 using EasyLan.Web.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,17 +25,25 @@ namespace EasyLan.Web.Controllers
         private readonly UserManager<IdentityUser> userManager;
         private readonly SignInManager<IdentityUser> signInManager;
         private AppDbContext dbContext;
-
+        private readonly IUserScoreService _userScoreService;
+        private readonly IPlayerProfileService _playerProfile;
+        private MapperConfiguration _mapper = new MapperConfiguration(cfg =>
+        {
+            cfg.CreateMap<PlayerProfile, PlayerProfileModel>();
+            cfg.CreateMap<PlayerProfileModel, PlayerProfile>();
+        });
 
         //private IHttpContextAccessor httpContextAccessor;
 
 
         public AccountController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager,
-            AppDbContext dbContext)
+            AppDbContext dbContext, IUserScoreService userScoreService, IPlayerProfileService playerProfile)
         {
             this.userManager = userManager;
             this.signInManager = signInManager;
             this.dbContext = dbContext;
+            _userScoreService = userScoreService ?? throw new ArgumentNullException(nameof(userScoreService));
+            _playerProfile = playerProfile;
             //this.httpContextAccessor = httpContextAccessor;
         }
 
@@ -43,7 +54,7 @@ namespace EasyLan.Web.Controllers
             if (user == null)
                 return Unauthorized();
             
-            var userData = new UserDataViewModel
+            var userData = new UserDataViewModel    
             {
                 Id = user.Id,
                 Username = user.UserName,
@@ -69,14 +80,15 @@ namespace EasyLan.Web.Controllers
                 Username = userFromDb.UserName,
             };
 
+            var userScore = _userScoreService.GetSumScore(id);
             var currentUser = await userManager.GetUserAsync(User);
             if (currentUser != null && currentUser.Id == userFromDb.Id)
             {
-                var userRole = userManager.GetRolesAsync(currentUser).Result.FirstOrDefault();
+                var userRole = await userManager.GetRolesAsync(currentUser).ContinueWith(x => x.Result.FirstOrDefault());
                 userData.Email = userFromDb.Email;
                 userData.Role = userRole;
             }
-
+            userData.Score = await userScore.ConfigureAwait(false);
             return new JsonResult(userData);
         }
 
@@ -112,6 +124,10 @@ namespace EasyLan.Web.Controllers
             if (result.Succeeded)
             {
                 await userManager.AddToRoleAsync(newUser, "user");
+
+                PlayerProfile profileEntity = new PlayerProfile { Player = newUser };
+                await _playerProfile.Create(profileEntity).ConfigureAwait(false);
+
                 return Ok();
             }
 

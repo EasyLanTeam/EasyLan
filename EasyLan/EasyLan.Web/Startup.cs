@@ -90,7 +90,8 @@ namespace EasyLan.Web
             services.AddTransient<IUserScoreService, UserScoreService>();
             services.AddTransient<ILeaderboardService, LeaderboardService>();
             services.AddTransient<IClubService, ClubService>();
-
+            services.AddTransient<IPlayerProfileService, PlayerProfileService>();
+            services.AddTransient<IconGenerator>();
 
         }
 

@@ -1,0 +1,35 @@
+﻿
+@{
+    ViewData["Title"] = "AdminPanel";
+}
+
+
+    <html>
+    <head>
+        <meta name="viewport" content="width=device-width" />
+        <title>Ке</title>
+    </head>
+    <body>
+        <div>
+            <h3>Заявки</h3>
+            <table>
+                <tr>
+                    <td><p>Имя клуба</p></td>
+                    <td><p>Адресс клуба</p></td>
+                    <td><p>Номер телефона</p></td>
+                    <td></td>
+                </tr>
+                @foreach (var b in ViewBag.Requests)
+                {
+            <tr>
+                <td><p>@b.Name</p></td>
+                <td><p>@b.Address</p></td>
+                <td><p>@b.PhoneNumber</p></td>
+                <td><p><a href="/admin/applyRequest/@b.ClubRequestId">Принять</a></p></td>
+            </tr>
+                }
+            </table>
+        </div>
+    </body>
+    </html>
+
