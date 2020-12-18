@@ -29,7 +29,7 @@ export class Prices extends React.Component<IDefaultProps> {
                 <QueueAnim type="bottom" className="pricing1-block-box ">
                   <div className="pricing1-top-wrapper">
                     <div className="pricing1-name" key="name">
-                      <p>Free</p>
+                      <p>{"Бесплатно WOW!"}</p>
                     </div>
                     <h1 className="pricing1-money" key="money">
                       0$
@@ -37,11 +37,9 @@ export class Prices extends React.Component<IDefaultProps> {
                   </div>
                   <div className="pricing1-content" key="content">
                     <span>
-                      {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
+                      {"Становись членом клуба!"}
+                      <br />{"Турниры проходят и бесплатно!"}
+                      <br /><br /><br /><br />
                     </span>
                   </div>
                   <i className="pricing1-line" key="line" />
@@ -62,11 +60,9 @@ export class Prices extends React.Component<IDefaultProps> {
                   </div>
                   <div className="pricing1-content" key="content">
                     <span>
-                      {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
+                      {"Мы тут же начинаем организацию"}
+                      <br /> {"Хорошее времяпровождение обеспечено"}
+                      <br /><br /><br />
                     </span>
                   </div>
                   <i className="pricing1-line" key="line" />
@@ -90,11 +86,11 @@ export class Prices extends React.Component<IDefaultProps> {
                   </div>
                   <div className="pricing1-content" key="content">
                     <span>
-                      {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
+                      {"Любое удобное время"}
+                      <br /> {"Можно с пивасом"}
+                      <br /> {"А можно и с кальяном"}
+                      <br /> {"Можно весь день"}
+                      <br /> {"Здесь уже можно все"}
                     </span>
                   </div>
                   <i className="pricing1-line" key="line" />

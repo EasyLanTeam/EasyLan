@@ -37,11 +37,11 @@ export class Prices extends React.Component<IDefaultProps> {
                   </div>
                   <div className="pricing1-content" key="content">
                     <span>
-                      {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
+                      {"Ну да, бесплатно."}
+                      <br /> {"Если вы первый клуб, то грац!"}
+                      <br /> {"Первый клуб влияет на сервис."}
+                      <br /> {"Есть пожелания, обсудим все."}
+                      <br /> {"Взаимовыручка во все края."}
                     </span>
                   </div>
                   <i className="pricing1-line" key="line" />
@@ -62,11 +62,11 @@ export class Prices extends React.Component<IDefaultProps> {
                   </div>
                   <div className="pricing1-content" key="content">
                     <span>
-                      {"Lorem ipsum dolor sit amet."}
+                      {"Турниры 2 раза в месяц."}<br /> <br /> <br /> <br />
+                      {/* <br /> {"Lorem ipsum dolor sit amet."}
                       <br /> {"Lorem ipsum dolor sit amet."}
                       <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
+                      <br /> {"Lorem ipsum dolor sit amet."} */}
                     </span>
                   </div>
                   <i className="pricing1-line" key="line" />
@@ -90,11 +90,11 @@ export class Prices extends React.Component<IDefaultProps> {
                   </div>
                   <div className="pricing1-content" key="content">
                     <span>
-                      {"Lorem ipsum dolor sit amet."}
+                      {"Турнир 4 раза в месяц."}<br /> <br /> <br /> <br />
+                      {/* <br /> {"Lorem ipsum dolor sit amet."}
                       <br /> {"Lorem ipsum dolor sit amet."}
                       <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
-                      <br /> {"Lorem ipsum dolor sit amet."}
+                      <br /> {"Lorem ipsum dolor sit amet."} */}
                     </span>
                   </div>
                   <i className="pricing1-line" key="line" />

@@ -13,7 +13,7 @@ export const ContentPartnerData = {
       },
       {
         name: "title",
-        children: "Компании которые используют наш продукт",
+        children: "Выбирай любую игру",
         className: "title-h1",
       },
     ],
@@ -30,7 +30,7 @@ export const ContentPartnerData = {
           wrapper: { className: "block-content" },
           img: {
             children:
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt065x5pCzIOtI3oUxpC113X_4_CCjLcwotQ&usqp=CAU",
+              "https://cdn.discordapp.com/attachments/787310862682685470/789420840001077258/dota.png",
           },
         },
       },
@@ -43,7 +43,7 @@ export const ContentPartnerData = {
           wrapper: { className: "block-content" },
           img: {
             children:
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt065x5pCzIOtI3oUxpC113X_4_CCjLcwotQ&usqp=CAU",
+              "https://cdn.discordapp.com/attachments/787310862682685470/789423858423431168/mortal_kombat.png",
           },
         },
       },
@@ -56,49 +56,49 @@ export const ContentPartnerData = {
           wrapper: { className: "block-content" },
           img: {
             children:
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt065x5pCzIOtI3oUxpC113X_4_CCjLcwotQ&usqp=CAU",
+              "https://cdn.discordapp.com/attachments/787310862682685470/789424624579772436/cs.png",
           },
         },
       },
-      {
-        name: "block3",
-        className: "block",
-        md: 8,
-        xs: 24,
-        children: {
-          wrapper: { className: "block-content" },
-          img: {
-            children:
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt065x5pCzIOtI3oUxpC113X_4_CCjLcwotQ&usqp=CAU",
-          },
-        },
-      },
-      {
-        name: "block4",
-        className: "block",
-        md: 8,
-        xs: 24,
-        children: {
-          wrapper: { className: "block-content" },
-          img: {
-            children:
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt065x5pCzIOtI3oUxpC113X_4_CCjLcwotQ&usqp=CAU",
-          },
-        },
-      },
-      {
-        name: "block5",
-        className: "block",
-        md: 8,
-        xs: 24,
-        children: {
-          wrapper: { className: "block-content" },
-          img: {
-            children:
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt065x5pCzIOtI3oUxpC113X_4_CCjLcwotQ&usqp=CAU",
-          },
-        },
-      },
+      // {
+      //   name: "block3",
+      //   className: "block",
+      //   md: 8,
+      //   xs: 24,
+      //   children: {
+      //     wrapper: { className: "block-content" },
+      //     img: {
+      //       children:
+      //         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt065x5pCzIOtI3oUxpC113X_4_CCjLcwotQ&usqp=CAU",
+      //     },
+      //   },
+      // },
+      // {
+      //   name: "block4",
+      //   className: "block",
+      //   md: 8,
+      //   xs: 24,
+      //   children: {
+      //     wrapper: { className: "block-content" },
+      //     img: {
+      //       children:
+      //         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt065x5pCzIOtI3oUxpC113X_4_CCjLcwotQ&usqp=CAU",
+      //     },
+      //   },
+      // },
+      // {
+      //   name: "block5",
+      //   className: "block",
+      //   md: 8,
+      //   xs: 24,
+      //   children: {
+      //     wrapper: { className: "block-content" },
+      //     img: {
+      //       children:
+      //         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTt065x5pCzIOtI3oUxpC113X_4_CCjLcwotQ&usqp=CAU",
+      //     },
+      //   },
+      // },
     ],
   },
 };

@@ -4,7 +4,7 @@ export const ContentAdvantagesData = {
   OverPack: { playScale: 0.3, className: "" },
   titleWrapper: {
     className: "title-wrapper",
-    children: [{ name: "title", children: "Lorem." }],
+    children: [{ name: "title", children: "Простые шаги" }],
   },
   childWrapper: {
     className: "content0-block-wrapper",
@@ -21,14 +21,14 @@ export const ContentAdvantagesData = {
               name: "image",
               className: "content0-block-icon",
               children:
-                "https://zos.alipayobjects.com/rmsportal/WBnVOjtIlGWbzyQivuyq.png",
+                "https://www.flaticon.com/svg/static/icons/svg/1265/1265464.svg",
             },
             {
               name: "title",
               className: "content0-block-title",
-              children: "Lorem, ipsum.",
+              children: "Регистрируйся",
             },
-            { name: "content", children: "Lorem, ipsum dolor." },
+            { name: "content", children: "Легко начать" },
           ],
         },
       },
@@ -44,16 +44,16 @@ export const ContentAdvantagesData = {
               name: "image",
               className: "content0-block-icon",
               children:
-                "https://zos.alipayobjects.com/rmsportal/YPMsLQuCEXtuEkmXTTdk.png",
+                "https://www.flaticon.com/svg/static/icons/svg/2074/2074797.svg",
             },
             {
               name: "title",
               className: "content0-block-title",
-              children: "Lorem, ipsum.",
+              children: "Учавствуй",
             },
             {
               name: "content",
-              children: "Lorem ipsum dolor sit amet.",
+              children: "Мы позаботимся об организации",
             },
           ],
         },
@@ -70,16 +70,16 @@ export const ContentAdvantagesData = {
               name: "image",
               className: "content0-block-icon",
               children:
-                "https://zos.alipayobjects.com/rmsportal/EkXWVvAaFJKCzhMmQYiX.png",
+                "https://www.flaticon.com/svg/static/icons/svg/3069/3069338.svg",
             },
             {
               name: "title",
               className: "content0-block-title",
-              children: "Lorem, ipsum.",
+              children: "Выигрывай",
             },
             {
               name: "content",
-              children: "Lorem, ipsum.",
+              children: "Сильный игрок? Останешься в плюсе!",
             },
           ],
         },
