@@ -103,8 +103,9 @@ const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
   const {
     matches,
     updateAllFromServer,
-    flags: { isEditable, isPending, isPossibleToFinish },
+    flags: { isEditable, isPending, isPossibleToFinish, isFinished },
   } = useTournament();
+  const [possibleEditGrid, setPossibleEditGrid] = React.useState(true);
 
   if (isPending) {
     return (
@@ -121,7 +122,8 @@ const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
   const matchesDict = fillMatchesDict(matches);
 
   const onSetWinner = (matchId: string, winnerId: string) => {
-    if (!isEditable) return;
+    if (!isEditable || !possibleEditGrid) return;
+    setPossibleEditGrid(false);
 
     let nextMatch = matchesDict[matchesDict[matchId].nextMatchId];
     while (nextMatch) {
@@ -135,61 +137,67 @@ const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
       nextMatch = matchesDict[nextMatch.nextMatchId];
     }
 
-    setWinner(matchId, winnerId).then((res) => {
-      if (res.status === 200) {
-        notifySuccess("Изменение успешно");
-        updateAllFromServer();
-      }
-    });
+    setWinner(matchId, winnerId)
+      .then((res) => {
+        if (res.status === 200) {
+          notifySuccess("Изменение успешно");
+          updateAllFromServer();
+        }
+      })
+      .then(() => {
+        setPossibleEditGrid(true);
+      });
   };
 
   const gridLayoutData = getGridLayoutData(matches);
 
   return (
-    <div className={styles.container}>
-      {isPossibleToFinish ? (
+    <>
+      {isPossibleToFinish && !isFinished ? (
         <div className={styles.completeMsg}>
           {`Победитель турнира определен. Для завершения турнира перейдите в
           раздел "Основное"`}
         </div>
       ) : null}
-      <div
-        className={styles.grid}
-        style={{ width: gridLayoutData.width, height: gridLayoutData.height }}
-      >
-        {matches.map((matchesList) => {
-          return matchesList
-            .sort((m1, m2) => m1.navNumber - m2.navNumber)
-            .map((match) => {
-              const { xPos, yPos } = gridLayoutData.mapMatchIdToLayoutData[
-                match.matchId
-              ];
-              const nextMatchLayoutData =
-                match.nextMatchId &&
-                gridLayoutData.mapMatchIdToLayoutData[match.nextMatchId];
+      <div className={styles.container}>
+        <div
+          className={styles.grid}
+          style={{ width: gridLayoutData.width, height: gridLayoutData.height }}
+        >
+          {matches.map((matchesList) => {
+            return matchesList
+              .sort((m1, m2) => m1.navNumber - m2.navNumber)
+              .map((match) => {
+                const { xPos, yPos } = gridLayoutData.mapMatchIdToLayoutData[
+                  match.matchId
+                ];
+                const nextMatchLayoutData =
+                  match.nextMatchId &&
+                  gridLayoutData.mapMatchIdToLayoutData[match.nextMatchId];
 
-              return (
-                <div key={match.matchId}>
-                  {nextMatchLayoutData ? (
-                    <MatchLine
-                      startPosX={xPos + MATCH_WIDTH}
-                      startPosY={yPos + MATCH_HEIGHT / 2}
-                      endPosX={nextMatchLayoutData.xPos}
-                      endPosY={nextMatchLayoutData.yPos + MATCH_HEIGHT / 2}
+                return (
+                  <div key={match.matchId}>
+                    {nextMatchLayoutData ? (
+                      <MatchLine
+                        startPosX={xPos + MATCH_WIDTH}
+                        startPosY={yPos + MATCH_HEIGHT / 2}
+                        endPosX={nextMatchLayoutData.xPos}
+                        endPosY={nextMatchLayoutData.yPos + MATCH_HEIGHT / 2}
+                      />
+                    ) : null}
+                    <Match
+                      match={match}
+                      xPos={xPos}
+                      yPos={yPos}
+                      onSetWinner={onSetWinner}
                     />
-                  ) : null}
-                  <Match
-                    match={match}
-                    xPos={xPos}
-                    yPos={yPos}
-                    onSetWinner={onSetWinner}
-                  />
-                </div>
-              );
-            });
-        })}
+                  </div>
+                );
+              });
+          })}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -1,10 +1,11 @@
 import * as React from "react";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
+import { Redirect, Route, Switch, useRouteMatch } from "react-router-dom";
 import PageMenu from "../../components/PageMenu";
 import { TournamentMain } from "./TournamentMain";
 import TournamentParticipants from "./TournamentParticipants/TournamentParticipants";
 import TournamentGrid from "./TournamentGrid/TournamentGrid";
 import UpdateTournamentPage from "../UpdateTournamentPage";
+import { Tournament } from "../../../data/entities/Tournament";
 import {
   ProvideTournament,
   useTournament,
@@ -13,12 +14,20 @@ import {
 interface ITournamentsPageProps {}
 
 const renderPageMenu = (url: string) => {
+  const {
+    flags: { isFinished },
+  } = useTournament();
+
   return (
     <PageMenu>
       <PageMenu.Item linkTo={`${url}`}>Основное</PageMenu.Item>
-      <PageMenu.Item linkTo={`${url}/participants`}>
-        Список участников
-      </PageMenu.Item>
+      {isFinished ? (
+        <PageMenu.Item linkTo={`${url}/results`}>Результаты</PageMenu.Item>
+      ) : (
+        <PageMenu.Item linkTo={`${url}/participants`}>
+          Список участников
+        </PageMenu.Item>
+      )}
       <PageMenu.Item linkTo={`${url}/grid`}>Турнирная сетка</PageMenu.Item>
     </PageMenu>
   );
@@ -26,7 +35,10 @@ const renderPageMenu = (url: string) => {
 
 const TournamentPageWrapper = () => {
   const { url } = useRouteMatch();
-  const { tournament } = useTournament();
+  const {
+    tournament,
+    flags: { isFinished },
+  } = useTournament();
 
   return (
     <div>
@@ -36,6 +48,16 @@ const TournamentPageWrapper = () => {
           <TournamentMain />
         </Route>
         <Route path={`${url}/participants`}>
+          {isFinished ? (
+            <Redirect to={`${url}/results`} />
+          ) : (
+            <>
+              {renderPageMenu(url)}
+              <TournamentParticipants />
+            </>
+          )}
+        </Route>
+        <Route path={`${url}/results`}>
           {renderPageMenu(url)}
           <TournamentParticipants />
         </Route>

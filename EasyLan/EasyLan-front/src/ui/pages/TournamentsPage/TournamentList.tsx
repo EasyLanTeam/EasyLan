@@ -6,59 +6,69 @@ import Button from "../../components/base/Button";
 import { Link, useRouteMatch } from "react-router-dom";
 import { useAuth } from "../../../domain/auth/appAuth";
 import { TournamentCard } from "./TournamentCard";
+import TournamentsPagination from "./TournamentsPagination";
+import useQuery from "../../../domain/useQuery";
 
 import styles from "./TournamentsPage.style.scss";
 
 interface ITournamentListProps {}
 
-const tournamentRepo = new TournamentRepository();
-
-let tournamentList: Tournament[] = null;
-
 export const TournamentList: React.FunctionComponent<ITournamentListProps> = () => {
-  const [isLoaded, setIsLoaded] = React.useState(false);
+  const [tournamentList, setTournamentList] = React.useState<Tournament[]>(
+    null
+  );
   const { url } = useRouteMatch();
+  const query = useQuery();
   const { user } = useAuth();
 
-  if (!isLoaded) {
-    tournamentRepo.getTournaments().then((res) => {
+  const pageQueryParam = query.get("page");
+  const pageNumber = pageQueryParam ? +pageQueryParam : 1;
+
+  React.useEffect(() => {
+    let cleanupFunction = false;
+
+    const tournamentRepo = new TournamentRepository();
+
+    tournamentRepo.getTournaments(pageNumber).then((res) => {
       if (!res.success) return;
       const { result: tournaments } = res;
-      tournamentList = tournaments.map((t) => {
-        t.datetime = new Date(t.datetime);
 
-        return t;
-      });
-
-      setIsLoaded(true);
+      !cleanupFunction && setTournamentList(tournaments);
     });
 
+    return () => (cleanupFunction = true);
+  }, [pageNumber]);
+
+  if (!tournamentList) {
     return null;
   }
 
   return (
-    <div className={styles.container}>
-      {user && user.role && user.role !== "user" ? (
-        <Link to={`${url}/create`}>
-          <Button size={"small"} variant={"primary"} icon={{ path: mdiPlus }}>
-            Провести турнир
-          </Button>
-        </Link>
-      ) : null}
-      <div className={styles.tournamentList}>
-        {tournamentList.map((tournament) => {
-          return (
-            <div key={tournament.id} className={styles.tournamentListItem}>
-              <Link
-                to={`${url}/${tournament.id}`}
-                className={styles.tournamentListLink}
-              >
-                <TournamentCard tournament={tournament}></TournamentCard>
-              </Link>
-            </div>
-          );
-        })}
+    <div>
+      <div className={styles.container}>
+        {user && user.role && user.role !== "user" ? (
+          <Link to={`${url}/create`}>
+            <Button size={"small"} variant={"primary"} icon={{ path: mdiPlus }}>
+              Провести турнир
+            </Button>
+          </Link>
+        ) : null}
+        <div className={styles.tournamentList}>
+          {tournamentList.map((tournament) => {
+            return (
+              <div key={tournament.id} className={styles.tournamentListItem}>
+                <Link
+                  to={`${url}/${tournament.id}`}
+                  className={styles.tournamentListLink}
+                >
+                  <TournamentCard tournament={tournament}></TournamentCard>
+                </Link>
+              </div>
+            );
+          })}
+        </div>
       </div>
+      <TournamentsPagination currentPageNumber={pageNumber}/>
     </div>
   );
 };

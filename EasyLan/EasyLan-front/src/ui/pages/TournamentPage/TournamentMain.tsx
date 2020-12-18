@@ -128,7 +128,7 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = () 
   };
 
   const renderUserActions = () => {
-    const { isTakeParticipation } = flags;
+    const { isTakeParticipation, isPending } = flags;
 
     return !isTakeParticipation ? (
       <Button
@@ -138,18 +138,18 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = () 
       >
         Принять участие
       </Button>
-    ) : (
+    ) : isPending ? (
       <Button
         className={styles.tournamentMainActionsButton}
         onClick={handleClickUndoTakePartition}
       >
         Отказ от участия
       </Button>
-    );
+    ) : null;
   };
 
   const renderInitiatorActions = () => {
-    const { isPending, isPossibleToFinish, isEditable } = flags;
+    const { isPending, isPossibleToFinish, isEditable, isFinished } = flags;
 
     if (!isEditable) {
       return renderUserActions();
@@ -165,7 +165,7 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = () 
           >
             Начать турнир
           </Button>
-        ) : isPossibleToFinish ? (
+        ) : isPossibleToFinish && !isFinished ? (
           <Button
             variant={"primary"}
             className={styles.tournamentMainActionsButton}
@@ -198,7 +198,7 @@ export const TournamentMain: React.FunctionComponent<ITournamentMainProps> = () 
 
   return (
     <Paper className={styles.paper}>
-      <TournamentInfo tournament={tournament} />
+      <TournamentInfo />
       <div className={styles.tournamentMainActions}>
         {renderInitiatorActions()}
       </div>

@@ -1,17 +1,25 @@
 import * as React from "react";
-import { Tournament } from "../../../data/entities/Tournament";
+import { useTournament } from "../../../domain/tournamentContext";
 import styles from "./TournamentPage.style.scss";
 
-interface ITournamentInfoProps {
-  tournament: Tournament;
-}
+interface ITournamentInfoProps {}
 
-const TournamentInfo: React.FunctionComponent<ITournamentInfoProps> = ({
-  tournament,
-}: ITournamentInfoProps) => {
+const TournamentInfo: React.FunctionComponent<ITournamentInfoProps> = (
+  props: ITournamentInfoProps
+) => {
+  const {
+    tournament,
+    flags: { isOngoing, isFinished, isPending },
+  } = useTournament();
+
   return (
     <div className={styles.info}>
       <div className={styles.infoHeader}>
+        {isPending ? null : (
+          <div className={styles.infoUsername}>
+            {isOngoing ? "Турнир идет" : isFinished ? "Турнир завершен" : null}
+          </div>
+        )}
         <div className={styles.infoUsername}>{`${tournament.game}`}</div>
         <div className={styles.infoRating}>{`${tournament.gameFormat}`}</div>
       </div>

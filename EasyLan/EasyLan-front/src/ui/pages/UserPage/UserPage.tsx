@@ -1,7 +1,7 @@
 import * as React from "react";
 import Paper from "../../components/Paper";
 import PageMenu from "../../components/PageMenu";
-import { useParams, useRouteMatch } from "react-router-dom";
+import { Route, Switch, useParams, useRouteMatch } from "react-router-dom";
 import { toast } from "react-toastify";
 import AccountService from "../../../data/services/AccountService";
 import { UserData } from "../../../data/entities/UserData";
@@ -45,29 +45,36 @@ const UserPage: React.FunctionComponent<IUserPageProps> = () => {
     <div>
       <PageMenu>
         <PageMenu.Item linkTo={url}>Основное</PageMenu.Item>
-        <PageMenu.Item linkTo={`${url}/tournaments`}>Мои турниры</PageMenu.Item>
+        <PageMenu.Item linkTo={`${url}/mytournaments`}>
+          Мои турниры
+        </PageMenu.Item>
       </PageMenu>
 
-      <div className={styles.container}>
-        <Paper className={styles.paper}>
-          <div className={styles.userInfo}>
-            <div className={styles.userInfoHeader}>
-              <div className={styles.userInfoUsername}>{username}</div>
-              <div
-                className={styles.userInfoRating}
-              >{`Рейтинг: ${"Неизвестно"}`}</div>
-            </div>
-            <div className={styles.userInfoBody}>
-              <div className={styles.userInfoItem}>
-                <span>{`Публичное имя: ${username}`}</span>
+      <Switch>
+        <Route path={`${url}`} exact>
+          <div className={styles.container}>
+            <Paper className={styles.paper}>
+              <div className={styles.userInfo}>
+                <div className={styles.userInfoHeader}>
+                  <div className={styles.userInfoUsername}>{username}</div>
+                  <div
+                    className={styles.userInfoRating}
+                  >{`Рейтинг: ${"Неизвестно"}`}</div>
+                </div>
+                <div className={styles.userInfoBody}>
+                  <div className={styles.userInfoItem}>
+                    <span>{`Публичное имя: ${username}`}</span>
+                  </div>
+                  <div className={styles.userInfoItem}>
+                    <span>{`E-mail: ${email}`}</span>
+                  </div>
+                </div>
               </div>
-              <div className={styles.userInfoItem}>
-                <span>{`E-mail: ${email}`}</span>
-              </div>
-            </div>
+            </Paper>
           </div>
-        </Paper>
-      </div>
+        </Route>
+        <Route path={`${url}/mytournaments`}>{null}</Route>
+      </Switch>
     </div>
   );
 };
