@@ -101,6 +101,28 @@ export default class TournamentRepository implements ITournamentService {
     );
   }
 
+  getAllTournamentsByUser() {
+    return fetch("/api/Tournament/GetAllByUser", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "*/*",
+      },
+      mode: "cors",
+    })
+      .then((res) => {
+        if (res.status !== 200) {
+          console.error(res.status);
+        }
+
+        return res.json();
+      })
+      .then((ts: Tournament[]) => {
+        if (!ts) return null;
+        return ts.map((t) => getTournamentFromApi(t));
+      });
+  }
+
   getTournamentById(id: string): Promise<ApiResult<Tournament>> {
     return new Promise<ApiResult<Tournament>>((resolve, reject) => {
       fetch(`/api/Tournament/${id}`, {

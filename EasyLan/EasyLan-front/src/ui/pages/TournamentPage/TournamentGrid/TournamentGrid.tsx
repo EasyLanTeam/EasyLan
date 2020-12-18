@@ -122,7 +122,7 @@ const TournamentGrid: React.FunctionComponent<ITournamentGridProps> = ({
   const matchesDict = fillMatchesDict(matches);
 
   const onSetWinner = (matchId: string, winnerId: string) => {
-    if (!isEditable || !possibleEditGrid) return;
+    if (!isEditable || isFinished || !possibleEditGrid) return;
     setPossibleEditGrid(false);
 
     let nextMatch = matchesDict[matchesDict[matchId].nextMatchId];

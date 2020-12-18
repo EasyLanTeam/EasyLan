@@ -7,6 +7,7 @@ import AccountService from "../../../data/services/AccountService";
 import { UserData } from "../../../data/entities/UserData";
 import ErrorPage from "../ErrorPage/ErrorPage";
 import { ApiFailureResult } from "../../../data/services/ApiResult";
+import MyTournaments from "./MyTournaments";
 
 import styles from "./UserPage.style.scss";
 
@@ -40,14 +41,17 @@ const UserPage: React.FunctionComponent<IUserPageProps> = () => {
   }
 
   const { email, username } = userInfo;
+  const isOwnPage = id === userInfo.id;
 
   return (
     <div>
       <PageMenu>
         <PageMenu.Item linkTo={url}>Основное</PageMenu.Item>
-        <PageMenu.Item linkTo={`${url}/mytournaments`}>
-          Мои турниры
-        </PageMenu.Item>
+        {isOwnPage ? (
+          <PageMenu.Item linkTo={`${url}/mytournaments`}>
+            Мои турниры
+          </PageMenu.Item>
+        ) : null}
       </PageMenu>
 
       <Switch>
@@ -73,7 +77,9 @@ const UserPage: React.FunctionComponent<IUserPageProps> = () => {
             </Paper>
           </div>
         </Route>
-        <Route path={`${url}/mytournaments`}>{null}</Route>
+        <Route path={`${url}/mytournaments`}>
+          <MyTournaments />
+        </Route>
       </Switch>
     </div>
   );
